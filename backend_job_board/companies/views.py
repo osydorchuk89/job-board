@@ -1,10 +1,7 @@
-from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework_extensions.utils import compose_parent_pk_kwarg_name
 
-from .models import Company, Recruiter, Vacancy, Application
-from .serializers import CompanySerializer, RecruiterSerializer, VacancySerializer, ApplicationSerializer
+from .models import Company, Recruiter
+from .serializers import CompanySerializer, RecruiterSerializer
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -12,12 +9,12 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Company.objects.all()
-        countryName = self.request.query_params.get("country")
-        industryName = self.request.query_params.get("industry")
-        if countryName is not None:
-            queryset = queryset.filter(country=countryName)
-        if industryName is not None:
-            queryset = queryset.filter(industry=industryName)
+        country_value = self.request.query_params.get("country")
+        industry_value = self.request.query_params.get("industry")
+        if country_value is not None:
+            queryset = queryset.filter(country=country_value)
+        if industry_value is not None:
+            queryset = queryset.filter(industry=industry_value)
         return queryset
 
 
@@ -26,17 +23,3 @@ class RecruiterViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Recruiter.objects.filter(company_id=self.kwargs["company_pk"])
-
-
-class VacancyViewSet(viewsets.ModelViewSet):
-    serializer_class = VacancySerializer
-
-    def get_queryset(self):
-        return Vacancy.objects.filter(company_id=self.kwargs["company_pk"])
-
-
-class ApplicationViewSet(viewsets.ModelViewSet):
-    serializer_class = ApplicationSerializer
-
-    def get_queryset(self):
-        return Application.objects.filter(vacancy_id=self.kwargs["vacancy_pk"])

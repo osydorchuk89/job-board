@@ -7,7 +7,7 @@ class Candidate(models.Model):
     email = models.EmailField(max_length=100, unique=True)
     phone = PhoneNumberField()
     linkedIn = models.URLField(null=True, blank=True)
-    cv = models.FileField(upload_to="cvs", null=True, blank=True)
+    cv = models.FileField(upload_to="candidates/cvs", null=True, blank=True)
 
     def __str__(self):
         return self.name
