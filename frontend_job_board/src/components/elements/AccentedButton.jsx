@@ -2,6 +2,6 @@ import Button from '@mui/material/Button';
 
 export const AccentedButton = props => {
     return (
-        <Button size="large" variant="contained" color="success">{props.text}</Button>
+        <Button onClick={props.onClick} href={props.href} size="large" variant="contained" color="success">{props.text}</Button>
     );
 };

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { OutlinedButton } from "../elements/OutlinedButton";
+import { OutlinedButton } from "./elements/OutlinedButton";
 
 export const PopularCategories = () => {
     return (

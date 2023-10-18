@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import { AccentedButton } from "../elements/AccentedButton";
-import { NavList } from "../elements/NavList";
+import { AccentedButton } from "./elements/AccentedButton";
+import { NavList } from "./elements/NavList";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';

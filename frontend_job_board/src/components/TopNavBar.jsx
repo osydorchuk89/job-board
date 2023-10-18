@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import WorkIcon from "@mui/icons-material/Work";
-import { AccentedButton } from "../elements/AccentedButton";
+import { AccentedButton } from "./elements/AccentedButton";
 
 export const TopNavBar = () => {
     return (
@@ -17,9 +17,9 @@ export const TopNavBar = () => {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         JobLink
                     </Typography>
-                    <Button sx={{ mx: 5 }} color="inherit">FOR CANDIDATES</Button>
-                    <Button sx={{ mx: 5 }} color="inherit">FOR EMPLOYERS</Button>
-                    <AccentedButton text="CONTACT US" />
+                    <Button href="/job-search" sx={{ mx: 5 }} color="inherit">FOR CANDIDATES</Button>
+                    <Button href="/job-post" sx={{ mx: 5 }} color="inherit">FOR EMPLOYERS</Button>
+                    <AccentedButton href="/contact" text="CONTACT US" />
                     <IconButton
                         size="large"
                         edge="start"

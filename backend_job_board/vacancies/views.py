@@ -24,10 +24,10 @@ class VacancyViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(title=title_value)
 
         if country_value is not None:
-            queryset = queryset.filter(location_country=country_value)
+            queryset = queryset.filter(country=country_value)
 
         if city_value is not None:
-            queryset = queryset.filter(location_city=city_value)
+            queryset = queryset.filter(city=city_value)
 
         if industry_value is not None:
             queryset = queryset.filter(industry=industry_value)
