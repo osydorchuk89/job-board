@@ -1,53 +1,47 @@
-import axios from "axios";
-import { useState } from "react";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { AccentedButton } from './elements/AccentedButton';
-import { BASE_URL } from "../utils/config";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Container, TextField, Typography } from "@mui/material";
 
-export const SearchArea = () => {
+export const SearchArea = props => {
 
-    const [vacancyTitle, setVacancyTitle] = useState("");
-    const [vacancyLocation, setVacancyLocation] = useState("");
+    const userQuery = useRef(null);
 
-    const handleSearch = async () => {
-        let queryURL = `${BASE_URL}/vacancies/?`
-        if (vacancyLocation) {
-            const query = "city";
-            const value = vacancyLocation;
-            queryURL += `&${query}=${value}`
+    let navigate = useNavigate();
+
+    const handleSearch = event => {
+        event.preventDefault();
+        const userInputTitle = userQuery.current["jobTitle"].value;
+        const userInputLocation = userQuery.current["location"].value;
+        const userInputData = {
+            vacancyTitle: userInputTitle,
+            vacancyLocation: userInputLocation
         };
-        if (vacancyTitle) {
-            const query = "industry";
-            const value = vacancyTitle;
-            queryURL += `&${query}=${value}`
-        };
-
-        try {
-            const response = await axios.get(queryURL);
-            console.log(response);
-        } catch (error) {
-            console.error(error);
-        };
+        props.onClickSearch(userInputData);
+        navigate("/vacancies");
     };
 
     return (
         <Container>
             <Typography variant="h2" component="h2" sx={{ my: 10, fontWeight: "bold" }}>Find a Job</Typography>
-            <TextField
-                size="small"
-                sx={{ mr: 10 }}
-                label="Job Title"
-                onChange={event => setVacancyTitle(event.target.value)}
-            />
-            <TextField
-                size="small"
-                sx={{ mr: 10 }}
-                label="Location"
-                onChange={event => setVacancyLocation(event.target.value)}
-            />
-            <AccentedButton onClick={handleSearch} text="SEARCH">SEARCH</AccentedButton>
+            <form ref={userQuery} onSubmit={handleSearch}>
+                <TextField
+                    size="small"
+                    sx={{ mr: 10 }}
+                    label="Job Title"
+                    name="jobTitle"
+                />
+                <TextField
+                    size="small"
+                    sx={{ mr: 10 }}
+                    label="Location"
+                    name="location"
+                />
+                <Button
+                    type="submit"
+                    size="large"
+                    variant="contained"
+                    color="success">SEARCH</Button>
+            </form>
         </Container>
     );
 };

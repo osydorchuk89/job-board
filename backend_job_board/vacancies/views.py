@@ -18,19 +18,19 @@ class VacancyViewSet(viewsets.ModelViewSet):
         industry_value = self.request.query_params.get("industry")
 
         if company_value is not None:
-            queryset = queryset.filter(company=company_value)
+            queryset = queryset.filter(company__icontains=company_value)
 
         if title_value is not None:
-            queryset = queryset.filter(title=title_value)
+            queryset = queryset.filter(title__icontains=title_value)
 
         if country_value is not None:
-            queryset = queryset.filter(country=country_value)
+            queryset = queryset.filter(country__icontains=country_value)
 
         if city_value is not None:
-            queryset = queryset.filter(city=city_value)
+            queryset = queryset.filter(city__icontains=city_value)
 
         if industry_value is not None:
-            queryset = queryset.filter(industry=industry_value)
+            queryset = queryset.filter(industry__icontains=industry_value)
 
         return queryset
 

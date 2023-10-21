@@ -29,13 +29,12 @@ class Vacancy(models.Model):
     employment_type = models.CharField(max_length=100, choices=EMPLOYMENT_TYPES)
     work_mode = models.CharField(max_length=100, choices=WORK_MODES)
     posting_date = models.DateField(auto_now_add=True)
-    slug = models.SlugField(max_length=100)
 
     class Meta:
         verbose_name_plural = "Vacancies"
 
     def __str__(self):
-        return f"{self.company} - {self.title}"
+        return f"{self.company} - {self.title} - {self.pk}"
 
 
 def get_upload_path(instance, filename):

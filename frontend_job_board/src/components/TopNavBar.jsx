@@ -1,12 +1,8 @@
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import { Box, Button, Link, Toolbar, IconButton } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import WorkIcon from "@mui/icons-material/Work";
-import { AccentedButton } from "./elements/AccentedButton";
 
 export const TopNavBar = () => {
     return (
@@ -14,12 +10,26 @@ export const TopNavBar = () => {
             <AppBar position="static" elevation={0}>
                 <Toolbar sx={{ mx: 10 }}>
                     <WorkIcon sx={{ mr: 2 }} />
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                    <Link href="/" color="inherit" underline="none" variant="h6" sx={{ flexGrow: 1 }}>
                         JobLink
-                    </Typography>
-                    <Button href="/job-search" sx={{ mx: 5 }} color="inherit">FOR CANDIDATES</Button>
-                    <Button href="/job-post" sx={{ mx: 5 }} color="inherit">FOR EMPLOYERS</Button>
-                    <AccentedButton href="/contact" text="CONTACT US" />
+                    </Link>
+                    <Button
+                        component={RouterLink}
+                        to="/vacancies"
+                        sx={{ mx: 5 }}
+                        color="inherit">FOR CANDIDATES</Button>
+                    <Button
+                        component={RouterLink}
+                        to="/job-post"
+                        sx={{ mx: 5 }}
+                        color="inherit">FOR EMPLOYERS</Button>
+                    <Button
+                        component={RouterLink}
+                        to="#"
+                        size="large"
+                        variant="contained"
+                        color="success"
+                        text="LOGIN">LOGIN</Button>
                     <IconButton
                         size="large"
                         edge="start"

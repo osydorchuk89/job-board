@@ -1,15 +1,16 @@
-import { TopNavBar } from "../components/TopNavBar";
 import { SearchArea } from "../components/SearchArea";
 import { PopularCategories } from "../components/PopularCategories";
-import { BottomNavBar } from "../components/BottomNavBar";
 
-export const Home = () => {
+export const Home = props => {
+
+    const onClickSearchDisplay = userQuery => {
+        props.onClickSearch(userQuery);
+    }
+
     return (
         <>
-            <TopNavBar />
-            <SearchArea />
+            <SearchArea onClickSearch={onClickSearchDisplay} />
             <PopularCategories />
-            <BottomNavBar />
         </>
     )
 };
