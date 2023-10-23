@@ -1,6 +1,5 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import { AccentedButton } from "./elements/AccentedButton";
-import { NavList } from "./elements/NavList";
+import { NavList } from "./NavList";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -14,7 +13,7 @@ export const BottomNavBar = () => {
                     <Box sx={{ flexGrow: 1, width: "20%", mr: 2 }}>
                         <Typography variant="h6">ABOUT US</Typography>
                         <Typography variant="body2" component="p">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum, laborum corporis maiores ab, impedit quisquam necessitatibus voluptas, non placeat odio nam nihil amet omnis nemo?</Typography>
-                        <AccentedButton text="READ MORE"></AccentedButton>
+                        <Button variant="contained" color="success">READ MORE</Button>
                     </Box>
                     <Box sx={{ flexGrow: 1, width: "20%", mr: 2 }}>
                         <Typography variant="h6">NAVIGATE</Typography>

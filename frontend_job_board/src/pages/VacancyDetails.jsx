@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
 import { Button, Container, Typography } from "@mui/material";
-import { TopVacancyDetails } from "../components/elements/TopVacancyDetails";
+import { TopVacancyDetails } from "../components/TopVacancyDetails";
 
 export const VacancyDetails = () => {
 

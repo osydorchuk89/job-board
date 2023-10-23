@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState } from "react";
 import { Home } from "./pages/Home";
-import { JobSearch } from "./pages/JobSearch";
 import { JobPost } from "./pages/JobPost";
 import { Contact } from "./pages/Contact";
 import { Vacancies } from "./pages/Vacancies";
@@ -25,10 +24,6 @@ export const App = () => {
                 {
                     path: "/",
                     element: <Home onClickSearch={onClickSearchDisplay} />,
-                },
-                {
-                    path: "/job-search",
-                    element: <JobSearch />,
                 },
                 {
                     path: "/job-post",

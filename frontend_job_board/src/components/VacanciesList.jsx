@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Card, CardContent, CardActions, Container, Typography, Stack, Chip } from "@mui/material";
-import { TopVacancyDetails } from "./elements/TopVacancyDetails";
+import { TopVacancyDetails } from "./TopVacancyDetails";
 
 export const VacanciesList = props => {
 
@@ -17,7 +17,7 @@ export const VacanciesList = props => {
                             industry={vacancy.industry}
                             city={vacancy.city}
                             country={vacancy.country}
-                            salary={vacancy.salary.toLocaleString('en-US')}
+                            salary={vacancy.salary}
                             employment_type={vacancy.employment_type}
                             work_mode={vacancy.work_mode}
                         />

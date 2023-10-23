@@ -5,7 +5,7 @@ export const Home = props => {
 
     const onClickSearchDisplay = userQuery => {
         props.onClickSearch(userQuery);
-    }
+    };
 
     return (
         <>

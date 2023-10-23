@@ -20,10 +20,15 @@ WORK_MODES = [
 class Vacancy(models.Model):
     title = models.CharField(max_length=100)
     company = models.ForeignKey("companies.Company", on_delete=models.CASCADE, related_name="vacancy_company")
-    recruiter = models.ForeignKey("companies.Recruiter", on_delete=models.PROTECT, related_name="vacancy_recruiter")
+    recruiter = models.ForeignKey(
+        "companies.Recruiter", on_delete=models.PROTECT, related_name="vacancy_recruiter", null=True, blank=True
+    )
     city = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
-    description = models.TextField()
+    about_company = models.TextField(null=True, blank=True)
+    position_overview = models.TextField(null=True, blank=True)
+    key_responsibilities = models.TextField(null=True, blank=True)
+    qualifications = models.TextField(null=True, blank=True)
     salary = models.IntegerField(null=True, blank=True)
     industry = models.CharField(max_length=100)
     employment_type = models.CharField(max_length=100, choices=EMPLOYMENT_TYPES)
