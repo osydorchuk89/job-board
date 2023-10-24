@@ -6,6 +6,7 @@ import { Contact } from "./pages/Contact";
 import { Vacancies } from "./pages/Vacancies";
 import { VacancyDetails } from "./pages/VacancyDetails";
 import { VacancyApplication } from "./pages/VacancyApplication";
+import { VacancyPosted } from "./pages/VacancyPosted";
 import { Root } from "./pages/Root";
 
 export const App = () => {
@@ -28,6 +29,10 @@ export const App = () => {
                 {
                     path: "/job-post",
                     element: <JobPost />,
+                },
+                {
+                    path: "/job-post/succesfully-posted",
+                    element: <VacancyPosted />
                 },
                 {
                     path: "/contact",

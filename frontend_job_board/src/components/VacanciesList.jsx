@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button, Card, CardContent, CardActions, Container, Typography, Stack, Chip } from "@mui/material";
+import { Button, Card, CardContent, CardActions, Container, Typography } from "@mui/joy";
 import { TopVacancyDetails } from "./TopVacancyDetails";
 
 export const VacanciesList = props => {
@@ -9,7 +9,7 @@ export const VacanciesList = props => {
             {props.data.map(vacancy => (
                 <Card variant="outlined" sx={{ marginY: 5 }} key={vacancy.id}>
                     <CardContent>
-                        <Typography variant="h5">
+                        <Typography level="h4">
                             {vacancy.title}
                         </Typography>
                         <TopVacancyDetails
@@ -22,16 +22,28 @@ export const VacanciesList = props => {
                             work_mode={vacancy.work_mode}
                         />
                         <Typography sx={{ mt: 2 }}>
-                            {vacancy.description}
+                            {vacancy.position_overview}
                         </Typography>
                     </CardContent>
                     <CardActions>
                         <Button
-                            component={Link}
+                            component="a"
                             to={`${vacancy.id}`}
-                            size="medium"
-                            variant="contained"
+                            size="md"
+                            variant="solid"
                             color="success">Learn More</Button>
+                        <Button
+                            component="a"
+                            to={`${vacancy.id}/edit`}
+                            size="md"
+                            variant="solid"
+                            color="warning">Edit</Button>
+                        <Button
+                            component="a"
+                            to={`${vacancy.id}/delete`}
+                            size="md"
+                            variant="solid"
+                            color="danger">Delete</Button>
                     </CardActions>
                 </Card>
             ))}

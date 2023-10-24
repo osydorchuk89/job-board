@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Typography, Button, Stack } from "@mui/material";
 import { InputField } from "../components/InputField";
 import { TextareaField } from "../components/TextareaField";
@@ -25,6 +26,7 @@ const workModeOptions = [
 
 export const JobPost = () => {
 
+    const [userTitleInput, setUserTitleInput] = useState("");
     const [inputValid, setInputValid] = useState(true);
     const [keyResponsibilities, setKeyResponsibilities] = useState([]);
     const [qualifications, setQualifications] = useState([]);
@@ -33,6 +35,8 @@ export const JobPost = () => {
     const [workMode, setWorkMode] = useState(null);
     const [companies, setCompanies] = useState([]);
     const inputVacancyData = useRef(null);
+
+    let navigate = useNavigate();
 
     let getCompaniesURL = BASE_URL + "/companies/?fields=id,name";
     let postVacancyURL = BASE_URL + "/vacancies/";
@@ -99,8 +103,8 @@ export const JobPost = () => {
             city: inputVacancyCity,
             about_company: inputVacancyAboutCompany,
             position_overview: inputVacancyPositionOverview,
-            key_responsibilities: keyResponsibilities.slice(-1).join(" \n"),
-            qualifications: qualifications.slice(-1).join(" \n"),
+            key_responsibilities: keyResponsibilities.slice(-1)[0].join("\r\n"),
+            qualifications: qualifications.slice(-1)[0].join("\r\n"),
             salary: inputVacancySalary,
             employment_type: employmentType,
             work_mode: workMode
@@ -118,17 +122,19 @@ export const JobPost = () => {
                 }
             });
             console.log("Success!");
+            navigate("/job-post/succesfully-posted");
         } catch (error) {
             console.log(error);
         };
     };
 
     const handleBlur = event => {
-        const userInput = event.target.value;
-        if (event.target.touched && userInput.length === 0) {
+        setUserTitleInput(event.target.value);
+        if (userTitleInput.length === 0) {
             setInputValid(false);
+        } else {
+            setInputValid(true);
         };
-        console.log(userInput);
     };
 
     return (
@@ -192,7 +198,12 @@ export const JobPost = () => {
                         placeholder="Select work mode"
                         options={workModeOptions}
                         onSelectItem={updateWorkMode} />
-                    <Button type="submit" variant="contained" color="success" disableElevation>POST VACANCY</Button>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="success"
+                        disableElevation
+                    >POST VACANCY</Button>
                 </Stack>
             </form>
         </Container>

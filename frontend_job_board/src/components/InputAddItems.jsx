@@ -40,7 +40,7 @@ export const InputAddItems = props => {
                         size="lg"
                         variant="solid"
                         color="primary"
-                        sx={{ marginY: 1 }}
+                        sx={{ marginY: 1, maxWidth: "100%" }}
                         endDecorator={<ChipDelete onDelete={() => handleDeleteItem(item)} />}
                     >
                         {item}
@@ -53,6 +53,6 @@ export const InputAddItems = props => {
                 color="success"
                 disableElevation
                 onClick={handleAddItem}>Add</Button>
-        </FormControl>
+        </FormControl >
     );
 };

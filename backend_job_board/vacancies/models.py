@@ -10,7 +10,7 @@ EMPLOYMENT_TYPES = [
 ]
 
 WORK_MODES = [
-    ("On-site", "On-site"),
+    ("On-Site", "On-Site"),
     ("Remote", "Remote"),
     ("Hybrid", "Hybrid"),
     ("Flexible", "Flexible"),

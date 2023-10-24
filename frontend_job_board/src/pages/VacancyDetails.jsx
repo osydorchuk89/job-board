@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
-import { Button, Container, Typography } from "@mui/material";
+import { Box, Button, List, ListItem, Container, Typography } from "@mui/joy";
 import { TopVacancyDetails } from "../components/TopVacancyDetails";
 
 export const VacancyDetails = () => {
@@ -28,7 +28,7 @@ export const VacancyDetails = () => {
 
     return (
         <Container sx={{ marginY: 5 }}>
-            <Typography variant="h4">
+            <Typography level="h2">
                 {vacancyDetails.title}
             </Typography>
             <TopVacancyDetails
@@ -40,15 +40,34 @@ export const VacancyDetails = () => {
                 employment_type={vacancyDetails.employment_type}
                 work_mode={vacancyDetails.work_mode}
             />
-            <Typography>
-                {vacancyDetails.description}
-            </Typography>
+            <Box>
+                <Typography level="h4">Position Overview</Typography>
+                <Typography>{vacancyDetails.position_overview}</Typography>
+            </Box>
+            <Box>
+                <Typography level="h4">About Company</Typography>
+                <Typography>{vacancyDetails.about_company}</Typography>
+            </Box>
+            <Box>
+                <Typography level="h4">Key Responsibilities</Typography>
+                {vacancyDetails.key_responsibilities &&
+                    <List marker="disc">{vacancyDetails.key_responsibilities.split("\r\n").map(
+                        line => <ListItem key={line}>{line}</ListItem>
+                    )}</List>}
+            </Box>
+            <Box>
+                <Typography level="h4">Qualifications</Typography>
+                {vacancyDetails.qualifications &&
+                    <List marker="disc">{vacancyDetails.qualifications.split("\r\n").map(
+                        line => <ListItem key={line}>{line}</ListItem>
+                    )}</List>}
+            </Box>
             <Button
                 component={Link}
                 to={`/vacancies/${vacancyId}/apply`}
                 size="large"
                 variant="contained"
                 color="success">APPLY NOW</Button>
-        </Container>
+        </Container >
     );
 };
