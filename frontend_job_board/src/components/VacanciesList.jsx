@@ -28,19 +28,19 @@ export const VacanciesList = props => {
                     <CardActions>
                         <Button
                             component="a"
-                            to={`${vacancy.id}`}
+                            href={`/vacancies/${vacancy.id}`}
                             size="md"
                             variant="solid"
                             color="success">Learn More</Button>
                         <Button
                             component="a"
-                            to={`${vacancy.id}/edit`}
+                            href={`/vacancies/${vacancy.id}/edit`}
                             size="md"
                             variant="solid"
                             color="warning">Edit</Button>
                         <Button
                             component="a"
-                            to={`${vacancy.id}/delete`}
+                            href={`/vacancies/${vacancy.id}/delete`}
                             size="md"
                             variant="solid"
                             color="danger">Delete</Button>
