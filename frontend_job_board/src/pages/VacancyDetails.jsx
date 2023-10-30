@@ -2,8 +2,10 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
-import { Box, Button, List, ListItem, Container, Typography } from "@mui/joy";
+import { Box, Button, List, ListItem, Container, Typography, Stack } from "@mui/joy";
 import { TopVacancyDetails } from "../components/TopVacancyDetails";
+import { EditVacancyButton } from "../components/EditVacancyButton";
+import { DeleteVacancyButton } from "../components/DeleteVacancyButton";
 
 export const VacancyDetails = props => {
 
@@ -62,12 +64,20 @@ export const VacancyDetails = props => {
                         line => <ListItem key={line}>{line}</ListItem>
                     )}</List>}
             </Box>
-            <Button
-                component={Link}
-                to={`/vacancies/${vacancyId}/apply`}
-                size="large"
-                variant="contained"
-                color="success">APPLY NOW</Button>
+            <Stack direction="row" spacing={2}>
+                <Button
+                    component={Link}
+                    to={`/vacancies/${vacancyId}/apply`}
+                    size="lg"
+                    variant="solid"
+                    color="success">APPLY NOW</Button>
+                <EditVacancyButton
+                    vacancyId={vacancyId}
+                    size="lg" />
+                <DeleteVacancyButton
+                    vacancyId={vacancyId}
+                    size="lg" />
+            </Stack>
         </Container >
     );
 };

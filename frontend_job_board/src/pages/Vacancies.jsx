@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { BASE_URL } from "../utils/config";
 import { VacanciesList } from "../components/VacanciesList";
+import { Typography, Container } from "@mui/joy";
 
 export const Vacancies = props => {
 
@@ -30,7 +31,15 @@ export const Vacancies = props => {
         fetchVacancyData();
     }, []);
 
+    console.log(vacancyData);
+
     return (
-        <VacanciesList companies={props.companies} data={vacancyData} />
+        <Container>
+            <Typography level="h4" textAlign="center">
+                Total {vacancyData.length} vacancies found
+            </Typography>
+            <VacanciesList companies={props.companies} data={vacancyData} />
+        </Container >
+
     );
 };
