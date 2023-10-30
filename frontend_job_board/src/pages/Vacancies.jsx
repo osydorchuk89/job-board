@@ -31,6 +31,6 @@ export const Vacancies = props => {
     }, []);
 
     return (
-        <VacanciesList data={vacancyData} />
+        <VacanciesList companies={props.companies} data={vacancyData} />
     );
 };

@@ -5,7 +5,7 @@ import { BASE_URL } from "../utils/config";
 import { Box, Button, List, ListItem, Container, Typography } from "@mui/joy";
 import { TopVacancyDetails } from "../components/TopVacancyDetails";
 
-export const VacancyDetails = () => {
+export const VacancyDetails = props => {
 
     const [vacancyDetails, setVacancyDetails] = useState({});
 
@@ -32,7 +32,7 @@ export const VacancyDetails = () => {
                 {vacancyDetails.title}
             </Typography>
             <TopVacancyDetails
-                company={vacancyDetails.company}
+                company={props.companies[vacancyDetails.company]}
                 industry={vacancyDetails.industry}
                 city={vacancyDetails.city}
                 country={vacancyDetails.country}

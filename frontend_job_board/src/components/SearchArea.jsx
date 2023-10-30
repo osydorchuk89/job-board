@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Container, TextField, Typography } from "@mui/material";
+import { Button, Container, Input, Typography, Stack } from "@mui/joy";
 
 export const SearchArea = props => {
 
@@ -17,30 +17,31 @@ export const SearchArea = props => {
             vacancyLocation: userInputLocation
         };
         props.onClickSearch(userInputData);
+        console.log(userInputData)
         navigate("/vacancies");
     };
 
     return (
         <Container>
-            <Typography variant="h2" component="h2" sx={{ my: 10, fontWeight: "bold" }}>Find a Job</Typography>
+            <Typography level="h1" sx={{ my: 10, fontWeight: "bold" }}>Find a Job</Typography>
             <form ref={userQuery} onSubmit={handleSearch}>
-                <TextField
-                    size="small"
-                    sx={{ mr: 10 }}
-                    label="Job Title"
-                    name="jobTitle"
-                />
-                <TextField
-                    size="small"
-                    sx={{ mr: 10 }}
-                    label="Location"
-                    name="location"
-                />
-                <Button
-                    type="submit"
-                    size="large"
-                    variant="contained"
-                    color="success">SEARCH</Button>
+                <Stack direction="row">
+                    <Input
+                        sx={{ mr: 10 }}
+                        placeholder="Job Title"
+                        name="jobTitle"
+                    />
+                    <Input
+                        sx={{ mr: 10 }}
+                        placeholder="Location"
+                        name="location"
+                    />
+                    <Button
+                        type="submit"
+                        size="lg"
+                        variant="solid"
+                        color="success">SEARCH</Button>
+                </Stack>
             </form>
         </Container>
     );

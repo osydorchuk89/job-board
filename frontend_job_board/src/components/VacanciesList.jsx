@@ -1,8 +1,23 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, CardContent, CardActions, Container, Typography } from "@mui/joy";
 import { TopVacancyDetails } from "./TopVacancyDetails";
+import { BASE_URL } from "../utils/config";
 
 export const VacanciesList = props => {
+
+    let navigate = useNavigate();
+
+    const handleDeleteVacancy = async vacancyId => {
+        let deleteVacancyUrl = BASE_URL + `/vacancies/${vacancyId}/`
+        try {
+            const confirmDelete = confirm("Are you sure you want to delete this vacancy?")
+            if (confirmDelete) {
+                axios.delete(deleteVacancyUrl);
+                navigate("/vacancies/deleted");
+            }
+        } catch (error) { console.log(error) };
+    };
 
     return (
         <Container>
@@ -13,7 +28,7 @@ export const VacanciesList = props => {
                             {vacancy.title}
                         </Typography>
                         <TopVacancyDetails
-                            company={vacancy.company}
+                            company={props.companies[vacancy.company]}
                             industry={vacancy.industry}
                             city={vacancy.city}
                             country={vacancy.country}
@@ -40,7 +55,8 @@ export const VacanciesList = props => {
                             color="warning">Edit</Button>
                         <Button
                             component="a"
-                            href={`/vacancies/${vacancy.id}/delete`}
+                            // href={`/vacancies/${vacancy.id}/delete`}
+                            onClick={() => handleDeleteVacancy(vacancy.id)}
                             size="md"
                             variant="solid"
                             color="danger">Delete</Button>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FormControl, FormLabel, Select, Option } from "@mui/joy";
+import { FormControl, FormLabel, FormHelperText, Select, Option } from "@mui/joy";
 
 export const SelectField = props => {
 
@@ -7,21 +7,29 @@ export const SelectField = props => {
 
     useEffect(() => {
         props.onSelectItem(selectedItem);
-    }, [selectedItem])
+    }, [selectedItem]);
 
     const handleSelect = (event, index) => {
-        event.preventDefault();
+        event && event.preventDefault();
         setSelectedItem(index);
-    }
+    };
 
     return (
-        <FormControl sx={{ marginBottom: 3 }}>
+        <FormControl error={props.error} sx={{ marginBottom: 3 }}>
             <FormLabel sx={{ fontSize: "1.1rem" }}>{props.label}</FormLabel>
-            <Select onChange={handleSelect} placeholder={props.placeholder}>
-                {props.options.map(option => (
-                    <Option key={option.value} value={option.value}>{option.text}</Option>
+            <Select
+                defaultValue={props.defaultValue}
+                onChange={handleSelect}
+                placeholder={props.placeholder}
+                onFocus={props.onFocus}>
+                {Object.entries(props.options).map(option => (
+                    <Option key={option[0]} value={option[0]}>{option[1]}</Option>
                 ))}
             </Select>
+            {props.error &&
+                <FormHelperText>
+                    This field is required.
+                </FormHelperText>}
         </FormControl>
     );
 };
