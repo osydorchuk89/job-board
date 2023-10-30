@@ -1,11 +1,21 @@
-import { FormControl, FormLabel, Textarea } from "@mui/joy";
-
+import { FormControl, FormLabel, FormHelperText, Textarea } from "@mui/joy";
 
 export const TextareaField = props => {
     return (
         <FormControl sx={{ marginBottom: 3 }}>
             <FormLabel sx={{ fontSize: "1.1rem" }}>{props.label}</FormLabel>
-            <Textarea name={props.name} placeholder={props.placeholder} minRows={2} />
+            <Textarea
+                defaultValue={props.defaultValue}
+                name={props.name}
+                placeholder={props.placeholder}
+                minRows={2}
+                error={props.error}
+                onFocus={props.onFocus}
+            />
+            {props.error &&
+                <FormHelperText>
+                    This field is required.
+                </FormHelperText>}
         </FormControl>
     );
 };

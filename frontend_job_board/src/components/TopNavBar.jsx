@@ -22,7 +22,7 @@ export const TopNavBar = () => {
                         underline="none"
                         sx={{ marginX: 5 }}>FOR CANDIDATES</Link>
                     <Link
-                        href="/job-post"
+                        href="/vacancy-post"
                         color="inherit"
                         underline="none"
                         sx={{ marginX: 5 }}>FOR EMPLOYERS</Link>
