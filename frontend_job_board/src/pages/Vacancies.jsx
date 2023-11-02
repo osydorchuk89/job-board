@@ -10,31 +10,39 @@ export const Vacancies = props => {
     const [vacancyData, setVacancyData] = useState([]);
 
     let baseQueryURL = `${BASE_URL}/vacancies/?`;
-
+    if (props.item.vacancyTitle) {
+        baseQueryURL += `&title=${props.item.vacancyTitle}`;
+    };
     if (props.item.vacancyCity) {
         baseQueryURL += `&city=${props.item.vacancyCity}`;
     };
 
-    if (props.item.vacancyTitle) {
-        baseQueryURL += `&title=${props.item.vacancyTitle}`;
-    };
-
-    const fetchVacancyData = async () => {
+    const fetchVacancyData = async url => {
         try {
-            const response = await axios.get(baseQueryURL);
+            const response = await axios.get(url);
             setVacancyData(response.data);
         } catch (error) {
             console.error(error);
         };
     };
 
-    useEffect(() => async () => {
-        fetchVacancyData();
-    }, [vacancyData]);
+    const onClickSearchDisplay = userData => {
+        if (userData.vacancyTitle) {
+            baseQueryURL += `&title=${userData.vacancyTitle}`;
+        };
+        if (userData.vacancyCity) {
+            baseQueryURL += `&city=${userData.vacancyCity}`;
+        };
+        fetchVacancyData(baseQueryURL);
+    };
+
+    useEffect(() => {
+        fetchVacancyData(baseQueryURL);
+    }, []);
 
     return (
         <Container>
-            <SearchArea />
+            <SearchArea onClickSearch={onClickSearchDisplay} />
             <Typography level="h4" textAlign="center">
                 Total {vacancyData.length} {vacancyData.length === 1 ? "vacancy" : "vacancies"} found
             </Typography>

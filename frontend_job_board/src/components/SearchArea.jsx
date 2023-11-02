@@ -5,19 +5,16 @@ import { Button, Input, Stack } from "@mui/joy";
 export const SearchArea = props => {
 
     const userQuery = useRef(null);
-
     let navigate = useNavigate();
 
     const handleSearch = event => {
         event.preventDefault();
-        const userInputTitle = userQuery.current["title"].value.trim();
-        const userInputCity = userQuery.current["city"].value.trim();
         const userInputData = {
-            vacancyTitle: userInputTitle,
-            vacancyCity: userInputCity
+            vacancyTitle: userQuery.current["title"].value.trim(),
+            vacancyCity: userQuery.current["city"].value.trim()
         };
         props.onClickSearch(userInputData);
-        console.log(userInputData)
+        console.log(userInputData);
         navigate("/vacancies");
     };
 

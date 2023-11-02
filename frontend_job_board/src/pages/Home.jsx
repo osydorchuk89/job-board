@@ -4,8 +4,8 @@ import { Container, Typography } from "@mui/joy";
 
 export const Home = props => {
 
-    const onClickSearchDisplay = userQuery => {
-        props.onClickSearch(userQuery);
+    const onClickSearchDisplay = userData => {
+        props.onClickSearch(userData);
     };
 
     return (

@@ -16,11 +16,11 @@ import { BASE_URL } from "./utils/config";
 
 export const App = () => {
 
-    const [userQueryValue, setUserQueryValue] = useState({});
+    const [userQueryData, setUserQueryData] = useState({});
     const [companies, setCompanies] = useState([]);
 
-    const onClickSearchDisplay = userQuery => {
-        setUserQueryValue(userQuery);
+    const onClickSearchDisplay = userData => {
+        setUserQueryData(userData);
     };
 
     const fetchCompanies = async () => {
@@ -63,7 +63,7 @@ export const App = () => {
                 },
                 {
                     path: "/vacancies",
-                    element: <Vacancies item={userQueryValue} companies={companies} />,
+                    element: <Vacancies item={userQueryData} companies={companies} />,
                 },
                 {
                     path: "/vacancies/:vacancyId",
