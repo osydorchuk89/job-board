@@ -1,5 +1,6 @@
 import { SearchArea } from "../components/SearchArea";
 import { PopularCategories } from "../components/PopularCategories";
+import { Container, Typography } from "@mui/joy";
 
 export const Home = props => {
 
@@ -8,9 +9,10 @@ export const Home = props => {
     };
 
     return (
-        <>
+        <Container>
+            <Typography level="h1" sx={{ my: 10, fontWeight: "bold" }}>Find a Job</Typography>
             <SearchArea onClickSearch={onClickSearchDisplay} />
             <PopularCategories />
-        </>
+        </Container>
     )
 };

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { BASE_URL } from "../utils/config";
-import { VacanciesList } from "../components/VacanciesList";
 import { Typography, Container } from "@mui/joy";
+import { VacanciesList } from "../components/VacanciesList";
+import { SearchArea } from "../components/SearchArea";
+import { BASE_URL } from "../utils/config";
 
 export const Vacancies = props => {
 
@@ -10,8 +11,8 @@ export const Vacancies = props => {
 
     let baseQueryURL = `${BASE_URL}/vacancies/?`;
 
-    if (props.item.vacancyLocation) {
-        baseQueryURL += `&city=${props.item.vacancyLocation}`;
+    if (props.item.vacancyCity) {
+        baseQueryURL += `&city=${props.item.vacancyCity}`;
     };
 
     if (props.item.vacancyTitle) {
@@ -29,14 +30,13 @@ export const Vacancies = props => {
 
     useEffect(() => async () => {
         fetchVacancyData();
-    }, []);
-
-    console.log(vacancyData);
+    }, [vacancyData]);
 
     return (
         <Container>
+            <SearchArea />
             <Typography level="h4" textAlign="center">
-                Total {vacancyData.length} vacancies found
+                Total {vacancyData.length} {vacancyData.length === 1 ? "vacancy" : "vacancies"} found
             </Typography>
             <VacanciesList companies={props.companies} data={vacancyData} />
         </Container >

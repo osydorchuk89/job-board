@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Input, Typography, Stack } from "@mui/joy";
+import { Button, Input, Stack } from "@mui/joy";
 
 export const SearchArea = props => {
 
@@ -10,11 +10,11 @@ export const SearchArea = props => {
 
     const handleSearch = event => {
         event.preventDefault();
-        const userInputTitle = userQuery.current["jobTitle"].value;
-        const userInputLocation = userQuery.current["location"].value;
+        const userInputTitle = userQuery.current["title"].value.trim();
+        const userInputCity = userQuery.current["city"].value.trim();
         const userInputData = {
             vacancyTitle: userInputTitle,
-            vacancyLocation: userInputLocation
+            vacancyCity: userInputCity
         };
         props.onClickSearch(userInputData);
         console.log(userInputData)
@@ -22,27 +22,24 @@ export const SearchArea = props => {
     };
 
     return (
-        <Container>
-            <Typography level="h1" sx={{ my: 10, fontWeight: "bold" }}>Find a Job</Typography>
-            <form ref={userQuery} onSubmit={handleSearch}>
-                <Stack direction="row">
-                    <Input
-                        sx={{ mr: 10 }}
-                        placeholder="Job Title"
-                        name="jobTitle"
-                    />
-                    <Input
-                        sx={{ mr: 10 }}
-                        placeholder="Location"
-                        name="location"
-                    />
-                    <Button
-                        type="submit"
-                        size="lg"
-                        variant="solid"
-                        color="success">SEARCH</Button>
-                </Stack>
-            </form>
-        </Container>
+        <form ref={userQuery} onSubmit={handleSearch} >
+            <Stack direction="row" justifyContent="space-between" sx={{ my: 5 }}>
+                <Input
+                    sx={{ mr: 10, width: "33%" }}
+                    placeholder="Title"
+                    name="title"
+                />
+                <Input
+                    sx={{ mr: 10, width: "33%" }}
+                    placeholder="City"
+                    name="city"
+                />
+                <Button
+                    type="submit"
+                    size="lg"
+                    variant="solid"
+                    color="success">SEARCH</Button>
+            </Stack>
+        </form>
     );
 };

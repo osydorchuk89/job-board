@@ -8,7 +8,9 @@ export const InputField = props => {
                 defaultValue={props.defaultValue}
                 name={props.name}
                 placeholder={props.placeholder}
-                onFocus={props.onFocus} />
+                onFocus={props.onFocus}
+                type={props.type}
+                slotProps={{ input: { min: props.min } }} />
             {props.error &&
                 <FormHelperText>
                     This field is required.

@@ -23,23 +23,6 @@ export const App = () => {
         setUserQueryValue(userQuery);
     };
 
-    // const fetchCompanies = async () => {
-    //     let getCompaniesURL = BASE_URL + "/companies/?fields=id,name";
-    //     try {
-    //         const response = await axios.get(getCompaniesURL);
-    //         const responseData = response.data;
-    //         for (const companyData of responseData) {
-    //             companyData["value"] = companyData["id"];
-    //             companyData["text"] = companyData["name"];
-    //             delete companyData["id"];
-    //             delete companyData["name"];
-    //         };
-    //         setCompanies(responseData);
-    //     } catch (error) {
-    //         console.error(error);
-    //     };
-    // };
-
     const fetchCompanies = async () => {
         let getCompaniesURL = BASE_URL + "/companies/?fields=id,name";
         try {
