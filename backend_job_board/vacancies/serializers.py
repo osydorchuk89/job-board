@@ -19,4 +19,4 @@ class VacancySerializer(serializers.ModelSerializer):
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
-        fields = ["id", "vacancy", "applicant", "cv", "submission_date"]
+        fields = "__all__"

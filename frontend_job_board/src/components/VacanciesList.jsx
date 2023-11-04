@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardActions, Container, Typography } from "@mui/joy";
+import { Button, Card, CardContent, CardActions, Container, Typography, Link } from "@mui/joy";
 import { TopVacancyDetails } from "./TopVacancyDetails";
 import { EditVacancyButton } from "./EditVacancyButton";
 import { DeleteVacancyButton } from "./DeleteVacancyButton";
@@ -10,8 +10,8 @@ export const VacanciesList = props => {
             {props.data.map(vacancy => (
                 <Card variant="outlined" sx={{ marginY: 5 }} key={vacancy.id}>
                     <CardContent>
-                        <Typography level="h3">
-                            {vacancy.title}
+                        <Typography level="h3" sx={{ marginBottom: 2 }}>
+                            <Link underline="none" variant="plain" href={`/vacancies/${vacancy.id}`}>{vacancy.title}</Link>
                         </Typography>
                         <TopVacancyDetails
                             company={props.companies[vacancy.company]}

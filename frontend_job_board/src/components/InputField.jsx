@@ -10,7 +10,16 @@ export const InputField = props => {
                 placeholder={props.placeholder}
                 onFocus={props.onFocus}
                 type={props.type}
-                slotProps={{ input: { min: props.min } }} />
+                startDecorator={props.startDecorator}
+                slotProps={{
+                    input: {
+                        min: props.min,
+                        maxLength: props.maxLength,
+                        pattern: props.pattern,
+                        onInvalid: props.onInvalid,
+                        ref: props.inputRef
+                    }
+                }} />
             {props.error &&
                 <FormHelperText>
                     This field is required.

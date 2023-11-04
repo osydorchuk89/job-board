@@ -1,6 +1,4 @@
-import { Box, Button } from "@mui/material";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import { Container, Box, Button, Typography } from "@mui/joy";
 
 export const PopularCategories = () => {
     return (
@@ -13,9 +11,9 @@ export const PopularCategories = () => {
             </Box>
             <Box sx={{ mb: 5 }}>
                 <Typography sx={{ mb: 2, fontWeight: "bold" }}>Popular Locations</Typography>
-                <Button variant="outlined">London, UK</Button>
-                <Button variant="outlined">San Fransisco, USA</Button>
-                <Button variant="outlined">Toronto, Canada</Button>
+                <Button variant="outlined">London</Button>
+                <Button variant="outlined">San Fransisco</Button>
+                <Button variant="outlined">Toronto</Button>
             </Box>
         </Container>
     );

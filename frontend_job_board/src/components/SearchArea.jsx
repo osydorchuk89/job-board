@@ -11,6 +11,7 @@ export const SearchArea = props => {
         event.preventDefault();
         const userInputData = {
             vacancyTitle: userQuery.current["title"].value.trim(),
+            vacancyCompany: userQuery.current["company"].value.trim(),
             vacancyCity: userQuery.current["city"].value.trim()
         };
         props.onClickSearch(userInputData);
@@ -22,12 +23,17 @@ export const SearchArea = props => {
         <form ref={userQuery} onSubmit={handleSearch} >
             <Stack direction="row" justifyContent="space-between" sx={{ my: 5 }}>
                 <Input
-                    sx={{ mr: 10, width: "33%" }}
-                    placeholder="Title"
+                    sx={{ mr: 10, width: "25%" }}
+                    placeholder="Job Title"
                     name="title"
                 />
                 <Input
-                    sx={{ mr: 10, width: "33%" }}
+                    sx={{ mr: 10, width: "25%" }}
+                    placeholder="Company"
+                    name="company"
+                />
+                <Input
+                    sx={{ mr: 10, width: "25%" }}
                     placeholder="City"
                     name="city"
                 />

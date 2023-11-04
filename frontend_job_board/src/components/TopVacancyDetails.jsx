@@ -1,4 +1,4 @@
-import { Stack, Typography, Chip } from "@mui/material";
+import { Stack, Typography, Chip } from "@mui/joy";
 import BusinessIcon from '@mui/icons-material/Business';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
@@ -21,10 +21,10 @@ export const TopVacancyDetails = props => {
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
                 <LocalAtmIcon />
-                <Typography>${props.salary}</Typography>
+                <Typography>${props.salary && props.salary.toLocaleString()}</Typography>
             </Stack>
-            <Chip label={props.employment_type} />
-            <Chip label={props.work_mode} />
+            <Chip variant="outlined" size="lg">{props.employment_type}</Chip>
+            <Chip variant="outlined" size="lg">{props.work_mode}</Chip>
         </Stack>
     );
 };

@@ -8,14 +8,7 @@ import { BASE_URL } from "../utils/config";
 export const Vacancies = props => {
 
     const [vacancyData, setVacancyData] = useState([]);
-
     let baseQueryURL = `${BASE_URL}/vacancies/?`;
-    if (props.item.vacancyTitle) {
-        baseQueryURL += `&title=${props.item.vacancyTitle}`;
-    };
-    if (props.item.vacancyCity) {
-        baseQueryURL += `&city=${props.item.vacancyCity}`;
-    };
 
     const fetchVacancyData = async url => {
         try {
@@ -26,9 +19,23 @@ export const Vacancies = props => {
         };
     };
 
+    if (props.item.vacancyTitle) {
+        baseQueryURL += `&title=${props.item.vacancyTitle}`;
+    };
+    if (props.item.vacancyCompany) {
+        baseQueryURL += `&company=${props.item.vacancyCompany}`;
+    };
+    if (props.item.vacancyCity) {
+        baseQueryURL += `&city=${props.item.vacancyCity}`;
+    };
+
+
     const onClickSearchDisplay = userData => {
         if (userData.vacancyTitle) {
             baseQueryURL += `&title=${userData.vacancyTitle}`;
+        };
+        if (userData.vacancyCompany) {
+            baseQueryURL += `&company=${userData.vacancyCompany}`;
         };
         if (userData.vacancyCity) {
             baseQueryURL += `&city=${userData.vacancyCity}`;

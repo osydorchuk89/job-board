@@ -18,7 +18,7 @@ class VacancyViewSet(viewsets.ModelViewSet):
         industry_value = self.request.query_params.get("industry")
 
         if company_value is not None:
-            queryset = queryset.filter(company__icontains=company_value)
+            queryset = queryset.filter(company__name__icontains=company_value)
 
         if title_value is not None:
             queryset = queryset.filter(title__icontains=title_value)

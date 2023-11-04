@@ -5,7 +5,7 @@ import { Container, Typography, Button, Stack } from "@mui/joy";
 import { InputField } from "../components/InputField";
 import { TextareaField } from "../components/TextareaField";
 import { SelectField } from "../components/SelectField";
-import { employmentTypeOptions, workModeOptions } from "../utils/data";
+import { employmentTypeOptions, workModeOptions } from "../store/data";
 
 export const VacancyPostForm = props => {
 
@@ -177,7 +177,7 @@ export const VacancyPostForm = props => {
                         placeholder="Enter annual salary"
                         name="salary"
                         type="number"
-                        min="1"
+                        min="1000"
                         error={!userInputData.salary && !inputsFocused.salary && submitButtonClicked} />
                     <TextareaField
                         defaultValue={props.defaultValues.key_responsibilities}
@@ -224,7 +224,7 @@ export const VacancyPostForm = props => {
                     <Button
                         type="submit"
                         variant="solid"
-                        color="success">{props.buttonText}Y</Button>
+                        color="success">{props.buttonText}</Button>
                 </Stack>
             </form>
         </Container>

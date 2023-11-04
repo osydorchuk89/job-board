@@ -83,7 +83,7 @@ export const App = () => {
                 },
                 {
                     path: "/vacancies/:vacancyId/apply",
-                    element: <VacancyApplication />,
+                    element: <VacancyApplication companies={companies} />,
                 },
             ]
         },
