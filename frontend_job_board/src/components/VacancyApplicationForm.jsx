@@ -1,21 +1,19 @@
 import axios from "axios";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Typography, Button, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
-
-import { InputField } from "../components/InputField";
+import { SelectField } from "./SelectField";
 import { FileUploadField } from "./FileUploadField";
 
 export const VacancyApplicationForm = props => {
 
     const allInputsNotFocused = {
-        name: false,
-        email: false,
-        phone: false,
+        applicant: false,
         cv: false,
     };
 
+    const [candidateId, setCandidateId] = useState(null);
     const [vacancyData, setVacancyData] = useState({});
     const [userInputData, setUserInputData] = useState({});
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
@@ -24,16 +22,16 @@ export const VacancyApplicationForm = props => {
         cv: null,
         coverLetter: null
     });
-
-    const applicationName = useRef();
-    const applicationEmail = useRef();
-    const applicationPhone = useRef();
+    const [filesUploaded, setFilesUploaded] = useState({
+        cv: false,
+        coverLetter: false
+    });
 
     const params = useParams();
     const vacancyId = params.vacancyId;
-    const vacancyURL = BASE_URL + `/vacancies/${vacancyId}`
+    let vacancyURL = BASE_URL + `/vacancies/${vacancyId}`
 
-    const fetchVacancyTitle = async () => {
+    const fetchVacancyData = async () => {
         try {
             const response = await axios.get(vacancyURL);
             setVacancyData({
@@ -46,9 +44,8 @@ export const VacancyApplicationForm = props => {
     };
 
     useEffect(() => {
-        fetchVacancyTitle();
-    }, [])
-
+        fetchVacancyData();
+    }, []);
 
     const handleFileUpload = event => {
         event.preventDefault();
@@ -56,28 +53,47 @@ export const VacancyApplicationForm = props => {
             ...prevState,
             [event.target.name]: event.target.files[0]
         }));
+        setFilesUploaded(prevState => ({
+            ...prevState,
+            [event.target.name]: true
+        }))
     };
 
-    const handleSubmit = event => {
-        event.preventDefault();
+    const combineInputData = () => {
         const inputDataObject = {
-            name: applicationName.current.value.trim(),
-            email: applicationEmail.current.value.trim(),
-            phone: applicationPhone.current.value.trim(),
+            vacancy: vacancyId,
+            applicant: candidateId,
             cv: applicationFiles.cv,
-            coverLetter: applicationFiles.coverLetter
+            cover_letter: applicationFiles.coverLetter
         };
         setUserInputData(inputDataObject);
-        console.log(inputDataObject);
+        return inputDataObject;
+    }
+
+    const handleSubmit = async event => {
+        event.preventDefault();
+        const inputData = combineInputData();
+        console.log(inputData);
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (
-            inputDataObject.name &&
-            inputDataObject.email &&
-            inputDataObject.phone &&
-            inputDataObject.cv
+            inputData.applicant &&
+            inputData.cv
         ) {
-            console.log("Applied succesfully!")
+            try {
+                await axios({
+                    method: "post",
+                    url: vacancyURL + "/applications/",
+                    data: inputData,
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+                );
+                navigate(`/vacancies/${vacancyId}/applied`);
+            } catch (error) {
+                console.log(error);
+            };
         } else { console.log("You should complete the required fields") };
     };
 
@@ -92,7 +108,7 @@ export const VacancyApplicationForm = props => {
             </Typography>
             <form onSubmit={handleSubmit}>
                 <Stack>
-                    <InputField
+                    {/* <InputField
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
                             name: true
@@ -127,24 +143,28 @@ export const VacancyApplicationForm = props => {
                         startDecorator="+"
                         onInvalid={e => e.target.setCustomValidity('This field should contain only numbers')}
                         inputRef={applicationPhone}
-                        error={!userInputData.phone && !inputsFocused.phone && submitButtonClicked} />
-                    <FileUploadField
+                        error={!userInputData.phone && !inputsFocused.phone && submitButtonClicked} /> */}
+                    <SelectField
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
-                            cv: true
+                            applicant: true
                         }))}
+                        label="Applicant"
+                        name="applicant"
+                        options={props.candidates}
+                        onSelectItem={item => setCandidateId(item)}
+                        error={!userInputData.applicant && !inputsFocused.applicant && submitButtonClicked} />
+                    <FileUploadField
                         label="Your CV"
                         name="cv"
                         onChange={handleFileUpload}
-                        error={!userInputData.cv && !inputsFocused.cv && submitButtonClicked} />
+                        uploaded={filesUploaded.cv}
+                        error={!userInputData.cv && !filesUploaded.cv && submitButtonClicked} />
                     <FileUploadField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            coverLetter: true
-                        }))}
                         label="Your Cover Letter"
                         name="coverLetter"
-                        onChange={handleFileUpload} />
+                        onChange={handleFileUpload}
+                        uploaded={filesUploaded.coverLetter} />
                     <Button
                         type="submit"
                         variant="solid"

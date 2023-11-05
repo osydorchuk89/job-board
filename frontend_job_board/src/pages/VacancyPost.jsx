@@ -23,6 +23,7 @@ export const VacancyPost = props => {
         <Container maxWidth="md" sx={{ marginY: 5 }}>
             <VacancyPostForm
                 companies={props.companies}
+                candidates={props.candidates}
                 defaultValues={defaultValues}
                 method="post"
                 url={`${BASE_URL}/vacancies/`}

@@ -11,6 +11,7 @@ import { VacancyPosted } from "./pages/VacancyPosted";
 import { VacancyEdit } from "./pages/VacancyEdit";
 import { VacancyEdited } from "./pages/VacancyEdited";
 import { VacancyDeleted } from "./pages/VacancyDeleted";
+import { VacancyApplied } from "./pages/VacancyApplied";
 import { Root } from "./pages/Root";
 import { BASE_URL } from "./utils/config";
 
@@ -18,6 +19,7 @@ export const App = () => {
 
     const [userQueryData, setUserQueryData] = useState({});
     const [companies, setCompanies] = useState([]);
+    const [candidates, setCandidates] = useState([]);
 
     const onClickSearchDisplay = userData => {
         setUserQueryData(userData);
@@ -36,8 +38,22 @@ export const App = () => {
         };
     };
 
+    const fetchCandidates = async () => {
+        let getCandidatesURL = BASE_URL + "/candidates/?fields=id,name";
+        try {
+            const response = await axios.get(getCandidatesURL);
+            const idCandidatesObject = response.data.reduce(
+                (obj, item) => Object.assign(obj, { [item.id]: item.name }), {}
+            );
+            setCandidates(idCandidatesObject);
+        } catch (error) {
+            console.error(error);
+        };
+    }
+
     useEffect(() => {
         fetchCompanies();
+        fetchCandidates();
     }, []);
 
     const router = createBrowserRouter([
@@ -83,7 +99,11 @@ export const App = () => {
                 },
                 {
                     path: "/vacancies/:vacancyId/apply",
-                    element: <VacancyApplication companies={companies} />,
+                    element: <VacancyApplication companies={companies} candidates={candidates} />,
+                },
+                {
+                    path: "/vacancies/:vacancyId/applied",
+                    element: <VacancyApplied companies={companies} />,
                 },
             ]
         },

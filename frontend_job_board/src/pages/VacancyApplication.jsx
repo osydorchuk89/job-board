@@ -4,7 +4,7 @@ import { VacancyApplicationForm } from "../components/VacancyApplicationForm";
 export const VacancyApplication = props => {
     return (
         <Container maxWidth="md" sx={{ marginY: 5 }}>
-            <VacancyApplicationForm companies={props.companies} />
+            <VacancyApplicationForm companies={props.companies} candidates={props.candidates} />
         </Container>
     );
 };

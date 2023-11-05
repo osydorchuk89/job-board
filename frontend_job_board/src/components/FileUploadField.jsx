@@ -1,8 +1,8 @@
-import { FormControl, FormLabel, FormHelperText, Button, styled } from "@mui/joy";
+import { FormControl, FormLabel, FormHelperText, Button, Typography, styled } from "@mui/joy";
 
 export const FileUploadField = props => {
 
-    const VisuallyHiddenInput = styled('input')`
+    const VisuallyHiddenInput = styled("input")`
         clip: rect(0 0 0 0);
         clip-path: inset(50%);
         height: 1px;
@@ -20,10 +20,16 @@ export const FileUploadField = props => {
             <Button
                 component="label"
                 variant="solid"
-                onFocus={props.onFocus}
             >Upload File
-                <VisuallyHiddenInput name={props.name} onChange={props.onChange} type="file" />
+                <VisuallyHiddenInput
+                    name={props.name}
+                    onClick={props.onClick}
+                    onChange={props.onChange}
+                    type="file" />
             </Button>
+            {props.uploaded && <FormHelperText>
+                Uploaded succesfully!
+            </FormHelperText>}
             {props.error &&
                 <FormHelperText>
                     This field is required.
