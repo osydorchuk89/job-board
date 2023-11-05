@@ -12,6 +12,7 @@ import { VacancyEdit } from "./pages/VacancyEdit";
 import { VacancyEdited } from "./pages/VacancyEdited";
 import { VacancyDeleted } from "./pages/VacancyDeleted";
 import { VacancyApplied } from "./pages/VacancyApplied";
+import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
 import { BASE_URL } from "./utils/config";
 
@@ -60,9 +61,10 @@ export const App = () => {
         {
             path: "/",
             element: <Root />,
+            errorElement: <Error />,
             children: [
                 {
-                    path: "/",
+                    index: true,
                     element: <Home onClickSearch={onClickSearchDisplay} />,
                 },
                 {
@@ -80,6 +82,14 @@ export const App = () => {
                 {
                     path: "/vacancies",
                     element: <Vacancies item={userQueryData} companies={companies} />,
+                    loader: async url => {
+                        try {
+                            const response = await axios.get(`${BASE_URL}/vacancies/?`);
+                            return response.data;
+                        } catch (error) {
+                            console.error(error);
+                        };
+                    }
                 },
                 {
                     path: "/vacancies/:vacancyId",

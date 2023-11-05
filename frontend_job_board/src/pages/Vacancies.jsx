@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useLoaderData } from "react-router-dom";
 import { Typography, Container } from "@mui/joy";
 import { VacanciesList } from "../components/VacanciesList";
 import { SearchArea } from "../components/SearchArea";
@@ -46,6 +47,8 @@ export const Vacancies = props => {
     useEffect(() => {
         fetchVacancyData(baseQueryURL);
     }, []);
+
+    console.log(vacancyData);
 
     return (
         <Container>
