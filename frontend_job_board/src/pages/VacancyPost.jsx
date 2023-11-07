@@ -1,8 +1,13 @@
+import { useRouteLoaderData } from "react-router-dom";
 import { Container } from "@mui/joy";
 import { VacancyPostForm } from "../components/VacancyPostForm";
 import { BASE_URL } from "../utils/config";
 
 export const VacancyPost = props => {
+
+    const companyData = useRouteLoaderData("root");
+
+    console.log(companyData);
 
     const defaultValues = {
         title: "",
@@ -22,8 +27,8 @@ export const VacancyPost = props => {
     return (
         <Container maxWidth="md" sx={{ marginY: 5 }}>
             <VacancyPostForm
-                companies={props.companies}
-                candidates={props.candidates}
+                companies={companyData}
+                // candidates={props.candidates}
                 defaultValues={defaultValues}
                 method="post"
                 url={`${BASE_URL}/vacancies/`}

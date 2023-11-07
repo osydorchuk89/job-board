@@ -28,7 +28,7 @@ export const TopNavBar = () => {
                         sx={{ marginX: 5 }}>FOR EMPLOYERS</Link>
                     <Button
                         component="a"
-                        href="#"
+                        href="/candidate-login"
                         size="lg"
                         variant="solid"
                         color="success">LOGIN</Button>

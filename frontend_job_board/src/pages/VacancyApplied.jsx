@@ -1,36 +1,39 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useRouteLoaderData } from "react-router-dom";
 import { Button, Container } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
 
 export const VacancyApplied = props => {
 
-    const [vacancyData, setVacancyData] = useState({});
+    const vacancyData = useRouteLoaderData("vacancy");
+    const companyData = useRouteLoaderData("root");
+
+    // const [vacancyData, setVacancyData] = useState({});
 
     const params = useParams();
     const vacancyId = params.vacancyId;
-    let vacancyURL = BASE_URL + `/vacancies/${vacancyId}`
+    // let vacancyURL = BASE_URL + `/vacancies/${vacancyId}`
 
-    const fetchVacancyData = async () => {
-        try {
-            const response = await axios.get(vacancyURL);
-            setVacancyData({
-                title: response.data.title,
-                company: response.data.company
-            });
-        } catch (error) {
-            console.error(error);
-        };
-    };
+    // const fetchVacancyData = async () => {
+    //     try {
+    //         const response = await axios.get(vacancyURL);
+    //         setVacancyData({
+    //             title: response.data.title,
+    //             company: response.data.company
+    //         });
+    //     } catch (error) {
+    //         console.error(error);
+    //     };
+    // };
 
-    useEffect(() => {
-        fetchVacancyData();
-    }, [])
+    // useEffect(() => {
+    //     fetchVacancyData();
+    // }, [])
 
     return (
         <Container>
-            <div>You succesfully applied for a vacancy {vacancyData.title} at {props.companies[vacancyData.company]}!</div>
+            <div>You succesfully applied for a vacancy {vacancyData.title} at {companyData[vacancyData.company]}!</div>
             <Button
                 variant="solid"
                 color="success"

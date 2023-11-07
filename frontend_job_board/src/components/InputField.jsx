@@ -5,6 +5,7 @@ export const InputField = props => {
         <FormControl error={props.error} sx={{ marginBottom: 3 }}>
             <FormLabel sx={{ fontSize: "1.1rem" }}>{props.label}</FormLabel>
             <Input
+                size={props.size}
                 defaultValue={props.defaultValue}
                 name={props.name}
                 placeholder={props.placeholder}
@@ -15,9 +16,10 @@ export const InputField = props => {
                     input: {
                         min: props.min,
                         maxLength: props.maxLength,
+                        minLength: props.minLength,
                         pattern: props.pattern,
                         onInvalid: props.onInvalid,
-                        ref: props.inputRef
+                        ref: props.inputRef,
                     }
                 }} />
             {props.error &&

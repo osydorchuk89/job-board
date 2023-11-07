@@ -5,13 +5,15 @@ import { Home } from "./pages/Home";
 import { VacancyPost } from "./pages/VacancyPost";
 import { Contact } from "./pages/Contact";
 import { Vacancies } from "./pages/Vacancies";
-import { VacancyDetails } from "./pages/VacancyDetails";
+import { VacancyDetails, vacancyDataLoader } from "./pages/VacancyDetails";
 import { VacancyApplication } from "./pages/VacancyApplication";
 import { VacancyPosted } from "./pages/VacancyPosted";
 import { VacancyEdit } from "./pages/VacancyEdit";
 import { VacancyEdited } from "./pages/VacancyEdited";
 import { VacancyDeleted } from "./pages/VacancyDeleted";
 import { VacancyApplied } from "./pages/VacancyApplied";
+import { Login } from "./pages/Login";
+import { Registration } from "./pages/Registration";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
 import { BASE_URL } from "./utils/config";
@@ -19,7 +21,6 @@ import { BASE_URL } from "./utils/config";
 export const App = () => {
 
     const [userQueryData, setUserQueryData] = useState({});
-    const [companies, setCompanies] = useState([]);
     const [candidates, setCandidates] = useState([]);
 
     const onClickSearchDisplay = userData => {
@@ -33,7 +34,7 @@ export const App = () => {
             const idCompaniesObject = response.data.reduce(
                 (obj, item) => Object.assign(obj, { [item.id]: item.name }), {}
             );
-            setCompanies(idCompaniesObject);
+            return idCompaniesObject;
         } catch (error) {
             console.error(error);
         };
@@ -53,7 +54,6 @@ export const App = () => {
     }
 
     useEffect(() => {
-        fetchCompanies();
         fetchCandidates();
     }, []);
 
@@ -62,62 +62,90 @@ export const App = () => {
             path: "/",
             element: <Root />,
             errorElement: <Error />,
+            id: "root",
+            loader: fetchCompanies,
             children: [
                 {
                     index: true,
                     element: <Home onClickSearch={onClickSearchDisplay} />,
                 },
                 {
-                    path: "/vacancy-post",
-                    element: <VacancyPost companies={companies} />,
+                    path: "/candidate-login",
+                    element: <Login />
                 },
                 {
-                    path: "/vacancy-post/posted",
-                    element: <VacancyPosted />
+                    path: "/recruiter-login",
+                    element: <Login />
                 },
                 {
-                    path: "/contact",
+                    path: "/register",
+                    element: <Registration />
+                },
+                {
+                    path: "vacancy-post",
+                    children: [
+                        {
+                            index: true,
+                            element: <VacancyPost />,
+                        },
+
+                        {
+                            path: "posted",
+                            element: <VacancyPosted />
+                        }
+                    ]
+                },
+                {
+                    path: "contact",
                     element: <Contact />,
                 },
                 {
-                    path: "/vacancies",
-                    element: <Vacancies item={userQueryData} companies={companies} />,
-                    loader: async url => {
-                        try {
-                            const response = await axios.get(`${BASE_URL}/vacancies/?`);
-                            return response.data;
-                        } catch (error) {
-                            console.error(error);
-                        };
-                    }
-                },
-                {
-                    path: "/vacancies/:vacancyId",
-                    element: <VacancyDetails companies={companies} />,
-                },
-                {
-                    path: "/vacancies/:vacancyId/edit",
-                    element: <VacancyEdit companies={companies} />,
-                },
-                {
-                    path: "/vacancies/deleted",
-                    element: <VacancyDeleted />,
-                },
-                {
-                    path: "/vacancies/:vacancyId/edit/updated",
-                    element: <VacancyEdited />,
-                },
-                {
-                    path: "/vacancies/:vacancyId/apply",
-                    element: <VacancyApplication companies={companies} candidates={candidates} />,
-                },
-                {
-                    path: "/vacancies/:vacancyId/applied",
-                    element: <VacancyApplied companies={companies} />,
+                    path: "vacancies",
+                    children: [
+                        {
+                            index: true,
+                            element: <Vacancies item={userQueryData} />
+                        },
+                        {
+                            path: ":vacancyId",
+                            id: "vacancy",
+                            loader: vacancyDataLoader,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <VacancyDetails />,
+                                },
+                                {
+                                    path: "edit",
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <VacancyEdit />
+                                        },
+                                        {
+                                            path: "updated",
+                                            element: <VacancyEdited />,
+                                        },
+                                    ]
+                                },
+                                {
+                                    path: "apply",
+                                    element: <VacancyApplication candidates={candidates} />
+                                },
+                                {
+                                    path: "applied",
+                                    element: <VacancyApplied />,
+                                },
+                            ]
+                        },
+                        {
+                            path: "deleted",
+                            element: <VacancyDeleted />,
+                        },
+                    ]
                 },
             ]
         },
     ]);
-
     return <RouterProvider router={router} />
 };

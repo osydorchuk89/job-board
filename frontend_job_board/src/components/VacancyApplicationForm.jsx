@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Typography, Button, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
@@ -14,7 +14,6 @@ export const VacancyApplicationForm = props => {
     };
 
     const [candidateId, setCandidateId] = useState(null);
-    const [vacancyData, setVacancyData] = useState({});
     const [userInputData, setUserInputData] = useState({});
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
@@ -30,22 +29,6 @@ export const VacancyApplicationForm = props => {
     const params = useParams();
     const vacancyId = params.vacancyId;
     let vacancyURL = BASE_URL + `/vacancies/${vacancyId}`
-
-    const fetchVacancyData = async () => {
-        try {
-            const response = await axios.get(vacancyURL);
-            setVacancyData({
-                title: response.data.title,
-                company: response.data.company
-            });
-        } catch (error) {
-            console.error(error);
-        };
-    };
-
-    useEffect(() => {
-        fetchVacancyData();
-    }, []);
 
     const handleFileUpload = event => {
         event.preventDefault();
@@ -70,7 +53,7 @@ export const VacancyApplicationForm = props => {
         return inputDataObject;
     }
 
-    const handleSubmit = async event => {
+    const handleApplicationSubmit = async event => {
         event.preventDefault();
         const inputData = combineInputData();
         console.log(inputData);
@@ -104,9 +87,9 @@ export const VacancyApplicationForm = props => {
             <Typography
                 level="h3"
                 sx={{ marginBottom: 5 }}
-            >Apply for Vacancy: {vacancyData.title} at {props.companies[vacancyData.company]}
+            >Apply for Vacancy: {props.vacancyData.title} at {props.companies[props.vacancyData.company]}
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleApplicationSubmit}>
                 <Stack>
                     {/* <InputField
                         onFocus={() => setInputsFocused(prevState => ({

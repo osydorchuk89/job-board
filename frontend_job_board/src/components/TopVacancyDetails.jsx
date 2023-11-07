@@ -21,7 +21,7 @@ export const TopVacancyDetails = props => {
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
                 <LocalAtmIcon />
-                <Typography>${props.salary && props.salary.toLocaleString()}</Typography>
+                <Typography>${props.salary.toLocaleString()}</Typography>
             </Stack>
             <Chip variant="outlined" size="lg">{props.employment_type}</Chip>
             <Chip variant="outlined" size="lg">{props.work_mode}</Chip>

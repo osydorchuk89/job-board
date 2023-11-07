@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useRouteLoaderData } from "react-router-dom";
 import { Typography, Container } from "@mui/joy";
 import { VacanciesList } from "../components/VacanciesList";
 import { SearchArea } from "../components/SearchArea";
 import { BASE_URL } from "../utils/config";
 
 export const Vacancies = props => {
+
+    const companyData = useRouteLoaderData("root");
 
     const [vacancyData, setVacancyData] = useState([]);
     let baseQueryURL = `${BASE_URL}/vacancies/?`;
@@ -48,15 +50,13 @@ export const Vacancies = props => {
         fetchVacancyData(baseQueryURL);
     }, []);
 
-    console.log(vacancyData);
-
     return (
         <Container>
             <SearchArea onClickSearch={onClickSearchDisplay} />
             <Typography level="h4" textAlign="center">
                 Total {vacancyData.length} {vacancyData.length === 1 ? "vacancy" : "vacancies"} found
             </Typography>
-            <VacanciesList companies={props.companies} data={vacancyData} />
+            <VacanciesList companies={companyData} data={vacancyData} />
         </Container >
 
     );
