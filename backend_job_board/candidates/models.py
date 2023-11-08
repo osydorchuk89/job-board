@@ -1,13 +1,12 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
+from django.conf import settings
 
 
 class Candidate(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100, unique=True)
-    phone = PhoneNumberField()
-    linkedIn = models.URLField(null=True, blank=True)
-    cv = models.FileField(upload_to="candidates/cvs", null=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.user.first_name} {self.user.last_name}"

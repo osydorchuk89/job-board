@@ -28,7 +28,7 @@ export const App = () => {
     };
 
     const fetchCompanies = async () => {
-        let getCompaniesURL = BASE_URL + "/companies/?fields=id,name";
+        let getCompaniesURL = BASE_URL + "/companies/companies/?fields=id,name";
         try {
             const response = await axios.get(getCompaniesURL);
             const idCompaniesObject = response.data.reduce(
@@ -78,7 +78,11 @@ export const App = () => {
                     element: <Login />
                 },
                 {
-                    path: "/register",
+                    path: "/candidate-register",
+                    element: <Registration />
+                },
+                {
+                    path: "/recruiter-register",
                     element: <Registration />
                 },
                 {

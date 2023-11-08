@@ -23,6 +23,8 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 
 class CandidateSerializer(DynamicFieldsModelSerializer):
+    # user_id = serializers.IntegerField()
+
     class Meta:
         model = Candidate
         fields = "__all__"

@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "djoser",
     "corsheaders",
+    "core",
     "candidates",
     "companies",
     "vacancies",
@@ -131,6 +133,19 @@ MEDIA_URL = "/uploads/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+REST_FRAMEWORK = {
+    # "COERCE_DECIMAL_TOSTRING": False,
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
+}
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+}
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+AUTH_USER_MODEL = "core.User"
+
+DJOSER = {"SERIALIZERS": {"user_create": "core.serializers.UserCreateSerializer"}}

@@ -3,7 +3,7 @@ import { Button, Typography } from "@mui/joy";
 import { InputField } from "./InputField";
 
 
-export const LoginForm = () => {
+export const LoginForm = props => {
 
     const loginData = useRef();
 
@@ -15,7 +15,9 @@ export const LoginForm = () => {
 
     return (
         <form ref={loginData} onSubmit={handleLogin}>
-            <Typography sx={{ marginBottom: 5 }} level="h3" textAlign="center">Login to Your Account</Typography>
+            <Typography sx={{ marginBottom: 5 }} level="h3" textAlign="center">Login to Your {
+                props.isCandidateLogin ? "Candidate" : "Recruiter"
+            } Account</Typography>
             <InputField
                 size="lg"
                 label="Email"

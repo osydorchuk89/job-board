@@ -2,13 +2,11 @@ from django.contrib import admin
 from .models import Company, Recruiter
 
 
+@admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ["name", "country", "industry"]
+    list_display = ["name", "industry"]
 
 
+@admin.register(Recruiter)
 class RecruiterAdmin(admin.ModelAdmin):
-    list_display = ["name", "company"]
-
-
-admin.site.register(Company, CompanyAdmin)
-admin.site.register(Recruiter, RecruiterAdmin)
+    list_display = ["first_name", "last_name"]

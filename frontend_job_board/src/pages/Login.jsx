@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import { Container, Typography, Card, CardContent, CardActions, Stack, Link } from "@mui/joy";
 import { LoginForm } from "../components/LoginForm";
 
@@ -12,7 +11,7 @@ export const Login = () => {
             <Stack justifyContent="center" alignItems="center" spacing={5}>
                 <Card variant="outlined" sx={{ width: "66%" }}>
                     <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
-                        <LoginForm />
+                        <LoginForm isCandidateLogin={isCandidateLogin} />
                     </CardContent>
                     <CardActions>
                     </CardActions>
@@ -25,7 +24,10 @@ export const Login = () => {
                     }>here</Link>.
                 </Typography>
                 <Typography textAlign="center">
-                    Don't have an account yet? Register <Link underline="none" href="/register">here</Link>.
+                    Don't have an account yet? Register as a {
+                        isCandidateLogin ? "candidate" : "recruiter"
+                    } <Link underline="none" href={
+                        isCandidateLogin ? "/candidate-register" : "/recruiter-register"}>here</Link>.
                 </Typography>
             </Stack>
         </Container >
