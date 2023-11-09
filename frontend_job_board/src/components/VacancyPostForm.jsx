@@ -79,10 +79,12 @@ export const VacancyPostForm = props => {
                     url: props.url,
                     data: inputData,
                     headers: {
-                        "Content-Type": "multipart/form-data"
+                        "Content-Type": "multipart/form-data",
+                        Authorization: localStorage.getItem("access_token")
+                            ? "JWT " + localStorage.getItem("access_token")
+                            : null,
                     }
-                }
-                );
+                });
                 navigate(props.navigateUrl);
             } catch (error) {
                 console.log(error);

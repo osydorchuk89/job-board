@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { AuthContext } from "./store/AuthContext";
 import { Home } from "./pages/Home";
 import { VacancyPost } from "./pages/VacancyPost";
 import { Contact } from "./pages/Contact";
@@ -14,6 +15,7 @@ import { VacancyDeleted } from "./pages/VacancyDeleted";
 import { VacancyApplied } from "./pages/VacancyApplied";
 import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
+import { UserRegistered } from "./pages/UserRegistered";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
 import { BASE_URL } from "./utils/config";
@@ -22,13 +24,19 @@ export const App = () => {
 
     const [userQueryData, setUserQueryData] = useState({});
     const [candidates, setCandidates] = useState([]);
+    const [userLoggedIn, setUserLoggedIn] = useState(null);
+
+    const setLoggedInStatus = value => {
+        console.log(value);
+        setUserLoggedIn(value);
+    };
 
     const onClickSearchDisplay = userData => {
         setUserQueryData(userData);
     };
 
     const fetchCompanies = async () => {
-        let getCompaniesURL = BASE_URL + "/companies/companies/?fields=id,name";
+        let getCompaniesURL = BASE_URL + "/companies/companies/";
         try {
             const response = await axios.get(getCompaniesURL);
             const idCompaniesObject = response.data.reduce(
@@ -41,7 +49,7 @@ export const App = () => {
     };
 
     const fetchCandidates = async () => {
-        let getCandidatesURL = BASE_URL + "/candidates/?fields=id,name";
+        let getCandidatesURL = BASE_URL + "/candidates/";
         try {
             const response = await axios.get(getCandidatesURL);
             const idCandidatesObject = response.data.reduce(
@@ -70,20 +78,38 @@ export const App = () => {
                     element: <Home onClickSearch={onClickSearchDisplay} />,
                 },
                 {
-                    path: "/candidate-login",
+                    path: "candidate-login",
                     element: <Login />
                 },
                 {
-                    path: "/recruiter-login",
+                    path: "recruiter-login",
                     element: <Login />
                 },
                 {
-                    path: "/candidate-register",
-                    element: <Registration />
+                    path: "candidate-register",
+                    children: [
+                        {
+                            index: true,
+                            element: <Registration />
+                        },
+                        {
+                            path: "success",
+                            element: <UserRegistered />
+                        }
+                    ]
                 },
                 {
-                    path: "/recruiter-register",
-                    element: <Registration />
+                    path: "recruiter-register",
+                    children: [
+                        {
+                            index: true,
+                            element: <Registration />
+                        },
+                        {
+                            path: "success",
+                            element: <UserRegistered />
+                        }
+                    ]
                 },
                 {
                     path: "vacancy-post",
@@ -151,5 +177,15 @@ export const App = () => {
             ]
         },
     ]);
-    return <RouterProvider router={router} />
+
+    const authContextValue = {
+        isLoggedIn: userLoggedIn,
+        changeLoggedIn: setLoggedInStatus,
+    };
+
+    return (
+        <AuthContext.Provider value={authContextValue}>
+            <RouterProvider router={router} />
+        </AuthContext.Provider>
+    );
 };

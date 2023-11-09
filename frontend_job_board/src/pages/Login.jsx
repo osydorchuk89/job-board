@@ -1,7 +1,7 @@
 import { Container, Typography, Card, CardContent, CardActions, Stack, Link } from "@mui/joy";
 import { LoginForm } from "../components/LoginForm";
 
-export const Login = () => {
+export const Login = props => {
 
     const pathName = window.location.pathname;
     const isCandidateLogin = pathName === "/candidate-login";

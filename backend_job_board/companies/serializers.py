@@ -3,22 +3,22 @@ from .models import Company, Recruiter
 
 
 # https://stackoverflow.com/a/23674297/16772424
-class DynamicFieldsModelSerializer(serializers.ModelSerializer):
-    """
-    A ModelSerializer that takes an additional `fields` argument that
-    controls which fields should be displayed.
-    """
+# class DynamicFieldsModelSerializer(serializers.ModelSerializer):
+#     """
+#     A ModelSerializer that takes an additional `fields` argument that
+#     controls which fields should be displayed.
+#     """
 
-    def __init__(self, *args, **kwargs):
-        super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
 
-        fields = self.context["request"].query_params.get("fields")
-        if fields is not None:
-            fields = fields.split(",")
-            allowed = set(fields)
-            existing = set(self.fields.keys())
-            for field_name in existing - allowed:
-                self.fields.pop(field_name)
+#         fields = self.context["request"].query_params.get("fields")
+#         if fields is not None:
+#             fields = fields.split(",")
+#             allowed = set(fields)
+#             existing = set(self.fields.keys())
+#             for field_name in existing - allowed:
+#                 self.fields.pop(field_name)
 
 
 class RecruiterSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class RecruiterSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CompanySerializer(DynamicFieldsModelSerializer):
+class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = "__all__"

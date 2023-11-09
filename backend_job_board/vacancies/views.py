@@ -1,12 +1,13 @@
-from django.shortcuts import render
 from rest_framework import viewsets
-
+from rest_framework.permissions import IsAdminUser, DjangoModelPermissionsOrAnonReadOnly
 from .models import Vacancy, Application
 from .serializers import VacancySerializer, ApplicationSerializer
+from .permissions import EditDeleteVacancyPermission, ViewApplicationPermission
 
 
-class VacancyViewSet(viewsets.ModelViewSet):
+class VacancyViewSet(viewsets.ModelViewSet, EditDeleteVacancyPermission):
     serializer_class = VacancySerializer
+    permission_classes = [EditDeleteVacancyPermission, DjangoModelPermissionsOrAnonReadOnly]
 
     def get_queryset(self):
         queryset = Vacancy.objects.all()
@@ -35,8 +36,9 @@ class VacancyViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class ApplicationViewSet(viewsets.ModelViewSet):
+class ApplicationViewSet(viewsets.ModelViewSet, ViewApplicationPermission):
     serializer_class = ApplicationSerializer
+    permission_classes = [ViewApplicationPermission, IsAdminUser]
 
     def get_queryset(self):
         return Application.objects.filter(vacancy_id=self.kwargs["vacancy_pk"])

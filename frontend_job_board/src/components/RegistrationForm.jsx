@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useState, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Typography, Stack, Button } from "@mui/joy";
 import { InputField } from "./InputField";
 import { BASE_URL, BASE_AUTH_URL } from "../utils/config";
 
 export const RegistrationForm = props => {
+
+    const { pathname } = useLocation();
 
     const allInputsNotFocused = {
         firstName: false,
@@ -35,6 +38,8 @@ export const RegistrationForm = props => {
         return [inputUserDataObject, inputProfileDataObject];
     };
 
+    let navigate = useNavigate();
+
     const handleRegistration = event => {
         event.preventDefault();
         const [inputUserData, inputProfileData] = combineInputData();
@@ -59,6 +64,7 @@ export const RegistrationForm = props => {
                 .then(response => {
                     const newUserId = response.data.id;
                     const userTypeUrl = props.isCandidateRegistration ? "/candidates/" : "/companies/recruiters/"
+                    const navigateURL = props.isCandidateRegistration ? "/candidate-register/success" : "/recruiter-register/success"
                     const addProfileUrl = BASE_URL + userTypeUrl
                     axios({
                         method: "post",
@@ -68,7 +74,9 @@ export const RegistrationForm = props => {
                             "Content-Type": "multipart/form-data"
                         }
                     })
-                        .then(response => console.log(response))
+                        .then(() => {
+                            navigate(navigateURL, { state: { previousPath: pathname } });
+                        })
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))
@@ -89,8 +97,8 @@ export const RegistrationForm = props => {
                             ...prevState,
                             name: true
                         }))}
-                        label="Your Name"
-                        placeholder="Enter your full name"
+                        label="First Name"
+                        placeholder="Enter your first name"
                         name="firstName"
                         error={!userInputData.first_name && !inputsFocused.firstName && submitButtonClicked} />
                     <InputField
@@ -98,8 +106,8 @@ export const RegistrationForm = props => {
                             ...prevState,
                             name: true
                         }))}
-                        label="Your Name"
-                        placeholder="Enter your full name"
+                        label="Last Name"
+                        placeholder="Enter your last name"
                         name="lastName"
                         error={!userInputData.last_name && !inputsFocused.lastName && submitButtonClicked} />
                     <InputField
@@ -156,7 +164,7 @@ export const RegistrationForm = props => {
                     <Button
                         type="submit"
                         variant="solid"
-                        color="success">SUBMIT YOUR APPLICATION</Button>
+                        color="success">REGISTER</Button>
                 </Stack>
             </form>
         </Container>

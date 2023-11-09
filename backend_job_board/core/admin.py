@@ -6,13 +6,13 @@ from .models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     ordering = ("email",)
-    list_display = ("email", "first_name", "last_name")
+    list_display = ("email", "first_name", "last_name", "id")
     search_fields = ("email", "first_name", "last_name")
     fieldsets = (
         (
             None,
             {
-                "fields": (("email", "password", "first_name", "last_name")),
+                "fields": (("email", "password", "first_name", "last_name", "groups", "is_superuser")),
             },
         ),
     )
@@ -25,6 +25,3 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-
-
-# Register your models here.

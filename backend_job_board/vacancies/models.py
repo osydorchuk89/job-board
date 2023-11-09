@@ -48,12 +48,9 @@ def get_upload_path(instance, filename):
 
 class Application(models.Model):
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name="application_vacancy")
-    applicant = models.ForeignKey(
+    candidate = models.ForeignKey(
         "candidates.Candidate", on_delete=models.CASCADE, related_name="application_candidate"
     )
-    # applicant_name = models.CharField(max_length=100)
-    # applicant_email = models.EmailField(max_length=100)
-    # applicant_phone = models.CharField(max_length=100, null=True, blank=True)
     cv = models.FileField(upload_to=get_upload_path)
     cover_letter = models.FileField(upload_to=get_upload_path, null=True, blank=True)
     submission_date = models.DateTimeField(auto_now_add=True)

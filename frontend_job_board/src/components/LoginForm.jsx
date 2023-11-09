@@ -1,16 +1,32 @@
-import { useRef } from "react";
+import { useContext } from "react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Typography } from "@mui/joy";
+import { AuthContext } from "../store/AuthContext";
 import { InputField } from "./InputField";
-
+import { axiosAuthInstance } from "../utils/axiosAuth";
 
 export const LoginForm = props => {
 
     const loginData = useRef();
+    const navigate = useNavigate();
+    const { changeLoggedIn } = useContext(AuthContext);
 
     const handleLogin = event => {
         event.preventDefault();
-        console.log(loginData.current["email"].value);
-        console.log(loginData.current["password"].value);
+        axiosAuthInstance
+            .post("auth/jwt/create/", {
+                email: loginData.current["email"].value.trim(),
+                password: loginData.current["password"].value.trim(),
+            })
+            .then(result => {
+                localStorage.setItem("access_token", result.data.access);
+                localStorage.setItem("refresh_token", result.data.refresh);
+                axiosAuthInstance.defaults.headers["Authorization"] = "JWT " + localStorage.getItem("access_token");
+                changeLoggedIn(true);
+                console.log("SUCCESS!!!");
+                navigate("/");
+            });
     };
 
     return (

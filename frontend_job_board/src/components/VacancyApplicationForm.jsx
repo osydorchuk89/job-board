@@ -9,7 +9,7 @@ import { FileUploadField } from "./FileUploadField";
 export const VacancyApplicationForm = props => {
 
     const allInputsNotFocused = {
-        applicant: false,
+        candidate: false,
         cv: false,
     };
 
@@ -45,13 +45,14 @@ export const VacancyApplicationForm = props => {
     const combineInputData = () => {
         const inputDataObject = {
             vacancy: vacancyId,
-            applicant: candidateId,
+            candidate: candidateId,
             cv: applicationFiles.cv,
             cover_letter: applicationFiles.coverLetter
         };
         setUserInputData(inputDataObject);
         return inputDataObject;
     }
+    let navigate = useNavigate();
 
     const handleApplicationSubmit = async event => {
         event.preventDefault();
@@ -60,7 +61,7 @@ export const VacancyApplicationForm = props => {
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (
-            inputData.applicant &&
+            inputData.candidate &&
             inputData.cv
         ) {
             try {
@@ -80,7 +81,6 @@ export const VacancyApplicationForm = props => {
         } else { console.log("You should complete the required fields") };
     };
 
-    let navigate = useNavigate();
 
     return (
         <Container maxWidth="md" sx={{ marginY: 5 }}>
@@ -91,52 +91,16 @@ export const VacancyApplicationForm = props => {
             </Typography>
             <form onSubmit={handleApplicationSubmit}>
                 <Stack>
-                    {/* <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            name: true
-                        }))}
-                        label="Your Name"
-                        placeholder="Enter your full name"
-                        name="name"
-                        inputRef={applicationName}
-                        error={!userInputData.name && !inputsFocused.name && submitButtonClicked} />
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            email: true
-                        }))}
-                        label="Your Email"
-                        placeholder="Enter your email"
-                        name="email"
-                        type="email"
-                        inputRef={applicationEmail}
-                        error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            phone: true
-                        }))}
-                        label="Your Phone Number"
-                        placeholder="Enter your phone"
-                        name="phone"
-                        type="tel"
-                        maxLength="15"
-                        pattern="\d*"
-                        startDecorator="+"
-                        onInvalid={e => e.target.setCustomValidity('This field should contain only numbers')}
-                        inputRef={applicationPhone}
-                        error={!userInputData.phone && !inputsFocused.phone && submitButtonClicked} /> */}
                     <SelectField
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
-                            applicant: true
+                            candidate: true
                         }))}
-                        label="Applicant"
-                        name="applicant"
+                        label="Candidate"
+                        name="candidate"
                         options={props.candidates}
                         onSelectItem={item => setCandidateId(item)}
-                        error={!userInputData.applicant && !inputsFocused.applicant && submitButtonClicked} />
+                        error={!userInputData.candidate && !inputsFocused.candidate && submitButtonClicked} />
                     <FileUploadField
                         label="Your CV"
                         name="cv"
