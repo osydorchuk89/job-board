@@ -8,7 +8,7 @@ export const DeleteVacancyButton = props => {
     let navigate = useNavigate();
 
     const handleDeleteVacancy = async vacancyId => {
-        let deleteVacancyUrl = BASE_URL + `/vacancies/${vacancyId}/`
+        let deleteVacancyUrl = BASE_URL + `api/vacancies/${vacancyId}/`
         try {
             const confirmDelete = confirm(`Are you sure you want to delete vacancy #${vacancyId}?`)
             if (confirmDelete) {
@@ -20,7 +20,7 @@ export const DeleteVacancyButton = props => {
 
     return (
         <Button
-            component="a"
+            disabled={props.disabled}
             onClick={() => handleDeleteVacancy(props.vacancyId)}
             size={props.size}
             variant="solid"

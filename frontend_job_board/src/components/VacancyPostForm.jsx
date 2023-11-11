@@ -5,13 +5,13 @@ import { Container, Typography, Button, Stack } from "@mui/joy";
 import { InputField } from "../components/InputField";
 import { TextareaField } from "../components/TextareaField";
 import { SelectField } from "../components/SelectField";
+import { DisabledInputField } from "./DisabledInputField";
 import { employmentTypeOptions, workModeOptions } from "../store/data";
 
 export const VacancyPostForm = props => {
 
     const allInputsNotFocused = {
         title: false,
-        company: false,
         country: false,
         city: false,
         aboutCompany: false,
@@ -24,7 +24,6 @@ export const VacancyPostForm = props => {
         salary: false
     };
 
-    const [companyId, setCompanyId] = useState(null);
     const [employmentType, setEmploymentType] = useState(null);
     const [workMode, setWorkMode] = useState(null);
     const [userInputData, setUserInputData] = useState({});
@@ -37,7 +36,7 @@ export const VacancyPostForm = props => {
     const combineInputData = () => {
         const inputDataObject = {
             title: vacancyData.current["title"].value.trim(),
-            company: companyId || props.defaultValues.company,
+            recruiter: localStorage.getItem("profile_id"),
             industry: vacancyData.current["industry"].value.trim(),
             country: vacancyData.current["country"].value.trim(),
             city: vacancyData.current["city"].value.trim(),
@@ -56,12 +55,10 @@ export const VacancyPostForm = props => {
     const handleSubmitVacancy = async event => {
         event.preventDefault();
         const inputData = combineInputData();
-        console.log(inputData);
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (
             inputData.title &&
-            inputData.company &&
             inputData.industry &&
             inputData.country &&
             inputData.city &&
@@ -107,18 +104,9 @@ export const VacancyPostForm = props => {
                         placeholder="Enter vacancy title"
                         name="title"
                         error={!userInputData.title && !inputsFocused.title && submitButtonClicked} />
-                    <SelectField
-                        defaultValue={props.defaultValues.company.toString()}
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            company: true
-                        }))}
-                        label="Company"
-                        placeholder="Enter company name"
-                        name="company"
-                        options={props.companies}
-                        onSelectItem={item => setCompanyId(item)}
-                        error={!userInputData.company && !inputsFocused.company && submitButtonClicked} />
+                    <DisabledInputField
+                        label="Compane Name"
+                        placeholder={localStorage.getItem("company")} />
                     <InputField
                         defaultValue={props.defaultValues.industry}
                         onFocus={() => setInputsFocused(prevState => ({

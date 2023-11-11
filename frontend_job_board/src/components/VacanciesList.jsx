@@ -1,9 +1,13 @@
+import { useContext } from "react";
 import { Button, Card, CardContent, CardActions, Container, Typography, Link } from "@mui/joy";
 import { TopVacancyDetails } from "./TopVacancyDetails";
 import { EditVacancyButton } from "./EditVacancyButton";
 import { DeleteVacancyButton } from "./DeleteVacancyButton";
+import { AuthContext } from "../store/AuthContext";
 
 export const VacanciesList = props => {
+
+    const { authStatus } = useContext(AuthContext);
 
     return (
         <Container>
@@ -14,7 +18,7 @@ export const VacanciesList = props => {
                             <Link underline="none" variant="plain" href={`/vacancies/${vacancy.id}`}>{vacancy.title}</Link>
                         </Typography>
                         <TopVacancyDetails
-                            company={props.companies[vacancy.company]}
+                            company={vacancy.company}
                             industry={vacancy.industry}
                             city={vacancy.city}
                             country={vacancy.country}
@@ -33,12 +37,16 @@ export const VacanciesList = props => {
                             size="md"
                             variant="solid"
                             color="success">LEARN MORE</Button>
-                        <EditVacancyButton
-                            vacancyId={vacancy.id}
-                            size="md" />
-                        <DeleteVacancyButton
-                            vacancyId={vacancy.id}
-                            size="md" />
+                        {authStatus.userType === "recruiter" &&
+                            <EditVacancyButton
+                                disabled={vacancy.recruiter != localStorage.getItem("profile_id")}
+                                vacancyId={vacancy.id}
+                                size="md" />}
+                        {authStatus.userType === "recruiter" &&
+                            <DeleteVacancyButton
+                                disabled={vacancy.recruiter != localStorage.getItem("profile_id")}
+                                vacancyId={vacancy.id}
+                                size="md" />}
                     </CardActions>
                 </Card>
             ))

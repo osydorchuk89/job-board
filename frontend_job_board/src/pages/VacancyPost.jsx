@@ -1,17 +1,11 @@
-import { useContext } from "react";
-import { AuthContext } from "../store/AuthContext";
 import { useRouteLoaderData } from "react-router-dom";
 import { Container } from "@mui/joy";
 import { VacancyPostForm } from "../components/VacancyPostForm";
 import { BASE_URL } from "../utils/config";
 
-export const VacancyPost = props => {
+export const VacancyPost = () => {
 
     const companyData = useRouteLoaderData("root");
-    const { isLoggedIn } = useContext(AuthContext);
-    console.log(isLoggedIn);
-
-    console.log(companyData);
 
     const defaultValues = {
         title: "",
@@ -26,7 +20,7 @@ export const VacancyPost = props => {
         salary: "",
         employment_type: "",
         work_mode: ""
-    }
+    };
 
     return (
         <Container maxWidth="md" sx={{ marginY: 5 }}>
@@ -34,7 +28,7 @@ export const VacancyPost = props => {
                 companies={companyData}
                 defaultValues={defaultValues}
                 method="post"
-                url={`${BASE_URL}/vacancies/`}
+                url={`${BASE_URL}api/vacancies/`}
                 navigateUrl={"/vacancy-post/posted"}
                 buttonText="POST VACANCY"
             />

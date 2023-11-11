@@ -1,22 +1,18 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import { Container, Typography, Button, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
-import { SelectField } from "./SelectField";
+import { DisabledInputField } from "./DisabledInputField";
 import { FileUploadField } from "./FileUploadField";
 
 export const VacancyApplicationForm = props => {
 
-    const allInputsNotFocused = {
-        candidate: false,
-        cv: false,
-    };
+    const vacancyData = useRouteLoaderData("vacancy");
+    const recruiterId = vacancyData.recruiter;
 
-    const [candidateId, setCandidateId] = useState(null);
     const [userInputData, setUserInputData] = useState({});
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
-    const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const [applicationFiles, setApplicationFiles] = useState({
         cv: null,
         coverLetter: null
@@ -28,7 +24,7 @@ export const VacancyApplicationForm = props => {
 
     const params = useParams();
     const vacancyId = params.vacancyId;
-    let vacancyURL = BASE_URL + `/vacancies/${vacancyId}`
+    let vacancyURL = BASE_URL + `api/vacancies/${vacancyId}`
 
     const handleFileUpload = event => {
         event.preventDefault();
@@ -42,8 +38,11 @@ export const VacancyApplicationForm = props => {
         }))
     };
 
+    const candidateId = localStorage.getItem("profile_id");
+
     const combineInputData = () => {
         const inputDataObject = {
+            recruiter: recruiterId,
             vacancy: vacancyId,
             candidate: candidateId,
             cv: applicationFiles.cv,
@@ -59,18 +58,15 @@ export const VacancyApplicationForm = props => {
         const inputData = combineInputData();
         console.log(inputData);
         setSubmitButtonClicked(true);
-        setInputsFocused(allInputsNotFocused);
-        if (
-            inputData.candidate &&
-            inputData.cv
-        ) {
+        if (inputData.cv) {
             try {
                 await axios({
                     method: "post",
                     url: vacancyURL + "/applications/",
                     data: inputData,
                     headers: {
-                        "Content-Type": "multipart/form-data"
+                        "Content-Type": "multipart/form-data",
+                        Authorization: "JWT " + localStorage.getItem("access_token")
                     }
                 }
                 );
@@ -87,20 +83,13 @@ export const VacancyApplicationForm = props => {
             <Typography
                 level="h3"
                 sx={{ marginBottom: 5 }}
-            >Apply for Vacancy: {props.vacancyData.title} at {props.companies[props.vacancyData.company]}
+            >Apply for Vacancy: {props.vacancyData.title} at {props.vacancyData.company}
             </Typography>
             <form onSubmit={handleApplicationSubmit}>
                 <Stack>
-                    <SelectField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            candidate: true
-                        }))}
-                        label="Candidate"
-                        name="candidate"
-                        options={props.candidates}
-                        onSelectItem={item => setCandidateId(item)}
-                        error={!userInputData.candidate && !inputsFocused.candidate && submitButtonClicked} />
+                    <DisabledInputField
+                        label="Your Name"
+                        placeholder={`${localStorage.getItem("first_name")} ${localStorage.getItem("last_name")}`} />
                     <FileUploadField
                         label="Your CV"
                         name="cv"

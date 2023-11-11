@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useRouteLoaderData } from "react-router-dom";
 import { Typography, Container } from "@mui/joy";
 import { VacanciesList } from "../components/VacanciesList";
 import { SearchArea } from "../components/SearchArea";
@@ -8,10 +7,8 @@ import { BASE_URL } from "../utils/config";
 
 export const Vacancies = props => {
 
-    const companyData = useRouteLoaderData("root");
-
     const [vacancyData, setVacancyData] = useState([]);
-    let baseQueryURL = `${BASE_URL}/vacancies/?`;
+    let baseQueryURL = BASE_URL + "api/vacancies/?";
 
     const fetchVacancyData = async url => {
         try {
@@ -31,7 +28,6 @@ export const Vacancies = props => {
     if (props.item.vacancyCity) {
         baseQueryURL += `&city=${props.item.vacancyCity}`;
     };
-
 
     const onClickSearchDisplay = userData => {
         if (userData.vacancyTitle) {
@@ -56,7 +52,7 @@ export const Vacancies = props => {
             <Typography level="h4" textAlign="center">
                 Total {vacancyData.length} {vacancyData.length === 1 ? "vacancy" : "vacancies"} found
             </Typography>
-            <VacanciesList companies={companyData} data={vacancyData} />
+            <VacanciesList data={vacancyData} />
         </Container >
 
     );

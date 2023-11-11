@@ -19,10 +19,7 @@ WORK_MODES = [
 
 class Vacancy(models.Model):
     title = models.CharField(max_length=100)
-    company = models.ForeignKey("companies.Company", on_delete=models.CASCADE, related_name="vacancy_company")
-    recruiter = models.ForeignKey(
-        "companies.Recruiter", on_delete=models.PROTECT, related_name="vacancy_recruiter", null=True, blank=True
-    )
+    recruiter = models.ForeignKey("companies.Recruiter", on_delete=models.CASCADE, related_name="vacancy_recruiter")
     city = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     about_company = models.TextField(null=True, blank=True)
@@ -47,13 +44,16 @@ def get_upload_path(instance, filename):
 
 
 class Application(models.Model):
-    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name="application_vacancy")
+    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name="vacancy_applications")
+    recruiter = models.ForeignKey(
+        "companies.Recruiter", on_delete=models.CASCADE, related_name="recruiter_applications"
+    )
     candidate = models.ForeignKey(
-        "candidates.Candidate", on_delete=models.CASCADE, related_name="application_candidate"
+        "candidates.Candidate", on_delete=models.CASCADE, related_name="candidate_applications"
     )
     cv = models.FileField(upload_to=get_upload_path)
     cover_letter = models.FileField(upload_to=get_upload_path, null=True, blank=True)
     submission_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.vacancy} - {self.applicant}"
+        return f"{self.vacancy} - {self.candidate}"

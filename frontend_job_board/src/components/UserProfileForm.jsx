@@ -1,47 +1,43 @@
 import axios from "axios";
 import { useState, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Container, Typography, Stack, Button } from "@mui/joy";
-import { InputField } from "./InputField";
+import { useNavigate } from "react-router-dom";
+import { Container, Typography, Button, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
+import { InputField } from "./InputField";
 
-export const RegistrationForm = props => {
-
-    const { pathname } = useLocation();
+export const UserProfileForm = props => {
 
     const allInputsNotFocused = {
         firstName: false,
         lastName: false,
-        password: false,
         email: false,
         company: false
     };
 
+    const registrationData = useRef();
     const [userInputData, setUserInputData] = useState({});
     const [companyName, setCompanyName] = useState("");
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
-
-    const registrationData = useRef();
+    const isCandidate = localStorage.getItem("user_type") === "candidate"
 
     const combineInputData = () => {
         const inputUserDataObject = {
             first_name: registrationData.current["firstName"].value.trim(),
             last_name: registrationData.current["lastName"].value.trim(),
             email: registrationData.current["email"].value.trim(),
-            password: registrationData.current["password"].value.trim(),
         };
         let inputProfileDataObject = {
             phone: registrationData.current["phone"].value.trim(),
             country: registrationData.current["country"].value.trim(),
             city: registrationData.current["city"].value.trim()
         };
-        if (!props.isCandidateRegistration) {
+        if (!isCandidate) {
             inputProfileDataObject = {
                 ...inputProfileDataObject,
                 company: registrationData.current["company"].value.trim(),
             }
-        }
+        };
         setUserInputData(inputUserDataObject);
         inputProfileDataObject.company && setCompanyName(inputProfileDataObject.company)
         return [inputUserDataObject, inputProfileDataObject];
@@ -49,44 +45,52 @@ export const RegistrationForm = props => {
 
     let navigate = useNavigate();
 
-    const handleRegistration = event => {
+    const handleEditProfile = event => {
         event.preventDefault();
+        const userId = localStorage.getItem("user_id");
         const [inputUserData, inputProfileData] = combineInputData();
-        const userGroup = props.isCandidateRegistration ? "Candidates" : "Recruiters"
         console.log(inputUserData);
         console.log(inputProfileData);
+        console.log()
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (
             inputUserData.first_name &&
             inputUserData.last_name &&
             inputUserData.email &&
-            inputUserData.password &&
-            (props.isCandidateRegistration || inputProfileData.company)
+            (isCandidate || inputProfileData.company)
         ) {
             axios({
-                method: "post",
-                url: BASE_URL + "auth/users/",
-                data: { ...inputUserData, user_group: userGroup },
+                method: "put",
+                url: BASE_URL + `auth/users/${userId}/`,
+                data: { ...inputUserData },
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    Authorization: "JWT " + localStorage.getItem("access_token")
                 }
             })
-                .then(response => {
-                    const newUserId = response.data.id;
-                    const userTypeUrl = props.isCandidateRegistration ? "api/candidates/" : "api/companies/recruiters/"
-                    const navigateURL = props.isCandidateRegistration ? "/candidate-register/success" : "/recruiter-register/success"
-                    const addProfileUrl = BASE_URL + userTypeUrl
+                .then(() => {
+                    localStorage.setItem("email", inputUserData.email);
+                    localStorage.setItem("first_name", inputUserData.first_name);
+                    localStorage.setItem("last_name", inputUserData.last_name);
+                    localStorage.setItem("phone", inputProfileData.phone);
+                    inputProfileData.country && localStorage.setItem("country", inputProfileData.country)
+                    inputProfileData.city && localStorage.setItem("city", inputProfileData.city)
+                    inputProfileData.company && localStorage.setItem("company", inputProfileData.company)
+                    const userTypeUrl = isCandidate ? "api/candidates/me/" : "api/companies/recruiters/me/"
+                    const navigateURL = isCandidate ? "/" : "/"
+                    const editProfileUrl = BASE_URL + userTypeUrl
                     axios({
-                        method: "post",
-                        url: addProfileUrl,
-                        data: { ...inputProfileData, user: newUserId },
+                        method: "put",
+                        url: editProfileUrl,
+                        data: { ...inputProfileData, user: userId },
                         headers: {
-                            "Content-Type": "multipart/form-data"
+                            "Content-Type": "multipart/form-data",
+                            Authorization: "JWT " + localStorage.getItem("access_token")
                         }
                     })
                         .then(() => {
-                            navigate(navigateURL, { state: { previousPath: pathname } });
+                            navigate(navigateURL);
                         })
                         .catch(error => console.log(error))
                 })
@@ -97,13 +101,12 @@ export const RegistrationForm = props => {
     return (
         <Container sx={{ marginY: 5 }}>
             <Typography level="h3" textAlign="center" sx={{ marginBottom: 5 }}>
-                Register Your {
-                    props.isCandidateRegistration ? "Candidate" : "Recruiter"
-                } Account
+                Your Profile
             </Typography>
-            <form onSubmit={handleRegistration} ref={registrationData}>
+            <form onSubmit={handleEditProfile} ref={registrationData}>
                 <Stack>
                     <InputField
+                        defaultValue={localStorage.getItem("first_name")}
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
                             firstName: true
@@ -111,17 +114,21 @@ export const RegistrationForm = props => {
                         label="First Name"
                         placeholder="Enter your first name"
                         name="firstName"
-                        error={!userInputData.first_name && !inputsFocused.firstName && submitButtonClicked} />
+                        error={!userInputData.first_name && !inputsFocused.firstName && submitButtonClicked}
+                    />
                     <InputField
+                        defaultValue={localStorage.getItem("last_name")}
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
-                            lastName: true
+                            name: true
                         }))}
                         label="Last Name"
                         placeholder="Enter your last name"
                         name="lastName"
-                        error={!userInputData.last_name && !inputsFocused.lastName && submitButtonClicked} />
+                        error={!userInputData.last_name && !inputsFocused.lastName && submitButtonClicked}
+                    />
                     <InputField
+                        defaultValue={localStorage.getItem("email")}
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
                             email: true
@@ -130,20 +137,10 @@ export const RegistrationForm = props => {
                         placeholder="Enter your email"
                         name="email"
                         type="email"
-                        error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
+                        error={!userInputData.email && !inputsFocused.email && submitButtonClicked}
+                    />
                     <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            password: true
-                        }))}
-                        label="Password"
-                        name="password"
-                        placeholder="Enter your password"
-                        type="password"
-                        minLength="8"
-                        // onInvalid={e => e.target.setCustomValidity("Password should be at least 8 characters long")}
-                        error={!userInputData.password && !inputsFocused.password && submitButtonClicked} />
-                    <InputField
+                        defaultValue={localStorage.getItem("phone")}
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
                             phone: true
@@ -156,7 +153,8 @@ export const RegistrationForm = props => {
                         pattern="\d*"
                         // onInvalid={e => e.target.setCustomValidity("This field should contain only numbers")}
                         startDecorator="+" />
-                    {!props.isCandidateRegistration && <InputField
+                    {localStorage.getItem("user_type") === "recruiter" && <InputField
+                        defaultValue={localStorage.getItem("company")}
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
                             company: true
@@ -164,8 +162,10 @@ export const RegistrationForm = props => {
                         label="Your Company Name"
                         placeholder="Enter your company"
                         name="company"
-                        error={!companyName && !inputsFocused.company && submitButtonClicked} />}
+                        error={!companyName && !inputsFocused.company && submitButtonClicked}
+                    />}
                     <InputField
+                        defaultValue={localStorage.getItem("country") || ""}
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
                             country: true
@@ -174,6 +174,7 @@ export const RegistrationForm = props => {
                         placeholder="Enter country"
                         name="country" />
                     <InputField
+                        defaultValue={localStorage.getItem("city") || ""}
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
                             city: true
@@ -184,7 +185,7 @@ export const RegistrationForm = props => {
                     <Button
                         type="submit"
                         variant="solid"
-                        color="success">REGISTER</Button>
+                        color="success">EDIT PROFILE</Button>
                 </Stack>
             </form>
         </Container>

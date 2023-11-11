@@ -2,7 +2,7 @@ import { useRouteLoaderData } from "react-router-dom";
 import { Container } from "@mui/joy";
 import { VacancyApplicationForm } from "../components/VacancyApplicationForm";
 
-export const VacancyApplication = props => {
+export const VacancyApplication = () => {
 
     const vacancyData = useRouteLoaderData("vacancy");
     const companyData = useRouteLoaderData("root");
@@ -11,7 +11,6 @@ export const VacancyApplication = props => {
         <Container maxWidth="md" sx={{ marginY: 5 }}>
             <VacancyApplicationForm
                 companies={companyData}
-                candidates={props.candidates}
                 vacancyData={vacancyData} />
         </Container>
     );

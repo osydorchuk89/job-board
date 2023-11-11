@@ -41,6 +41,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
+    user_group = models.CharField(max_length=50)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = UserManager()

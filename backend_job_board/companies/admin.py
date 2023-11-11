@@ -9,4 +9,4 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(Recruiter)
 class RecruiterAdmin(admin.ModelAdmin):
-    list_display = ["first_name", "last_name"]
+    list_display = ["first_name", "last_name", "id"]

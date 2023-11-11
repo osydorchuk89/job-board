@@ -6,7 +6,7 @@ from .models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     ordering = ("email",)
-    list_display = ("email", "first_name", "last_name", "id")
+    list_display = ("email", "first_name", "last_name", "id", "user_group")
     search_fields = ("email", "first_name", "last_name")
     fieldsets = (
         (

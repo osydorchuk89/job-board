@@ -1,6 +1,6 @@
-import axios from "axios";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "./store/AuthContext";
 import { Home } from "./pages/Home";
 import { VacancyPost } from "./pages/VacancyPost";
@@ -16,54 +16,68 @@ import { VacancyApplied } from "./pages/VacancyApplied";
 import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
 import { UserRegistered } from "./pages/UserRegistered";
+import { UserProfile } from "./pages/UserProfile";
+import { UserProfileEdit } from "./pages/UserProfileEdit";
+import { ChangeLoginType } from "./pages/ChangeLoginType";
+import { SubmittedApplications, submittedApplicationsLoader } from "./pages/SubmittedApplications";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
-import { BASE_URL } from "./utils/config";
 
 export const App = () => {
 
     const [userQueryData, setUserQueryData] = useState({});
-    const [candidates, setCandidates] = useState([]);
-    const [userLoggedIn, setUserLoggedIn] = useState(null);
+    const [userAuthStatus, setUserAuthStatus] = useState({
+        isLoggedIn: null,
+        userType: null
+    });
 
-    const setLoggedInStatus = value => {
+    const checkTokenExpiry = () => {
+        let accessToken = localStorage.getItem("access_token");
+        if (accessToken) {
+            const { exp } = jwtDecode(accessToken);
+            const expirationTime = (exp * 1000) - 10000;
+            if (Date.now() >= expirationTime) {
+                localStorage.clear();
+                setUserAuthStatus({
+                    isLoggedIn: false,
+                    userType: null
+                });
+                redirect("/login");
+            };
+        };
+    };
+
+    useEffect(() => {
+
+        if (localStorage.getItem("user_type") === "candidate") {
+            setUserAuthStatus({
+                isLoggedIn: true,
+                userType: "candidate"
+            });
+        };
+
+        if (localStorage.getItem("user_type") === "recruiter") {
+            setUserAuthStatus({
+                isLoggedIn: true,
+                userType: "recruiter"
+            });
+        };
+    }, [])
+
+    useEffect(() => {
+        setInterval(() => {
+            checkTokenExpiry();
+        }, 4000)
+    }, [])
+
+    const setUserAuthStatusFunction = value => {
         console.log(value);
-        setUserLoggedIn(value);
+        setUserAuthStatus(value);
     };
 
     const onClickSearchDisplay = userData => {
         setUserQueryData(userData);
     };
-
-    const fetchCompanies = async () => {
-        let getCompaniesURL = BASE_URL + "/companies/companies/";
-        try {
-            const response = await axios.get(getCompaniesURL);
-            const idCompaniesObject = response.data.reduce(
-                (obj, item) => Object.assign(obj, { [item.id]: item.name }), {}
-            );
-            return idCompaniesObject;
-        } catch (error) {
-            console.error(error);
-        };
-    };
-
-    const fetchCandidates = async () => {
-        let getCandidatesURL = BASE_URL + "/candidates/";
-        try {
-            const response = await axios.get(getCandidatesURL);
-            const idCandidatesObject = response.data.reduce(
-                (obj, item) => Object.assign(obj, { [item.id]: item.name }), {}
-            );
-            setCandidates(idCandidatesObject);
-        } catch (error) {
-            console.error(error);
-        };
-    }
-
-    useEffect(() => {
-        fetchCandidates();
-    }, []);
 
     const router = createBrowserRouter([
         {
@@ -71,22 +85,29 @@ export const App = () => {
             element: <Root />,
             errorElement: <Error />,
             id: "root",
-            loader: fetchCompanies,
             children: [
                 {
                     index: true,
                     element: <Home onClickSearch={onClickSearchDisplay} />,
                 },
                 {
-                    path: "candidate-login",
-                    element: <Login />
-                },
-                {
-                    path: "recruiter-login",
+                    path: "login",
+                    loader: async () => {
+                        if (userAuthStatus.userType) {
+                            return redirect("/");
+                        };
+                        return null;
+                    },
                     element: <Login />
                 },
                 {
                     path: "candidate-register",
+                    loader: async () => {
+                        if (userAuthStatus.userType) {
+                            return redirect("/");
+                        };
+                        return null;
+                    },
                     children: [
                         {
                             index: true,
@@ -100,6 +121,12 @@ export const App = () => {
                 },
                 {
                     path: "recruiter-register",
+                    loader: async () => {
+                        if (userAuthStatus.userType) {
+                            return redirect("/");
+                        };
+                        return null;
+                    },
                     children: [
                         {
                             index: true,
@@ -112,18 +139,59 @@ export const App = () => {
                     ]
                 },
                 {
-                    path: "vacancy-post",
+                    path: "my-profile",
+                    loader: async () => {
+                        if (!userAuthStatus.userType) {
+                            return redirect("/login");
+                        };
+                        return null;
+                    },
                     children: [
                         {
                             index: true,
-                            element: <VacancyPost />,
+                            element: <UserProfile />
                         },
-
                         {
-                            path: "posted",
-                            element: <VacancyPosted />
+                            path: "submitted-applications",
+                            loader: submittedApplicationsLoader,
+                            element: <SubmittedApplications />,
+                        },
+                        {
+                            path: "edit",
+                            element: <UserProfileEdit />
                         }
                     ]
+                },
+                {
+                    path: "vacancy-post",
+                    loader: async () => {
+                        if (userAuthStatus.userType === "recruiter") {
+                            return null;
+                        };
+                        if (userAuthStatus.userType === "candidate") {
+                            return redirect("/change-login-type")
+                        };
+                        return redirect("/login");
+                    },
+                    children: [
+                        {
+                            path: "",
+                            children: [
+                                {
+                                    index: true,
+                                    element: <VacancyPost />,
+                                },
+                                {
+                                    path: "posted",
+                                    element: <VacancyPosted />
+                                }
+                            ]
+                        },
+                    ]
+                },
+                {
+                    path: "change-login-type",
+                    element: <ChangeLoginType />,
                 },
                 {
                     path: "contact",
@@ -147,6 +215,12 @@ export const App = () => {
                                 },
                                 {
                                     path: "edit",
+                                    loader: async () => {
+                                        if (userAuthStatus.userType !== "recruiter") {
+                                            return redirect("/");
+                                        };
+                                        return null;
+                                    },
                                     children: [
                                         {
                                             index: true,
@@ -160,12 +234,32 @@ export const App = () => {
                                 },
                                 {
                                     path: "apply",
-                                    element: <VacancyApplication candidates={candidates} />
+                                    loader: async () => {
+                                        if (userAuthStatus.userType === "candidate") {
+                                            return null;
+                                        };
+                                        if (userAuthStatus.userType === "recruiter") {
+                                            return redirect("/change-login-type")
+                                        }
+                                        return redirect("/login");
+                                    },
+                                    children: [
+                                        {
+                                            path: "",
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: <VacancyApplication />
+                                                }
+                                            ]
+
+                                        }
+                                    ],
                                 },
                                 {
                                     path: "applied",
                                     element: <VacancyApplied />,
-                                },
+                                }
                             ]
                         },
                         {
@@ -179,13 +273,13 @@ export const App = () => {
     ]);
 
     const authContextValue = {
-        isLoggedIn: userLoggedIn,
-        changeLoggedIn: setLoggedInStatus,
+        authStatus: userAuthStatus,
+        changeAuthStatus: setUserAuthStatusFunction,
     };
 
     return (
         <AuthContext.Provider value={authContextValue}>
-            <RouterProvider router={router} />
+            <RouterProvider router={router} history={history} />
         </AuthContext.Provider>
     );
 };
