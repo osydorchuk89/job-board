@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "./store/AuthContext";
 import { Home } from "./pages/Home";
 import { VacancyPost } from "./pages/VacancyPost";
@@ -22,6 +21,7 @@ import { ChangeLoginType } from "./pages/ChangeLoginType";
 import { SubmittedApplications, submittedApplicationsLoader } from "./pages/SubmittedApplications";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
+import { checkTokenExpiry } from "./utils/checkTokenExpiry";
 
 export const App = () => {
 
@@ -31,31 +31,13 @@ export const App = () => {
         userType: null
     });
 
-    const checkTokenExpiry = () => {
-        let accessToken = localStorage.getItem("access_token");
-        if (accessToken) {
-            const { exp } = jwtDecode(accessToken);
-            const expirationTime = (exp * 1000) - 10000;
-            if (Date.now() >= expirationTime) {
-                localStorage.clear();
-                setUserAuthStatus({
-                    isLoggedIn: false,
-                    userType: null
-                });
-                redirect("/login");
-            };
-        };
-    };
-
     useEffect(() => {
-
         if (localStorage.getItem("user_type") === "candidate") {
             setUserAuthStatus({
                 isLoggedIn: true,
                 userType: "candidate"
             });
         };
-
         if (localStorage.getItem("user_type") === "recruiter") {
             setUserAuthStatus({
                 isLoggedIn: true,
@@ -66,12 +48,18 @@ export const App = () => {
 
     useEffect(() => {
         setInterval(() => {
-            checkTokenExpiry();
+            const token_expired = checkTokenExpiry();
+            if (token_expired) {
+                localStorage.clear();
+                setUserAuthStatus({
+                    isLoggedIn: false,
+                    userType: null
+                });
+            };
         }, 4000)
     }, [])
 
     const setUserAuthStatusFunction = value => {
-        console.log(value);
         setUserAuthStatus(value);
     };
 
