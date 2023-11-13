@@ -15,6 +15,7 @@ class VacancyViewSet(viewsets.ModelViewSet, EditDeleteVacancyPermission):
         company_value = self.request.query_params.get("company")
         title_value = self.request.query_params.get("title")
         city_value = self.request.query_params.get("city")
+        recruiter_id = self.request.query_params.get("recruiter")
 
         if company_value is not None:
             queryset = queryset.filter(recruiter__company__icontains=company_value)
@@ -24,6 +25,9 @@ class VacancyViewSet(viewsets.ModelViewSet, EditDeleteVacancyPermission):
 
         if city_value is not None:
             queryset = queryset.filter(city__icontains=city_value)
+
+        if recruiter_id is not None:
+            queryset = queryset.filter(recruiter=recruiter_id)
 
         return queryset
 

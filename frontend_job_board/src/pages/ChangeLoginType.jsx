@@ -1,13 +1,10 @@
-import { useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../store/AuthContext";
+import { useLocation } from "react-router-dom";
 import { Link } from "@mui/joy";
-import { Stack, Box, Typography } from "@mui/joy"
+import { Stack, Box, Typography } from "@mui/joy";
+import { useLogout } from "../hooks/useLogout";
 
 export const ChangeLoginType = () => {
 
-    const { changeAuthStatus } = useContext(AuthContext);
-    const navigate = useNavigate();
     const isCandidate = localStorage.getItem("user_type") === "candidate";
 
     const { state } = useLocation();
@@ -16,14 +13,7 @@ export const ChangeLoginType = () => {
         wasRedirected = true
     }
 
-    const handleLogout = () => {
-        localStorage.clear();
-        changeAuthStatus({
-            isLoggedIn: false,
-            userType: null
-        });
-        navigate("/");
-    }
+    const handleLogout = useLogout();
 
     return (
         <Stack alignItems="center" sx={{ marginY: 5 }}>

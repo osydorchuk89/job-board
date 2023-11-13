@@ -1,16 +1,17 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Button, Container } from "@mui/joy";
 
-export const VacancyDeleted = () => {
+export const LoggedOut = () => {
+
     return (
         <Container>
-            <div>You succesfully deleted a vacancy!</div>
+            <div>You have logged out!</div>
             <Button
                 variant="solid"
                 color="success"
                 component={RouterLink}
-                to="/vacancies">
-                BACK TO ALL VACANCIES
+                to="/">
+                BACK TO HOME PAGE
             </Button>
         </Container>
     );

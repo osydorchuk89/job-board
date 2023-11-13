@@ -1,4 +1,4 @@
-import { useRouteLoaderData } from "react-router-dom";
+import { useRouteLoaderData, Link as RouterLink } from "react-router-dom";
 import { Button, Container } from "@mui/joy";
 
 export const VacancyApplied = () => {
@@ -11,8 +11,8 @@ export const VacancyApplied = () => {
             <Button
                 variant="solid"
                 color="success"
-                component="a"
-                href="/vacancies/">
+                component={RouterLink}
+                to="/vacancies">
                 BACK TO ALL VACANCIES
             </Button>
         </Container>

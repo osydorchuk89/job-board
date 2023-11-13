@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { Button, Card, CardContent, CardActions, Container, Typography, Link } from "@mui/joy";
 import { TopVacancyDetails } from "./TopVacancyDetails";
 import { EditVacancyButton } from "./EditVacancyButton";
@@ -15,7 +16,9 @@ export const VacanciesList = props => {
                 <Card variant="outlined" sx={{ marginY: 5 }} key={vacancy.id}>
                     <CardContent>
                         <Typography level="h3" sx={{ marginBottom: 2 }}>
-                            <Link underline="none" variant="plain" href={`/vacancies/${vacancy.id}`}>{vacancy.title}</Link>
+                            <Link
+                                component={RouterLink}
+                                to={`/vacancies/${vacancy.id}`}>{vacancy.title}</Link>
                         </Typography>
                         <TopVacancyDetails
                             company={vacancy.company}
@@ -26,27 +29,32 @@ export const VacanciesList = props => {
                             employment_type={vacancy.employment_type}
                             work_mode={vacancy.work_mode}
                         />
-                        <Typography sx={{ mt: 2 }}>
+                        <Typography sx={{
+                            marginTop: 2,
+                            display: { xs: "none", md: "block" }
+                        }}>
                             {vacancy.position_overview}
                         </Typography>
                     </CardContent>
                     <CardActions>
                         <Button
-                            component="a"
-                            href={`/vacancies/${vacancy.id}`}
-                            size="md"
+                            component={RouterLink}
+                            to={`/vacancies/${vacancy.id}`}
+                            size="lg"
                             variant="solid"
                             color="success">LEARN MORE</Button>
-                        {authStatus.userType === "recruiter" &&
-                            <EditVacancyButton
+                        {authStatus.userType === "recruiter"
+                            ? <EditVacancyButton
                                 disabled={vacancy.recruiter != localStorage.getItem("profile_id")}
                                 vacancyId={vacancy.id}
-                                size="md" />}
-                        {authStatus.userType === "recruiter" &&
-                            <DeleteVacancyButton
+                                size="lg" />
+                            : <Button disabled sx={{ visibility: "hidden" }} />}
+                        {authStatus.userType === "recruiter"
+                            ? <DeleteVacancyButton
                                 disabled={vacancy.recruiter != localStorage.getItem("profile_id")}
                                 vacancyId={vacancy.id}
-                                size="md" />}
+                                size="lg" />
+                            : <Button disabled sx={{ visibility: "hidden" }} />}
                     </CardActions>
                 </Card>
             ))

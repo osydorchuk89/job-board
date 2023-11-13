@@ -5,21 +5,46 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import WorkIcon from '@mui/icons-material/Work';
 
 export const TopVacancyDetails = props => {
+
     return (
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between">
+            <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}>
                 <BusinessIcon />
                 <Typography>{props.company}</Typography>
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                sx={{
+                    display: { xs: "none", md: "flex" }
+                }}>
                 <WorkIcon />
                 <Typography>{props.industry}</Typography>
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                sx={{
+                    display: { xs: "none", md: "flex" }
+                }}>
                 <LocationOnIcon />
                 <Typography>{props.city}, {props.country}</Typography>
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                sx={{
+                    display: { xs: "none", md: "flex" }
+                }}>
                 <LocalAtmIcon />
                 <Typography>${props.salary.toLocaleString()}</Typography>
             </Stack>

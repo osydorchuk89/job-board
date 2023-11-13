@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Typography, Button, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
 import { InputField } from "./InputField";
+import { SubmitButton } from "./SubmitButton";
 
 export const UserProfileForm = props => {
 
@@ -78,7 +79,7 @@ export const UserProfileForm = props => {
                     inputProfileData.city && localStorage.setItem("city", inputProfileData.city)
                     inputProfileData.company && localStorage.setItem("company", inputProfileData.company)
                     const userTypeUrl = isCandidate ? "api/candidates/me/" : "api/companies/recruiters/me/"
-                    const navigateURL = isCandidate ? "/" : "/"
+                    const navigateURL = "/my-profile/edited"
                     const editProfileUrl = BASE_URL + userTypeUrl
                     axios({
                         method: "put",
@@ -103,8 +104,8 @@ export const UserProfileForm = props => {
             <Typography level="h3" textAlign="center" sx={{ marginBottom: 5 }}>
                 Your Profile
             </Typography>
-            <form onSubmit={handleEditProfile} ref={registrationData}>
-                <Stack>
+            <form style={{ display: "flex", justifyContent: "center" }} onSubmit={handleEditProfile} ref={registrationData}>
+                <Stack sx={{ width: { xs: "100%", sm: "80%", md: "60%" } }}>
                     <InputField
                         defaultValue={localStorage.getItem("first_name")}
                         onFocus={() => setInputsFocused(prevState => ({
@@ -182,10 +183,7 @@ export const UserProfileForm = props => {
                         label="City"
                         placeholder="Enter city"
                         name="city" />
-                    <Button
-                        type="submit"
-                        variant="solid"
-                        color="success">EDIT PROFILE</Button>
+                    <SubmitButton label="EDIT PROFILE" />
                 </Stack>
             </form>
         </Container>

@@ -1,36 +1,21 @@
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { Link as RouterLink } from 'react-router-dom';
+import { Sheet, List, ListItem, ListItemButton, ListItemContent } from '@mui/joy';
 
 export const NavList = props => {
     return (
-        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'inherit' }}>
-            <nav aria-label="secondary mailbox folders">
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemText primary={props.firstItem} />
+        <Sheet sx={{ width: "100%", maxWidth: 360, bgcolor: "inherit" }}>
+            <List sx={props.sx}>
+                {props.listItems.map((item, index) =>
+                    <ListItem key={index}>
+                        <ListItemButton
+                            component={RouterLink}
+                            to="#"
+                            color="inherit">
+                            <ListItemContent sx={{ color: "white" }}>{item}</ListItemContent>
                         </ListItemButton>
                     </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton component="a" href="#simple-list">
-                            <ListItemText primary={props.secondItem} />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton component="a" href="#simple-list">
-                            <ListItemText primary={props.thirdItem} />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton component="a" href="#simple-list">
-                            <ListItemText primary={props.forthItem} />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </nav>
-        </Box>
+                )}
+            </List>
+        </Sheet>
     );
 };

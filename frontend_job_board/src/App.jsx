@@ -1,10 +1,9 @@
-import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { AuthContext } from "./store/AuthContext";
+import { createBrowserRouter, RouterProvider, redirect, useLocation } from "react-router-dom";
+import { useEffect, useContext } from "react";
 import { Home } from "./pages/Home";
 import { VacancyPost } from "./pages/VacancyPost";
 import { Contact } from "./pages/Contact";
-import { Vacancies } from "./pages/Vacancies";
+import { Vacancies, vacanciesLoader } from "./pages/Vacancies";
 import { VacancyDetails, vacancyDataLoader } from "./pages/VacancyDetails";
 import { VacancyApplication } from "./pages/VacancyApplication";
 import { VacancyPosted } from "./pages/VacancyPosted";
@@ -18,28 +17,31 @@ import { UserRegistered } from "./pages/UserRegistered";
 import { UserProfile } from "./pages/UserProfile";
 import { UserProfileEdit } from "./pages/UserProfileEdit";
 import { ChangeLoginType } from "./pages/ChangeLoginType";
-import { SubmittedApplications, submittedApplicationsLoader } from "./pages/SubmittedApplications";
+import { Applications, applicationsLoader } from "./pages/Applications";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
+import { LoggedOut } from "./pages/LoggedOut";
+import { AboutUs } from "./pages/AboutUs";
+import { UserProfileEdited } from "./pages/UserProfileEdited";
 import { checkTokenExpiry } from "./utils/checkTokenExpiry";
+import { AuthContext } from "./store/AuthContext";
+import { UserQueryContext } from "./store/UserQueryContext";
 
 export const App = () => {
 
-    const [userQueryData, setUserQueryData] = useState({});
-    const [userAuthStatus, setUserAuthStatus] = useState({
-        isLoggedIn: null,
-        userType: null
-    });
+
+    const { query } = useContext(UserQueryContext);
+    const { authStatus, changeAuthStatus } = useContext(AuthContext);
 
     useEffect(() => {
         if (localStorage.getItem("user_type") === "candidate") {
-            setUserAuthStatus({
+            changeAuthStatus({
                 isLoggedIn: true,
                 userType: "candidate"
             });
         };
         if (localStorage.getItem("user_type") === "recruiter") {
-            setUserAuthStatus({
+            changeAuthStatus({
                 isLoggedIn: true,
                 userType: "recruiter"
             });
@@ -51,21 +53,13 @@ export const App = () => {
             const token_expired = checkTokenExpiry();
             if (token_expired) {
                 localStorage.clear();
-                setUserAuthStatus({
+                changeAuthStatus({
                     isLoggedIn: false,
                     userType: null
                 });
             };
-        }, 4000)
+        }, 60000)
     }, [])
-
-    const setUserAuthStatusFunction = value => {
-        setUserAuthStatus(value);
-    };
-
-    const onClickSearchDisplay = userData => {
-        setUserQueryData(userData);
-    };
 
     const router = createBrowserRouter([
         {
@@ -73,15 +67,21 @@ export const App = () => {
             element: <Root />,
             errorElement: <Error />,
             id: "root",
+            loader: () => {
+                if (query) {
+                    return vacanciesLoader(query)
+                };
+                return null;
+            },
             children: [
                 {
                     index: true,
-                    element: <Home onClickSearch={onClickSearchDisplay} />,
+                    element: <Home />,
                 },
                 {
                     path: "login",
                     loader: async () => {
-                        if (userAuthStatus.userType) {
+                        if (authStatus.userType) {
                             return redirect("/");
                         };
                         return null;
@@ -91,7 +91,7 @@ export const App = () => {
                 {
                     path: "candidate-register",
                     loader: async () => {
-                        if (userAuthStatus.userType) {
+                        if (authStatus.userType) {
                             return redirect("/");
                         };
                         return null;
@@ -110,7 +110,7 @@ export const App = () => {
                 {
                     path: "recruiter-register",
                     loader: async () => {
-                        if (userAuthStatus.userType) {
+                        if (authStatus.userType) {
                             return redirect("/");
                         };
                         return null;
@@ -129,7 +129,7 @@ export const App = () => {
                 {
                     path: "my-profile",
                     loader: async () => {
-                        if (!userAuthStatus.userType) {
+                        if (!authStatus.userType) {
                             return redirect("/login");
                         };
                         return null;
@@ -140,23 +140,27 @@ export const App = () => {
                             element: <UserProfile />
                         },
                         {
-                            path: "submitted-applications",
-                            loader: submittedApplicationsLoader,
-                            element: <SubmittedApplications />,
+                            path: "applications",
+                            loader: applicationsLoader,
+                            element: <Applications />,
                         },
                         {
                             path: "edit",
                             element: <UserProfileEdit />
+                        },
+                        {
+                            path: "edited",
+                            element: <UserProfileEdited />
                         }
                     ]
                 },
                 {
                     path: "vacancy-post",
                     loader: async () => {
-                        if (userAuthStatus.userType === "recruiter") {
+                        if (authStatus.userType === "recruiter") {
                             return null;
                         };
-                        if (userAuthStatus.userType === "candidate") {
+                        if (authStatus.userType === "candidate") {
                             return redirect("/change-login-type")
                         };
                         return redirect("/login");
@@ -186,11 +190,15 @@ export const App = () => {
                     element: <Contact />,
                 },
                 {
+                    path: "about-us",
+                    element: <AboutUs />
+                },
+                {
                     path: "vacancies",
                     children: [
                         {
                             index: true,
-                            element: <Vacancies item={userQueryData} />
+                            element: <Vacancies />
                         },
                         {
                             path: ":vacancyId",
@@ -204,7 +212,7 @@ export const App = () => {
                                 {
                                     path: "edit",
                                     loader: async () => {
-                                        if (userAuthStatus.userType !== "recruiter") {
+                                        if (authStatus.userType !== "recruiter") {
                                             return redirect("/");
                                         };
                                         return null;
@@ -223,10 +231,10 @@ export const App = () => {
                                 {
                                     path: "apply",
                                     loader: async () => {
-                                        if (userAuthStatus.userType === "candidate") {
+                                        if (authStatus.userType === "candidate") {
                                             return null;
                                         };
-                                        if (userAuthStatus.userType === "recruiter") {
+                                        if (authStatus.userType === "recruiter") {
                                             return redirect("/change-login-type")
                                         }
                                         return redirect("/login");
@@ -256,18 +264,15 @@ export const App = () => {
                         },
                     ]
                 },
+                {
+                    path: "logged-out",
+                    element: <LoggedOut />
+                }
             ]
         },
     ]);
 
-    const authContextValue = {
-        authStatus: userAuthStatus,
-        changeAuthStatus: setUserAuthStatusFunction,
-    };
-
     return (
-        <AuthContext.Provider value={authContextValue}>
-            <RouterProvider router={router} history={history} />
-        </AuthContext.Provider>
+        <RouterProvider router={router} history={history} />
     );
 };

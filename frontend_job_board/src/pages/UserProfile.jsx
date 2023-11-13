@@ -1,9 +1,30 @@
-import { Link as RouterLink } from "react-router-dom";
+import { useContext } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Stack, Typography, List, ListItem, ListItemButton, ListItemContent } from "@mui/joy";
+import { useLogout } from "../hooks/useLogout";
+import { useBrowseVacancies } from "../hooks/useBrowseVacancies";
+import { UserQueryContext } from "../store/UserQueryContext";
+
 
 export const UserProfile = () => {
 
+    const { changeQuery } = useContext(UserQueryContext);
+    let navigate = useNavigate();
     const isCandidate = localStorage.getItem("user_type") === "candidate";
+
+    const handleBrowseVacancies = useBrowseVacancies();
+    const handleLogout = useLogout();
+
+    const handleFetchVacancies = event => {
+        event.preventDefault();
+        const userInputData = {
+            vacancyRecruiter: localStorage.getItem("profile_id"),
+        };
+        changeQuery(userInputData);
+        navigate("/vacancies");
+    };
+
+    const listItemWidth = { width: { xs: "80%", sm: "55%", md: "35%" } }
 
     return (
         <Stack direction="column" alignItems="center" spacing={2} sx={{ marginY: 5 }}>
@@ -16,30 +37,52 @@ export const UserProfile = () => {
                 "--List-gap": "5px",
                 "--ListItem-minHeight": "75px"
             }}>
-                <ListItem sx={{ width: "50%" }}>
+                <ListItem sx={listItemWidth}>
                     <ListItemButton
-                        component={RouterLink}
-                        to={isCandidate ? "/vacancies" : "/vacancy-post"}
+                        component={isCandidate ? ListItemButton : RouterLink}
+                        to={isCandidate ? null : "/vacancy-post"}
+                        onClick={isCandidate ? handleBrowseVacancies : null}
                         color="primary">
                         <ListItemContent sx={{ textAlign: "center", fontSize: "1.3rem" }}>
                             {isCandidate ? "Browse Vacancies" : "Post Vacancy"}
                         </ListItemContent >
                     </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ width: "50%" }}>
+                {!isCandidate && <ListItem sx={listItemWidth}>
+                    <ListItemButton
+                        color="primary"
+                        onClick={handleFetchVacancies}>
+                        <ListItemContent sx={{ textAlign: "center", fontSize: "1.3rem" }}>
+                            See My Vacancies
+                        </ListItemContent >
+                    </ListItemButton>
+                </ListItem>}
+                <ListItem sx={listItemWidth}>
                     <ListItemButton
                         component={RouterLink}
-                        to={isCandidate ? "/my-profile/submitted-applications" : "/my-profile/received-applications"}
+                        to="applications"
                         color="primary">
                         <ListItemContent sx={{ textAlign: "center", fontSize: "1.3rem" }}>
                             {isCandidate ? "See My Applications" : "Review Received Applications"}
                         </ListItemContent >
                     </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ width: "50%" }}>
-                    <ListItemButton component={RouterLink} to="/my-profile/edit" color="primary">
+                <ListItem sx={listItemWidth}>
+                    <ListItemButton
+                        component={RouterLink}
+                        to="/my-profile/edit"
+                        color="primary">
                         <ListItemContent sx={{ textAlign: "center", fontSize: "1.3rem" }}>
                             Edit My Profile
+                        </ListItemContent >
+                    </ListItemButton>
+                </ListItem>
+                <ListItem sx={listItemWidth}>
+                    <ListItemButton
+                        onClick={handleLogout}
+                        color="primary">
+                        <ListItemContent sx={{ textAlign: "center", fontSize: "1.3rem" }}>
+                            Logout
                         </ListItemContent >
                     </ListItemButton>
                 </ListItem>

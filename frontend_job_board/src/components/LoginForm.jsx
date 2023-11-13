@@ -88,7 +88,6 @@ export const LoginForm = () => {
                 Login to Your Account
             </Typography>
             <InputField
-                size="lg"
                 label="Email"
                 name="email"
                 placeholder="Enter your email"
@@ -99,7 +98,6 @@ export const LoginForm = () => {
                 }))}
                 error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
             <InputField
-                size="lg"
                 label="Password"
                 name="password"
                 placeholder="Enter your password"

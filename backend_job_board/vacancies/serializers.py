@@ -14,10 +14,26 @@ class VacancySerializer(serializers.ModelSerializer):
 
 
 class ApplicationSerializer(serializers.ModelSerializer):
-    # recruiter = serializers.SerializerMethodField("get_recruiter")
+    vacancy_title = serializers.SerializerMethodField("get_vacancy_title")
+    vacancy_company = serializers.SerializerMethodField("get_vacancy_company")
+    candidate_name = serializers.SerializerMethodField("get_candidate_name")
+    candidate_email = serializers.SerializerMethodField("get_candidate_email")
+    candidate_phone = serializers.SerializerMethodField("get_candidate_phone")
 
-    # def get_recruiter(self, obj):
-    #     return obj.vacancy.recruiter.id
+    def get_vacancy_company(self, obj):
+        return obj.recruiter.company
+
+    def get_vacancy_title(self, obj):
+        return obj.vacancy.title
+
+    def get_candidate_name(self, obj):
+        return f"{obj.candidate.user.first_name} {obj.candidate.user.last_name}"
+
+    def get_candidate_email(self, obj):
+        return obj.candidate.user.email
+
+    def get_candidate_phone(self, obj):
+        return obj.candidate.phone
 
     class Meta:
         model = Application

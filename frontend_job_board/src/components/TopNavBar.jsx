@@ -1,96 +1,178 @@
-import AppBar from "@mui/material/AppBar";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useContext } from "react";
-import { Box, Toolbar, IconButton } from "@mui/material";
-import { Button, Link } from "@mui/joy";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Box, Sheet, Stack, Button, Link, IconButton, Typography } from "@mui/joy";
 import WorkIcon from "@mui/icons-material/Work";
 import { AuthContext } from "../store/AuthContext";
 import { DropdownMenu } from "./DropdownMenu";
+import { useLogout } from "../hooks/useLogout";
+import { useBrowseVacancies } from "../hooks/useBrowseVacancies";
 
 export const TopNavBar = () => {
 
-    const { authStatus, changeAuthStatus } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const { authStatus } = useContext(AuthContext);
+    const handleBrowseVacancies = useBrowseVacancies();
+    const handleLogout = useLogout();
 
     const registerMenuItems = [
-        <Link
-            component={RouterLink}
-            to="/candidate-register"
-            underline="none">Register as candidate</Link>,
-        <Link
-            component={RouterLink}
-            to="/recruiter-register"
-            underline="none">Register as recruiter</Link>,
+        {
+            link: "/candidate-register",
+            text: "Register As Candidate"
+        },
+        {
+            link: "/recruiter-register",
+            text: "Register As Recruiter"
+        },
+    ];
+
+    let generalMenuItems = [
+        {
+            link: "/vacancies",
+            text: "Browse Vacancies"
+        },
+        {
+            link: "/vacancy-post",
+            text: "Post New Vacancy"
+        },
+        authStatus.isLoggedIn
+            ? {
+                component: Typography,
+                text: "Logout",
+                onClick: handleLogout
+            }
+            : {
+                link: "/login",
+                text: "Login"
+            },
+        authStatus.isLoggedIn
+            ? {
+                link: "/my-profile",
+                text: "My Profile",
+            }
+            : {
+                link: "/candidate-register",
+                text: "Register As Candidate"
+            },
     ]
 
-    const handleLogout = () => {
-        localStorage.clear();
-        changeAuthStatus({
-            isLoggedIn: false,
-            userType: null
-        });
-        navigate("/");
+
+    if (!authStatus.isLoggedIn) {
+        generalMenuItems = [
+            ...generalMenuItems,
+            {
+                link: "/recruiter-register",
+                text: "Register As Recruiter",
+            }
+        ];
     };
 
+    generalMenuItems = [
+        ...generalMenuItems,
+        {
+            link: "/about-us",
+            text: "About Us",
+        },
+        {
+            link: "/contact",
+            text: "Contacts",
+        }
+    ];
+
+
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" elevation={0}>
-                <Toolbar sx={{ mx: 10 }}>
-                    <WorkIcon sx={{ mr: 2 }} />
+        <Sheet variant="solid" color="primary" sx={{
+            bgcolor: "primary.main",
+            width: "100%",
+            height: 80,
+            position: "sticky",
+            top: 0,
+            zIndex: 10
+        }}>
+            <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ height: "100%", mx: { xs: 1, md: 5 } }}
+            >
+                <Box
+                    sx={{
+                        width: { xs: "50%", md: "25%", lg: "35%" },
+                        color: "#f5f5f5",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: { xs: "center", md: "flex-start" }
+                    }}>
+                    <WorkIcon sx={{ color: "#f5f5f5", marginRight: 2 }} />
                     <Link
+                        sx={{ color: "#f5f5f5" }}
                         component={RouterLink}
+                        size="lg"
+                        underline="none"
                         to="/"
-                        color="inherit"
-                        underline="none"
                         level="h3"
-                        sx={{ flexGrow: 1 }}>JobLink</Link>
-                    <Link
-                        component={RouterLink}
-                        to="/vacancies"
-                        color="inherit"
-                        underline="none"
-                        sx={{ marginX: 5 }}>BROWSE VACANCIES</Link>
-                    <Link
-                        component={RouterLink}
-                        to="/vacancy-post"
-                        color="inherit"
-                        underline="none"
-                        sx={{ marginX: 5 }}>POST A VACANCY</Link>
-                    <Button
-                        component={RouterLink}
-                        to={authStatus.isLoggedIn ? null : "/login"}
+                    >JobLink</Link>
+                </Box>
+                <Button
+                    size="lg"
+                    color="success"
+                    variant="solid"
+                    onClick={handleBrowseVacancies}
+                    sx={{
+                        width: { xs: "25%", md: "20%", lg: "15%" },
+                        display: { xs: "none", md: "block" }
+                    }}>BROWSE VACANCIES</Button>
+                <Button
+                    component={RouterLink}
+                    size="lg"
+                    to="/vacancy-post"
+                    color="success"
+                    variant="solid"
+                    sx={{
+                        width: { xs: "25%", md: "20%", lg: "15%" },
+                        display: { xs: "none", md: "block" },
+                        textAlign: "center",
+                        marginRight: { xs: 0, md: 4, lg: 8 },
+                        marginLeft: 2,
+                    }}>POST NEW VACANCY</Button>
+                <Button
+                    component={authStatus.isLoggedIn ? Button : RouterLink}
+                    to={authStatus.isLoggedIn ? null : "/login"}
+                    size="lg"
+                    variant="solid"
+                    color="warning"
+                    onClick={authStatus.isLoggedIn ? handleLogout : null}
+                    sx={{ marginRight: 2, display: { xs: "none", md: "block" } }}>
+                    {authStatus.isLoggedIn ? "LOGOUT" : "LOGIN"}
+                </Button>
+                {authStatus.isLoggedIn && <Button
+                    component={RouterLink}
+                    to={"/my-profile"}
+                    size="lg"
+                    variant="solid"
+                    color="warning"
+                    sx={{ display: { xs: "none", md: "block" } }}>
+                    MY PROFILE
+                </Button>}
+                {!authStatus.isLoggedIn && <DropdownMenu
+                    sx={{ display: { xs: "none", md: "block" } }}
+                    label="REGISTER"
+                    variant="solid"
+                    color="warning"
+                    size="lg"
+                    menuItems={registerMenuItems} />}
+                <Box sx={{
+                    width: "50%",
+                    display: { xs: "flex", md: "none" },
+                    justifyContent: "center"
+                }}>
+                    <DropdownMenu
                         size="lg"
-                        variant="solid"
-                        color="success"
-                        onClick={authStatus.isLoggedIn ? handleLogout : null}
-                        sx={{ marginX: 2 }}>
-                        {authStatus.isLoggedIn ? "LOGOUT" : "LOGIN"}
-                    </Button>
-                    {authStatus.isLoggedIn && <Button
-                        component={RouterLink}
-                        to={"/my-profile"}
-                        size="lg"
-                        variant="solid"
-                        color="success"
-                        sx={{ marginX: 2 }}>
-                        MY PROFILE
-                    </Button>}
-                    {!authStatus.isLoggedIn && <DropdownMenu
-                        label="REGISTER"
-                        size="lg"
-                        menuItems={registerMenuItems} />}
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ ml: 2, display: "none" }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-        </Box>
+                        color="primary"
+                        iconButton={true}
+                        slots={{ root: IconButton }}
+                        slotProps={{ root: { variant: "solid", color: "primary" } }}
+                        menuItems={generalMenuItems} />
+                </Box>
+            </Stack>
+        </Sheet>
     );
 }

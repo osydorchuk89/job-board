@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Container, Typography, Stack, Button } from "@mui/joy";
+import { Container, Typography, Stack, Box } from "@mui/joy";
 import { InputField } from "./InputField";
+import { SubmitButton } from "./SubmitButton";
 import { BASE_URL } from "../utils/config";
 
 export const RegistrationForm = props => {
@@ -101,8 +102,8 @@ export const RegistrationForm = props => {
                     props.isCandidateRegistration ? "Candidate" : "Recruiter"
                 } Account
             </Typography>
-            <form onSubmit={handleRegistration} ref={registrationData}>
-                <Stack>
+            <form style={{ display: "flex", justifyContent: "center" }} onSubmit={handleRegistration} ref={registrationData}>
+                <Stack sx={{ width: { xs: "100%", sm: "90%", md: "80%" } }}>
                     <InputField
                         onFocus={() => setInputsFocused(prevState => ({
                             ...prevState,
@@ -181,10 +182,7 @@ export const RegistrationForm = props => {
                         label="City"
                         placeholder="Enter city"
                         name="city" />
-                    <Button
-                        type="submit"
-                        variant="solid"
-                        color="success">REGISTER</Button>
+                    <SubmitButton label="REGISTER" />
                 </Stack>
             </form>
         </Container>

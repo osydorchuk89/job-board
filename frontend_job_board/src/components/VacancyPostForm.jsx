@@ -6,6 +6,7 @@ import { InputField } from "../components/InputField";
 import { TextareaField } from "../components/TextareaField";
 import { SelectField } from "../components/SelectField";
 import { DisabledInputField } from "./DisabledInputField";
+import { SubmitButton } from "./SubmitButton";
 import { employmentTypeOptions, workModeOptions } from "../store/data";
 
 export const VacancyPostForm = props => {
@@ -92,8 +93,8 @@ export const VacancyPostForm = props => {
     return (
         <Container maxWidth="md" sx={{ marginY: 5 }}>
             <Typography level="h3" sx={{ marginBottom: 5 }}>Post a Vacancy</Typography>
-            <form ref={vacancyData} onSubmit={handleSubmitVacancy}>
-                <Stack>
+            <form style={{ display: "flex", justifyContent: "center" }} ref={vacancyData} onSubmit={handleSubmitVacancy}>
+                <Stack sx={{ width: { xs: "100%", sm: "80%", md: "60%" } }}>
                     <InputField
                         defaultValue={props.defaultValues.title}
                         onFocus={() => setInputsFocused(prevState => ({
@@ -211,10 +212,7 @@ export const VacancyPostForm = props => {
                         options={workModeOptions}
                         onSelectItem={item => setWorkMode(item)}
                         error={!userInputData.work_mode && !inputsFocused.workMode && submitButtonClicked} />
-                    <Button
-                        type="submit"
-                        variant="solid"
-                        color="success">{props.buttonText}</Button>
+                    <SubmitButton label={props.buttonText} />
                 </Stack>
             </form>
         </Container>
