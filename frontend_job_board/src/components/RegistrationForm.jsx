@@ -1,14 +1,15 @@
 import axios from "axios";
-import { useState, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Container, Typography, Stack, Box } from "@mui/joy";
+import { useState, useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Stack } from "@mui/joy";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
 import { BASE_URL } from "../utils/config";
+import { ProfileContext } from "../store/ProfileContext";
 
 export const RegistrationForm = props => {
 
-    const { pathname } = useLocation();
+    const { profile, changeProfile } = useContext(ProfileContext);
 
     const allInputsNotFocused = {
         firstName: false,
@@ -76,7 +77,6 @@ export const RegistrationForm = props => {
                 .then(response => {
                     const newUserId = response.data.id;
                     const userTypeUrl = props.isCandidateRegistration ? "api/candidates/" : "api/companies/recruiters/"
-                    const navigateURL = props.isCandidateRegistration ? "/candidate-register/success" : "/recruiter-register/success"
                     const addProfileUrl = BASE_URL + userTypeUrl
                     axios({
                         method: "post",
@@ -87,7 +87,11 @@ export const RegistrationForm = props => {
                         }
                     })
                         .then(() => {
-                            navigate(navigateURL, { state: { previousPath: pathname } });
+                            changeProfile({
+                                ...profile,
+                                justRegistered: true,
+                            });
+                            navigate("/");
                         })
                         .catch(error => console.log(error))
                 })
@@ -96,95 +100,94 @@ export const RegistrationForm = props => {
     };
 
     return (
-        <Container sx={{ marginY: 5 }}>
-            <Typography level="h3" textAlign="center" sx={{ marginBottom: 5 }}>
-                Register Your {
-                    props.isCandidateRegistration ? "Candidate" : "Recruiter"
-                } Account
-            </Typography>
-            <form style={{ display: "flex", justifyContent: "center" }} onSubmit={handleRegistration} ref={registrationData}>
-                <Stack sx={{ width: { xs: "100%", sm: "90%", md: "80%" } }}>
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            firstName: true
-                        }))}
-                        label="First Name"
-                        placeholder="Enter your first name"
-                        name="firstName"
-                        error={!userInputData.first_name && !inputsFocused.firstName && submitButtonClicked} />
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            lastName: true
-                        }))}
-                        label="Last Name"
-                        placeholder="Enter your last name"
-                        name="lastName"
-                        error={!userInputData.last_name && !inputsFocused.lastName && submitButtonClicked} />
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            email: true
-                        }))}
-                        label="Your Email"
-                        placeholder="Enter your email"
-                        name="email"
-                        type="email"
-                        error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            password: true
-                        }))}
-                        label="Password"
-                        name="password"
-                        placeholder="Enter your password"
-                        type="password"
-                        minLength="8"
-                        // onInvalid={e => e.target.setCustomValidity("Password should be at least 8 characters long")}
-                        error={!userInputData.password && !inputsFocused.password && submitButtonClicked} />
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            phone: true
-                        }))}
-                        label="Your Phone Number"
-                        placeholder="Enter your phone"
-                        name="phone"
-                        type="tel"
-                        maxLength="15"
-                        pattern="\d*"
-                        // onInvalid={e => e.target.setCustomValidity("This field should contain only numbers")}
-                        startDecorator="+" />
-                    {!props.isCandidateRegistration && <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            company: true
-                        }))}
-                        label="Your Company Name"
-                        placeholder="Enter your company"
-                        name="company"
-                        error={!companyName && !inputsFocused.company && submitButtonClicked} />}
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            country: true
-                        }))}
-                        label="Country"
-                        placeholder="Enter country"
-                        name="country" />
-                    <InputField
-                        onFocus={() => setInputsFocused(prevState => ({
-                            ...prevState,
-                            city: true
-                        }))}
-                        label="City"
-                        placeholder="Enter city"
-                        name="city" />
-                    <SubmitButton label="REGISTER" />
-                </Stack>
-            </form>
-        </Container>
+        <form
+            style={{
+                display: "flex",
+                justifyContent: "center"
+            }}
+            onSubmit={handleRegistration}
+            ref={registrationData}>
+            <Stack sx={{ width: { xs: "100%", sm: "90%", md: "80%" } }}>
+                <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        firstName: true
+                    }))}
+                    label="First Name"
+                    placeholder="Enter your first name"
+                    name="firstName"
+                    error={!userInputData.first_name && !inputsFocused.firstName && submitButtonClicked} />
+                <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        lastName: true
+                    }))}
+                    label="Last Name"
+                    placeholder="Enter your last name"
+                    name="lastName"
+                    error={!userInputData.last_name && !inputsFocused.lastName && submitButtonClicked} />
+                <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        email: true
+                    }))}
+                    label="Your Email"
+                    placeholder="Enter your email"
+                    name="email"
+                    type="email"
+                    error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
+                <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        password: true
+                    }))}
+                    label="Password"
+                    name="password"
+                    placeholder="Enter your password"
+                    type="password"
+                    minLength="8"
+                    // onInvalid={e => e.target.setCustomValidity("Password should be at least 8 characters long")}
+                    error={!userInputData.password && !inputsFocused.password && submitButtonClicked} />
+                <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        phone: true
+                    }))}
+                    label="Your Phone Number"
+                    placeholder="Enter your phone"
+                    name="phone"
+                    type="tel"
+                    maxLength="15"
+                    pattern="\d*"
+                    // onInvalid={e => e.target.setCustomValidity("This field should contain only numbers")}
+                    startDecorator="+" />
+                {!props.isCandidateRegistration && <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        company: true
+                    }))}
+                    label="Your Company Name"
+                    placeholder="Enter your company"
+                    name="company"
+                    error={!companyName && !inputsFocused.company && submitButtonClicked} />}
+                <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        country: true
+                    }))}
+                    label="Country"
+                    placeholder="Enter country"
+                    name="country" />
+                <InputField
+                    onFocus={() => setInputsFocused(prevState => ({
+                        ...prevState,
+                        city: true
+                    }))}
+                    label="City"
+                    placeholder="Enter city"
+                    name="city" />
+                <SubmitButton label="REGISTER" />
+            </Stack>
+        </form>
     );
 };

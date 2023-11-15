@@ -11,7 +11,7 @@ export const VacanciesList = props => {
     const { authStatus } = useContext(AuthContext);
 
     return (
-        <Container>
+        <Container sx={{ paddingY: 5 }}>
             {props.data.map(vacancy => (
                 <Card variant="outlined" sx={{ marginY: 5 }} key={vacancy.id}>
                     <CardContent>
@@ -60,5 +60,5 @@ export const VacanciesList = props => {
             ))
             }
         </Container >
-    )
-}
+    );
+};

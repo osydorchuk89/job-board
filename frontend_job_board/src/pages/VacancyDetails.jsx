@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useParams, Link as RouterLink, useRouteLoaderData } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
 import { Box, Button, List, ListItem, Container, Typography, Card, CardActions } from "@mui/joy";
@@ -18,8 +18,8 @@ export const VacancyDetails = () => {
     const vacancyId = params.vacancyId;
 
     return (
-        <Container sx={{ marginY: 5 }}>
-            <Card variant="outlined" sx={{ marginY: 5 }}>
+        <Container sx={{ paddingY: 5 }}>
+            <Card variant="outlined" sx={{ marginBottom: 5 }}>
                 <Typography
                     textAlign="center"
                     level="h2"

@@ -1,12 +1,16 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
-import { Container, Typography, Button, Stack } from "@mui/joy";
+import { Container, Typography, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
 import { DisabledInputField } from "./DisabledInputField";
 import { FileUploadField } from "./FileUploadField";
+import { SubmitButton } from "./SubmitButton";
+import { ProfileContext } from "../store/ProfileContext";
 
-export const VacancyApplicationForm = props => {
+export const VacancyApplicationForm = () => {
+
+    const { profile, changeProfile } = useContext(ProfileContext);
 
     const vacancyData = useRouteLoaderData("vacancy");
     const recruiterId = vacancyData.recruiter;
@@ -70,23 +74,34 @@ export const VacancyApplicationForm = props => {
                     }
                 }
                 );
-                navigate(`/vacancies/${vacancyId}/applied`);
+                changeProfile({
+                    ...profile,
+                    justApplied: true
+                })
+                navigate("/");
             } catch (error) {
                 console.log(error);
             };
         } else { console.log("You should complete the required fields") };
     };
 
-
     return (
-        <Container maxWidth="md" sx={{ marginY: 5 }}>
+        <Container>
             <Typography
                 level="h3"
-                sx={{ marginBottom: 5 }}
-            >Apply for Vacancy: {props.vacancyData.title} at {props.vacancyData.company}
+                textAlign="center"
+                sx={{ marginBottom: 1 }}
+            >Apply for Vacancy:
             </Typography>
-            <form onSubmit={handleApplicationSubmit}>
-                <Stack>
+            <Typography
+                level="h3"
+                textAlign="center"
+                sx={{ marginBottom: 5 }}
+            >
+                {vacancyData.title} at {vacancyData.company}
+            </Typography>
+            <form style={{ display: "flex", justifyContent: "center" }} onSubmit={handleApplicationSubmit}>
+                <Stack sx={{ width: { xs: "70%", md: "60%" } }}>
                     <DisabledInputField
                         label="Your Name"
                         placeholder={`${localStorage.getItem("first_name")} ${localStorage.getItem("last_name")}`} />
@@ -101,10 +116,7 @@ export const VacancyApplicationForm = props => {
                         name="coverLetter"
                         onChange={handleFileUpload}
                         uploaded={filesUploaded.coverLetter} />
-                    <Button
-                        type="submit"
-                        variant="solid"
-                        color="success">SUBMIT YOUR APPLICATION</Button>
+                    <SubmitButton label="APPLY" />
                 </Stack>
             </form>
         </Container>

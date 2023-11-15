@@ -1,13 +1,30 @@
-import { Link as RouterLink } from "react-router-dom";
+import { useContext } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Container, Typography, Card, CardContent, CardActions, Stack, Link } from "@mui/joy";
+import { AuthContext } from "../store/AuthContext";
 import { LoginForm } from "../components/LoginForm";
+import { useEffect } from "react";
 
 export const Login = () => {
 
+    const navigate = useNavigate();
+    const { authStatus } = useContext(AuthContext);
+
+    useEffect(() => {
+        authStatus.isLoggedIn && navigate("/");
+    }, []);
+
     return (
-        <Container sx={{ marginY: 5 }}>
-            <Stack justifyContent="center" alignItems="center" spacing={5}>
-                <Card variant="outlined" sx={{ width: { xs: "80%", sm: "60%", md: "40%" } }}>
+        <Container>
+            <Stack
+                justifyContent="center"
+                alignItems="center"
+                spacing={5}
+                sx={{ paddingY: 5 }}
+            >
+                <Card variant="outlined" sx={{
+                    width: { xs: "80%", sm: "60%", md: "40%" }
+                }}>
                     <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
                         <LoginForm />
                     </CardContent>

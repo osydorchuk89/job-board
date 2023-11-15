@@ -13,11 +13,12 @@ export const Root = () => {
         return children;
     };
 
-
     return (
         <ScrollToTopWrapper>
             <TopNavBar></TopNavBar>
-            <Outlet></Outlet>
+            <div style={{ backgroundColor: "#edf5fd" }}>
+                <Outlet></Outlet>
+            </div>
             <BottomNavBar></BottomNavBar>
         </ScrollToTopWrapper>
     )

@@ -1,21 +1,36 @@
 import axios from "axios";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
+import { ProfileContext } from "../store/ProfileContext";
 
 export const DeleteVacancyButton = props => {
+
+    const { profile, changeProfile } = useContext(ProfileContext);
 
     let navigate = useNavigate();
 
     const handleDeleteVacancy = async vacancyId => {
         let deleteVacancyUrl = BASE_URL + `api/vacancies/${vacancyId}/`
-        try {
-            const confirmDelete = confirm(`Are you sure you want to delete vacancy #${vacancyId}?`)
-            if (confirmDelete) {
-                axios.delete(deleteVacancyUrl);
-                navigate("/vacancies/deleted");
-            }
-        } catch (error) { console.log(error) };
+        const confirmDelete = confirm(`Are you sure you want to delete vacancy #${vacancyId}?`)
+        if (confirmDelete) {
+            try {
+                axios({
+                    method: "delete",
+                    url: deleteVacancyUrl,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: "JWT " + localStorage.getItem("access_token")
+                    }
+                });
+                changeProfile({
+                    ...profile,
+                    justDeletedVacancy: true
+                })
+                navigate("/");
+            } catch (error) { console.log(error) }
+        };
     };
 
     return (

@@ -1,10 +1,24 @@
-import { Stack, Typography, Chip } from "@mui/joy";
+import { useContext } from "react";
+import { Stack, Typography, Chip, Link } from "@mui/joy";
+import { useNavigate } from "react-router-dom";
+import { UserQueryContext } from "../store/UserQueryContext";
 import BusinessIcon from '@mui/icons-material/Business';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import WorkIcon from '@mui/icons-material/Work';
 
 export const TopVacancyDetails = props => {
+
+    const { changeQuery } = useContext(UserQueryContext);
+    const navigate = useNavigate();
+
+    window.onpopstate = () => {
+        changeQuery({
+            vacancyTitle: null,
+            vacancyCompany: null,
+            vacancyCity: null
+        });
+    };
 
     return (
         <Stack
@@ -16,7 +30,18 @@ export const TopVacancyDetails = props => {
                 alignItems="center"
                 spacing={1}>
                 <BusinessIcon />
-                <Typography>{props.company}</Typography>
+                <Typography>
+                    <Link onClick={event => {
+                        event.preventDefault();
+                        const userInputData = {
+                            vacancyCompany: props.company,
+                        };
+                        changeQuery(userInputData);
+                        navigate("/vacancies");
+                    }}>
+                        {props.company}
+                    </Link>
+                </Typography>
             </Stack>
             <Stack
                 direction="row"
@@ -36,7 +61,18 @@ export const TopVacancyDetails = props => {
                     display: { xs: "none", md: "flex" }
                 }}>
                 <LocationOnIcon />
-                <Typography>{props.city}, {props.country}</Typography>
+                <Typography>
+                    <Link onClick={event => {
+                        event.preventDefault();
+                        const userInputData = {
+                            vacancyCity: props.city,
+                        };
+                        changeQuery(userInputData);
+                        navigate("/vacancies");
+                    }}>
+                        {props.city}, {props.country}
+                    </Link>
+                </Typography>
             </Stack>
             <Stack
                 direction="row"

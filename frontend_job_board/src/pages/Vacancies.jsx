@@ -11,7 +11,7 @@ export const Vacancies = () => {
 
     return (
         <Container>
-            <SearchArea marginY={5} />
+            <SearchArea paddingY={5} />
             <Typography level="h4" textAlign="center">
                 Total {vacancies.length} {vacancies.length === 1 ? "vacancy" : "vacancies"} found
             </Typography>

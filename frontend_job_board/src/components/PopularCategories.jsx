@@ -9,13 +9,14 @@ const PopularCategory = props => {
     const navigate = useNavigate();
 
     return (
-        <Box sx={{ mb: 5 }}>
-            <Typography level="h4" sx={{ mb: 2, fontWeight: "bold" }}>{props.title}</Typography>
+        <Box sx={{ paddingY: 5 }}>
+            <Typography level="h4" sx={{ marginBottom: 2, fontWeight: "bold" }}>{props.title}</Typography>
             <Stack direction="row" spacing={{ xs: 2, md: 5 }}>
                 {props.popularItems.map((item, index) => <Button
                     key={index}
                     size="lg"
                     variant="outlined"
+                    color="primary"
                     onClick={event => {
                         event.preventDefault();
                         const userInputData = {
@@ -45,7 +46,7 @@ export const PopularCategories = () => {
     ];
 
     return (
-        <Container disableGutters sx={{ mt: 10, paddingX: 0 }}>
+        <Container disableGutters sx={{ marginTop: 10, paddingX: 0 }}>
             <PopularCategory
                 title="Popular Positions"
                 popularItems={popularPositions}

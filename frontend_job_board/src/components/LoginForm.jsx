@@ -55,7 +55,8 @@ export const LoginForm = () => {
                     localStorage.setItem("user_type", loggedInUserType);
                     changeAuthStatus({
                         isLoggedIn: true,
-                        userType: loggedInUserType
+                        userType: loggedInUserType,
+                        justLoggedIn: true
                     });
                     axios({
                         method: "get",
@@ -66,15 +67,14 @@ export const LoginForm = () => {
                         }
                     })
                         .then(response => {
-                            localStorage.setItem("profile_id", response.data.id)
-                            localStorage.setItem("phone", response.data.phone)
-                            response.data.country && localStorage.setItem("country", response.data.country)
-                            response.data.city && localStorage.setItem("city", response.data.city)
-                            response.data.company && localStorage.setItem("company", response.data.company)
-                            console.log("SUCCESS!!!");
+                            localStorage.setItem("profile_id", response.data.id);
+                            localStorage.setItem("phone", response.data.phone);
+                            response.data.country && localStorage.setItem("country", response.data.country);
+                            response.data.city && localStorage.setItem("city", response.data.city);
+                            response.data.company && localStorage.setItem("company", response.data.company);
+                            navigate("/");
                         })
-                        .catch(error => console.log(error))
-                    navigate("/");
+                        .catch(error => console.log(error));
                 })
                 .catch(error => {
                     error.response.status === 401 && setInvalidCredentials(true);
@@ -84,7 +84,7 @@ export const LoginForm = () => {
 
     return (
         <form ref={loginData} onSubmit={handleLogin}>
-            <Typography sx={{ marginBottom: 5 }} level="h3" textAlign="center">
+            <Typography sx={{ marginTop: 2, marginBottom: 5 }} level="h3" textAlign="center">
                 Login to Your Account
             </Typography>
             <InputField
@@ -114,7 +114,7 @@ export const LoginForm = () => {
                 size="lg"
                 type="submit"
                 variant="solid"
-                color="success" >LOGIN</Button>
+                color="success">LOGIN</Button>
         </form>
     )
 };

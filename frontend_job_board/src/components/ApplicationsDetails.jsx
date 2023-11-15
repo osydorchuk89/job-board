@@ -1,5 +1,5 @@
 import { useLoaderData, Link as RouterLink } from "react-router-dom";
-import { List, ListItem, Link, Card, Container } from "@mui/joy";
+import { List, ListItem, Link, Card, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
 
 export const ApplicationsDetails = () => {
@@ -15,12 +15,24 @@ export const ApplicationsDetails = () => {
     };
 
     return (
-        <Container>
+        <Stack
+            alignItems="center"
+            spacing={2}
+            sx={{
+                paddingY: 5,
+            }}>
             {applicationData.map((application, index) =>
-                <Card variant="outlined" sx={{ marginY: 5 }} key={index}>
+                <Card
+                    variant="outlined"
+                    key={index}
+                    sx={{ width: { xs: "90%", sm: "70%", md: "50%" } }}
+                >
                     <List sx={{ marginY: 2 }} >
                         <ListItem>
-                            <strong>Vacancy Title:</strong> {application.vacancy_title}
+                            <strong>Vacancy Title:</strong>
+                            <Link component={RouterLink} to={`/vacancies/${application.vacancy}`}>
+                                {application.vacancy_title}
+                            </Link>
                         </ListItem>
                         {isCandidate && <ListItem>
                             <strong>Company:</strong> {application.vacancy_company}
@@ -53,6 +65,6 @@ export const ApplicationsDetails = () => {
                         </ListItem>
                     </List>
                 </Card>)}
-        </Container>
+        </Stack>
     );
 };

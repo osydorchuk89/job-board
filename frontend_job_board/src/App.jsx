@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, redirect, useLocation } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { Home } from "./pages/Home";
 import { VacancyPost } from "./pages/VacancyPost";
@@ -6,32 +6,24 @@ import { Contact } from "./pages/Contact";
 import { Vacancies, vacanciesLoader } from "./pages/Vacancies";
 import { VacancyDetails, vacancyDataLoader } from "./pages/VacancyDetails";
 import { VacancyApplication } from "./pages/VacancyApplication";
-import { VacancyPosted } from "./pages/VacancyPosted";
 import { VacancyEdit } from "./pages/VacancyEdit";
-import { VacancyEdited } from "./pages/VacancyEdited";
-import { VacancyDeleted } from "./pages/VacancyDeleted";
-import { VacancyApplied } from "./pages/VacancyApplied";
 import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
-import { UserRegistered } from "./pages/UserRegistered";
 import { UserProfile } from "./pages/UserProfile";
 import { UserProfileEdit } from "./pages/UserProfileEdit";
 import { ChangeLoginType } from "./pages/ChangeLoginType";
 import { Applications, applicationsLoader } from "./pages/Applications";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
-import { LoggedOut } from "./pages/LoggedOut";
 import { AboutUs } from "./pages/AboutUs";
-import { UserProfileEdited } from "./pages/UserProfileEdited";
 import { checkTokenExpiry } from "./utils/checkTokenExpiry";
 import { AuthContext } from "./store/AuthContext";
 import { UserQueryContext } from "./store/UserQueryContext";
 
 export const App = () => {
 
-
     const { query } = useContext(UserQueryContext);
-    const { authStatus, changeAuthStatus } = useContext(AuthContext);
+    const { changeAuthStatus } = useContext(AuthContext);
 
     useEffect(() => {
         if (localStorage.getItem("user_type") === "candidate") {
@@ -80,60 +72,18 @@ export const App = () => {
                 },
                 {
                     path: "login",
-                    loader: async () => {
-                        if (authStatus.userType) {
-                            return redirect("/");
-                        };
-                        return null;
-                    },
                     element: <Login />
                 },
                 {
                     path: "candidate-register",
-                    loader: async () => {
-                        if (authStatus.userType) {
-                            return redirect("/");
-                        };
-                        return null;
-                    },
-                    children: [
-                        {
-                            index: true,
-                            element: <Registration />
-                        },
-                        {
-                            path: "success",
-                            element: <UserRegistered />
-                        }
-                    ]
+                    element: <Registration />
                 },
                 {
                     path: "recruiter-register",
-                    loader: async () => {
-                        if (authStatus.userType) {
-                            return redirect("/");
-                        };
-                        return null;
-                    },
-                    children: [
-                        {
-                            index: true,
-                            element: <Registration />
-                        },
-                        {
-                            path: "success",
-                            element: <UserRegistered />
-                        }
-                    ]
+                    element: <Registration />
                 },
                 {
                     path: "my-profile",
-                    loader: async () => {
-                        if (!authStatus.userType) {
-                            return redirect("/login");
-                        };
-                        return null;
-                    },
                     children: [
                         {
                             index: true,
@@ -148,38 +98,11 @@ export const App = () => {
                             path: "edit",
                             element: <UserProfileEdit />
                         },
-                        {
-                            path: "edited",
-                            element: <UserProfileEdited />
-                        }
                     ]
                 },
                 {
                     path: "vacancy-post",
-                    loader: async () => {
-                        if (authStatus.userType === "recruiter") {
-                            return null;
-                        };
-                        if (authStatus.userType === "candidate") {
-                            return redirect("/change-login-type")
-                        };
-                        return redirect("/login");
-                    },
-                    children: [
-                        {
-                            path: "",
-                            children: [
-                                {
-                                    index: true,
-                                    element: <VacancyPost />,
-                                },
-                                {
-                                    path: "posted",
-                                    element: <VacancyPosted />
-                                }
-                            ]
-                        },
-                    ]
+                    element: <VacancyPost />,
                 },
                 {
                     path: "change-login-type",
@@ -211,63 +134,16 @@ export const App = () => {
                                 },
                                 {
                                     path: "edit",
-                                    loader: async () => {
-                                        if (authStatus.userType !== "recruiter") {
-                                            return redirect("/");
-                                        };
-                                        return null;
-                                    },
-                                    children: [
-                                        {
-                                            index: true,
-                                            element: <VacancyEdit />
-                                        },
-                                        {
-                                            path: "updated",
-                                            element: <VacancyEdited />,
-                                        },
-                                    ]
+                                    element: <VacancyEdit />
                                 },
                                 {
                                     path: "apply",
-                                    loader: async () => {
-                                        if (authStatus.userType === "candidate") {
-                                            return null;
-                                        };
-                                        if (authStatus.userType === "recruiter") {
-                                            return redirect("/change-login-type")
-                                        }
-                                        return redirect("/login");
-                                    },
-                                    children: [
-                                        {
-                                            path: "",
-                                            children: [
-                                                {
-                                                    index: true,
-                                                    element: <VacancyApplication />
-                                                }
-                                            ]
-
-                                        }
-                                    ],
-                                },
-                                {
-                                    path: "applied",
-                                    element: <VacancyApplied />,
+                                    element: <VacancyApplication />
                                 }
                             ]
                         },
-                        {
-                            path: "deleted",
-                            element: <VacancyDeleted />,
-                        },
                     ]
                 },
-                {
-                    path: "logged-out",
-                    element: <LoggedOut />
-                }
             ]
         },
     ]);

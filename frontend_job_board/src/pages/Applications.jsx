@@ -1,13 +1,10 @@
 import axios from "axios";
-import { Stack } from "@mui/joy";
 import { ApplicationsDetails } from "../components/ApplicationsDetails";
 import { BASE_URL } from "../utils/config";
 
 export const Applications = () => {
     return (
-        <Stack>
-            <ApplicationsDetails />
-        </Stack>
+        <ApplicationsDetails />
     );
 };
 

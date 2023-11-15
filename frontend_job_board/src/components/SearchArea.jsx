@@ -28,7 +28,7 @@ export const SearchArea = props => {
 
     return (
         <form ref={userQuery} onSubmit={handleSearch} >
-            <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" sx={{ marginY: props.marginY }}>
+            <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" sx={{ paddingY: props.paddingY }}>
                 <Button
                     onClick={() => setSearchIsActive(prevValue => !prevValue)}
                     sx={{

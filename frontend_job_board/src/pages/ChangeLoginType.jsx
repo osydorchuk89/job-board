@@ -1,29 +1,35 @@
-import { useLocation } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "@mui/joy";
 import { Stack, Box, Typography } from "@mui/joy";
 import { useLogout } from "../hooks/useLogout";
+import { AuthContext } from "../store/AuthContext";
 
 export const ChangeLoginType = () => {
 
-    const isCandidate = localStorage.getItem("user_type") === "candidate";
+    const navigate = useNavigate();
+    const { authStatus } = useContext(AuthContext);
 
-    const { state } = useLocation();
-    let wasRedirected = null;
-    if (state && state._isRedirect) {
-        wasRedirected = true
-    }
+    useEffect(() => {
+        !authStatus.isLoggedIn && navigate("/");
+    }, []);
 
     const handleLogout = useLogout();
 
     return (
-        <Stack alignItems="center" sx={{ marginY: 5 }}>
-            {wasRedirected
-                ? <Box>
-                    <Typography>To post a vacancy, you should login as {isCandidate ? "recruiter" : "candidate"} first.</Typography>
-                    <Link onClick={handleLogout}>Logout from your {isCandidate ? "candidate" : "recruiter"} account.</Link>
-                </Box>
-                : <Typography>
-                    You shouldn't be here!</Typography>}
+        <Stack alignItems="center" sx={{ paddingY: 5 }}>
+            <Box>
+                <Typography>
+                    {authStatus.userType === "candidate"
+                        ? "To post a vacancy, you should login as recruiter."
+                        : "To apply for vacancy, you should login as candidate."}
+                </Typography>
+                <Link onClick={handleLogout}>
+                    {authStatus.userType === "candidate"
+                        ? "Logout from your candidate account."
+                        : "Logout from your recruiter account."}
+                </Link>
+            </Box>
         </Stack>
     )
 }

@@ -1,21 +1,17 @@
-import { Link as RouterLink } from 'react-router-dom';
-import { Sheet, List, ListItem, ListItemButton, ListItemContent } from '@mui/joy';
+import { Sheet, Stack } from '@mui/joy';
+import { NavigationLink } from './NavigationLink';
 
 export const NavList = props => {
     return (
         <Sheet sx={{ width: "100%", maxWidth: 360, bgcolor: "inherit" }}>
-            <List sx={props.sx}>
+            <Stack spacing={1} alignItems={{ xs: "center", sm: "flex-start" }} >
                 {props.listItems.map((item, index) =>
-                    <ListItem key={index}>
-                        <ListItemButton
-                            component={RouterLink}
-                            to="#"
-                            color="inherit">
-                            <ListItemContent sx={{ color: "white" }}>{item}</ListItemContent>
-                        </ListItemButton>
-                    </ListItem>
+                    <NavigationLink
+                        key={index}
+                        to="#"
+                        item={item} />
                 )}
-            </List>
+            </Stack>
         </Sheet>
     );
 };

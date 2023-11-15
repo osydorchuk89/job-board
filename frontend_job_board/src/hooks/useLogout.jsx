@@ -11,9 +11,10 @@ export const useLogout = () => {
         localStorage.clear();
         changeAuthStatus({
             isLoggedIn: false,
-            userType: null
+            userType: null,
+            justLoggedOut: true
         });
-        navigate("/logged-out");
+        navigate("/");
     };
 
     return handleLogout;
