@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState, useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useContext, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Stack } from "@mui/joy";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
@@ -11,20 +11,34 @@ export const RegistrationForm = props => {
 
     const { profile, changeProfile } = useContext(ProfileContext);
 
+    const location = useLocation();
+
     const allInputsNotFocused = {
         firstName: false,
         lastName: false,
         password: false,
         email: false,
+        phone: false,
         company: false
     };
 
     const [userInputData, setUserInputData] = useState({});
-    const [companyName, setCompanyName] = useState("");
+    const [userProfileData, setUserProfileData] = useState({})
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
+    const [passwordIncorrect, setPasswordIncorrect] = useState({});
+    const [passwordShort, setPasswordShort] = useState(null);
+    const [emailIncorrect, setEmailIncorrect] = useState({});
+    const [phoneIncorrect, setPhonelIncorrect] = useState(null);
 
     const registrationData = useRef();
+
+    useEffect(() => {
+        setSubmitButtonClicked(false);
+        setUserInputData({});
+        setUserProfileData({});
+        registrationData.current.reset();
+    }, [location])
 
     const combineInputData = () => {
         const inputUserDataObject = {
@@ -33,37 +47,39 @@ export const RegistrationForm = props => {
             email: registrationData.current["email"].value.trim(),
             password: registrationData.current["password"].value.trim(),
         };
-        let inputProfileDataObject = {
+        if (inputUserDataObject.password.length < 8) {
+            setPasswordShort(true);
+        } else { setPasswordShort(null) };
+        const inputProfileDataObject = {
             phone: registrationData.current["phone"].value.trim(),
             country: registrationData.current["country"].value.trim(),
-            city: registrationData.current["city"].value.trim()
+            city: registrationData.current["city"].value.trim(),
+            company: props.isCandidateRegistration ? null : registrationData.current["company"].value.trim()
         };
-        if (!props.isCandidateRegistration) {
-            inputProfileDataObject = {
-                ...inputProfileDataObject,
-                company: registrationData.current["company"].value.trim(),
-            }
-        }
+        if (!/^\d+$/.test(inputProfileDataObject.phone)) {
+            setPhonelIncorrect(true);
+        } else { setPhonelIncorrect(null) };;
         setUserInputData(inputUserDataObject);
-        inputProfileDataObject.company && setCompanyName(inputProfileDataObject.company)
+        setUserProfileData(inputProfileDataObject)
         return [inputUserDataObject, inputProfileDataObject];
     };
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleRegistration = event => {
         event.preventDefault();
         const [inputUserData, inputProfileData] = combineInputData();
         const userGroup = props.isCandidateRegistration ? "Candidates" : "Recruiters"
-        console.log(inputUserData);
-        console.log(inputProfileData);
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
+        setEmailIncorrect({});
+        setPasswordIncorrect({});
         if (
             inputUserData.first_name &&
             inputUserData.last_name &&
             inputUserData.email &&
-            inputUserData.password &&
+            inputUserData.password.length >= 8 &&
+            (inputProfileData.phone && /^\d+$/.test(inputProfileData.phone)) &&
             (props.isCandidateRegistration || inputProfileData.company)
         ) {
             axios({
@@ -95,7 +111,23 @@ export const RegistrationForm = props => {
                         })
                         .catch(error => console.log(error))
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    if (error.response.status === 400 && Object.hasOwn(error.response.data, "password")) {
+                        setPasswordIncorrect(prevData => ({
+                            ...prevData,
+                            incorrect: true,
+                            message: error.response.data.password[0]
+                        }));
+                    };
+                    if (error.response.status === 400 && Object.hasOwn(error.response.data, "email")) {
+                        console.log(error.response.data.email[0])
+                        setEmailIncorrect(prevData => ({
+                            ...prevData,
+                            incorrect: true,
+                            message: error.response.data.email[0]
+                        }));
+                    };
+                })
         } else { console.log("You should complete all required fields") }
     };
 
@@ -116,6 +148,7 @@ export const RegistrationForm = props => {
                     label="First Name"
                     placeholder="Enter your first name"
                     name="firstName"
+                    fieldIsEmpty={!userInputData.first_name}
                     error={!userInputData.first_name && !inputsFocused.firstName && submitButtonClicked} />
                 <InputField
                     onFocus={() => setInputsFocused(prevState => ({
@@ -125,6 +158,7 @@ export const RegistrationForm = props => {
                     label="Last Name"
                     placeholder="Enter your last name"
                     name="lastName"
+                    fieldIsEmpty={!userInputData.last_name}
                     error={!userInputData.last_name && !inputsFocused.lastName && submitButtonClicked} />
                 <InputField
                     onFocus={() => setInputsFocused(prevState => ({
@@ -135,7 +169,10 @@ export const RegistrationForm = props => {
                     placeholder="Enter your email"
                     name="email"
                     type="email"
-                    error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
+                    emailIncorrect={emailIncorrect.incorrect}
+                    emailIncorrectMessage={emailIncorrect.message}
+                    fieldIsEmpty={!userInputData.email}
+                    error={(!userInputData.email || emailIncorrect.incorrect) && !inputsFocused.email && submitButtonClicked} />
                 <InputField
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,
@@ -145,9 +182,12 @@ export const RegistrationForm = props => {
                     name="password"
                     placeholder="Enter your password"
                     type="password"
-                    minLength="8"
-                    // onInvalid={e => e.target.setCustomValidity("Password should be at least 8 characters long")}
-                    error={!userInputData.password && !inputsFocused.password && submitButtonClicked} />
+                    passwordShort={passwordShort}
+                    passwordShortMessage="The password should have at least 8 characters"
+                    passwordIncorrect={passwordIncorrect.incorrect}
+                    passwordIncorrectMessage={passwordIncorrect.message}
+                    fieldIsEmpty={!userInputData.password}
+                    error={(!userInputData.password || passwordIncorrect.incorrect || passwordShort) && !inputsFocused.password && submitButtonClicked} />
                 <InputField
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,
@@ -158,9 +198,10 @@ export const RegistrationForm = props => {
                     name="phone"
                     type="tel"
                     maxLength="15"
-                    pattern="\d*"
-                    // onInvalid={e => e.target.setCustomValidity("This field should contain only numbers")}
-                    startDecorator="+" />
+                    phoneIncorrect={phoneIncorrect}
+                    phoneIncorrectMessage="This field should contain only numbers"
+                    startDecorator="+"
+                    error={(userProfileData.phone !== "" && phoneIncorrect) && !inputsFocused.phone && submitButtonClicked} />
                 {!props.isCandidateRegistration && <InputField
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,
@@ -169,7 +210,8 @@ export const RegistrationForm = props => {
                     label="Your Company Name"
                     placeholder="Enter your company"
                     name="company"
-                    error={!companyName && !inputsFocused.company && submitButtonClicked} />}
+                    fieldIsEmpty={!userProfileData.company}
+                    error={!userProfileData.company && !inputsFocused.company && submitButtonClicked} />}
                 <InputField
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,

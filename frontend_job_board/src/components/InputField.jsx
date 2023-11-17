@@ -22,10 +22,27 @@ export const InputField = props => {
                         ref: props.inputRef,
                     }
                 }} />
-            {props.error &&
-                <FormHelperText>
-                    This field is required.
-                </FormHelperText>}
+            {(props.error) &&
+                <>
+                    {props.fieldIsEmpty && <FormHelperText>
+                        This field is required.
+                    </FormHelperText>}
+                    {props.passwordIncorrect && <FormHelperText>
+                        {props.passwordIncorrectMessage}
+                    </FormHelperText>}
+                    {!props.fieldIsEmpty && props.passwordShort && <FormHelperText>
+                        {props.passwordShortMessage}
+                    </FormHelperText>}
+                    {props.emailIncorrect && <FormHelperText>
+                        {props.emailIncorrectMessage}
+                    </FormHelperText>}
+                    {props.phoneIncorrect && <FormHelperText>
+                        {props.phoneIncorrectMessage}
+                    </FormHelperText>}
+                    {props.salaryIncorrect && <FormHelperText>
+                        {props.salaryIncorrectMessage}
+                    </FormHelperText>}
+                </>}
         </FormControl>
     );
 };

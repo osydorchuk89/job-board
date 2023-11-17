@@ -1,21 +1,22 @@
 import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Box, Sheet, Stack, Button, IconButton, Typography, List, ListItem, ListItemButton, ListItemContent } from "@mui/joy";
-import WorkIcon from "@mui/icons-material/Work";
+import { Box, Sheet, Stack, Button, IconButton } from "@mui/joy";
 import { AuthContext } from "../store/AuthContext";
 import { DropdownMenu } from "./DropdownMenu";
 import { NavigationLink } from "./NavigationLink";
+import { NavMenuList } from "./NavMenuList"
 import { useLogout } from "../hooks/useLogout";
 import { useBrowseVacancies } from "../hooks/useBrowseVacancies";
+import WorkIcon from "@mui/icons-material/Work";
 import MenuIcon from '@mui/icons-material/Menu';
 
 export const TopNavBar = () => {
 
     const { authStatus } = useContext(AuthContext);
+    const [menuOpen, setMenuOpen] = useState(false);
+
     const handleBrowseVacancies = useBrowseVacancies();
     const handleLogout = useLogout();
-
-    const [menuOpen, setMenuOpen] = useState(false);
 
     const registerMenuItems = [
         {
@@ -33,32 +34,28 @@ export const TopNavBar = () => {
             component: Box,
             text: "Browse Vacancies",
             onClick: handleBrowseVacancies
-        },
-        {
-            link: "/vacancy-post",
-            text: "Post New Vacancy"
-        },
-        authStatus.isLoggedIn
-            ? {
-                component: Box,
-                text: "Logout",
-                onClick: handleLogout
-            }
-            : {
-                link: "/login",
-                text: "Login"
+        }
+    ];
+
+    if (authStatus.userType === "recruiter" || !authStatus.isLoggedIn) {
+        generalMenuItems = [
+            ...generalMenuItems,
+            {
+                link: "/vacancy-post",
+                text: "Post New Vacancy"
             },
-        authStatus.isLoggedIn
-            ? {
+        ];
+    };
+
+    if (authStatus.isLoggedIn) {
+        generalMenuItems = [
+            ...generalMenuItems,
+            {
                 link: "/my-profile",
                 text: "My Profile",
             }
-            : {
-                link: "/candidate-register",
-                text: "Register As Candidate"
-            },
-    ]
-
+        ];
+    };
 
     if (!authStatus.isLoggedIn) {
         generalMenuItems = [
@@ -66,7 +63,11 @@ export const TopNavBar = () => {
             {
                 link: "/recruiter-register",
                 text: "Register As Recruiter",
-            }
+            },
+            {
+                link: "/candidate-register",
+                text: "Register As Candidate"
+            },
         ];
     };
 
@@ -82,6 +83,19 @@ export const TopNavBar = () => {
         }
     ];
 
+    generalMenuItems = [
+        ...generalMenuItems,
+        authStatus.isLoggedIn
+            ? {
+                component: Box,
+                text: "Logout",
+                onClick: handleLogout
+            }
+            : {
+                link: "/login",
+                text: "Login"
+            },
+    ];
 
     return (
         <Box sx={{
@@ -122,7 +136,7 @@ export const TopNavBar = () => {
                             width: { xs: "25%", md: "20%", lg: "15%" },
                             display: { xs: "none", md: "block" }
                         }}>BROWSE VACANCIES</Button>
-                    <Button
+                    {(authStatus.userType === "recruiter" || !authStatus.isLoggedIn) && <Button
                         component={RouterLink}
                         size="lg"
                         to="/vacancy-post"
@@ -134,7 +148,7 @@ export const TopNavBar = () => {
                             textAlign: "center",
                             marginRight: { xs: 0, md: 4, lg: 8 },
                             marginLeft: 2,
-                        }}>POST NEW VACANCY</Button>
+                        }}>POST NEW VACANCY</Button>}
                     <Button
                         component={authStatus.isLoggedIn ? Button : RouterLink}
                         to={authStatus.isLoggedIn ? null : "/login"}
@@ -181,27 +195,9 @@ export const TopNavBar = () => {
                 sx={{
                     display: { xs: menuOpen ? "block" : "none", md: "none" }
                 }}>
-                <List sx={{
-                    width: "100%",
-                    "--ListItem-minHeight": "60px"
-                }}>
-                    {generalMenuItems.map((item, index) =>
-                        <ListItem key={index}>
-                            <ListItemButton
-                                component={item.component ? item.component : RouterLink}
-                                to={item.link ? item.link : null}
-                                onClick={() => {
-                                    setMenuOpen(false);
-                                    item.onClick && item.onClick()
-                                }}
-                                color="primary"
-                                variant="solid">
-                                <ListItemContent sx={{ textAlign: "center", fontSize: "1.3rem" }}>
-                                    {item.text}
-                                </ListItemContent >
-                            </ListItemButton>
-                        </ListItem>)}
-                </List>
+                <NavMenuList
+                    items={generalMenuItems}
+                    setMenuOpen={setMenuOpen} />
             </Sheet>
         </Box>
     );

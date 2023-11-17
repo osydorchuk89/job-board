@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useRef, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useState, useContext, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Stack } from "@mui/joy";
 import { InputField } from "../components/InputField";
 import { TextareaField } from "../components/TextareaField";
@@ -11,6 +11,8 @@ import { employmentTypeOptions, workModeOptions } from "../store/data";
 import { ProfileContext } from "../store/ProfileContext";
 
 export const VacancyPostForm = props => {
+
+    const location = useLocation();
 
     const { profile, changeProfile } = useContext(ProfileContext);
 
@@ -33,7 +35,13 @@ export const VacancyPostForm = props => {
     const [userInputData, setUserInputData] = useState({});
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
-    const vacancyData = useRef(null);
+    const vacancyData = useRef();
+
+    useEffect(() => {
+        setSubmitButtonClicked(false);
+        setUserInputData({});
+        vacancyData.current.reset();
+    }, [location]);
 
     let navigate = useNavigate();
 
@@ -179,7 +187,7 @@ export const VacancyPostForm = props => {
                     placeholder="Enter annual salary"
                     name="salary"
                     type="number"
-                    min="1000"
+                    min="0"
                     error={!userInputData.salary && !inputsFocused.salary && submitButtonClicked} />
                 <TextareaField
                     defaultValue={props.defaultValues.key_responsibilities}

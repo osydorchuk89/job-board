@@ -12,7 +12,7 @@ export const VacancyPost = () => {
 
     useEffect(() => {
         !authStatus.isLoggedIn && navigate("/login");
-        authStatus.userType === "candidate" && navigate("/change-login-type");
+        authStatus.userType === "candidate" && navigate("/");
     }, []);
 
     const companyData = useRouteLoaderData("root");

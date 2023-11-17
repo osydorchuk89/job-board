@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Company, Recruiter
+from .models import Recruiter
 
 
-@admin.register(Company)
-class CompanyAdmin(admin.ModelAdmin):
-    list_display = ["name", "industry"]
+# @admin.register(Company)
+# class CompanyAdmin(admin.ModelAdmin):
+#     list_display = ["name", "industry"]
 
 
 @admin.register(Recruiter)

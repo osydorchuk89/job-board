@@ -1,22 +1,21 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, DjangoModelPermissionsOrAnonReadOnly, AllowAny
-from .models import Company, Recruiter
-from .serializers import CompanySerializer, RecruiterSerializer
-from .permissions import EditDeleteCompanyPermission
+from rest_framework.permissions import IsAuthenticated
+from .models import Recruiter
+from .serializers import RecruiterSerializer
 
 
-class CompanyViewSet(viewsets.ModelViewSet, EditDeleteCompanyPermission):
-    serializer_class = CompanySerializer
-    permission_classes = [EditDeleteCompanyPermission, DjangoModelPermissionsOrAnonReadOnly]
+# class CompanyViewSet(viewsets.ModelViewSet, EditDeleteCompanyPermission):
+#     serializer_class = CompanySerializer
+#     permission_classes = [EditDeleteCompanyPermission, DjangoModelPermissionsOrAnonReadOnly]
 
-    def get_queryset(self):
-        queryset = Company.objects.all()
-        industry_value = self.request.query_params.get("industry")
-        if industry_value is not None:
-            queryset = queryset.filter(industry=industry_value)
-        return queryset
+#     def get_queryset(self):
+#         queryset = Company.objects.all()
+#         industry_value = self.request.query_params.get("industry")
+#         if industry_value is not None:
+#             queryset = queryset.filter(industry=industry_value)
+#         return queryset
 
 
 class RecruiterViewSet(viewsets.ModelViewSet):

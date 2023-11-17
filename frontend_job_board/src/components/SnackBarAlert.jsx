@@ -11,14 +11,13 @@ export const SnackBarAlert = props => {
             }}
             size="sm"
             open={props.open}
-            autoHideDuration={props.autoHideDuration}
+            autoHideDuration={1500}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
             color="success"
             variant="soft"
             onClose={props.onClose}
             slotProps={props.slotProps}
-            resumeHideDuration={props.resumeHideDuration}
-            disableWindowBlurListener={props.disableWindowBlurListener}
+            resumeHideDuration={0}
         >
             <Typography
                 color="inherit">

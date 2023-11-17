@@ -19,13 +19,13 @@ class Recruiter(models.Model):
         return self.user.last_name
 
 
-class Company(models.Model):
-    name = models.CharField(max_length=100)
-    recruiter = models.OneToOneField(Recruiter, on_delete=models.CASCADE, related_name="company_recruiter")
-    industry = models.CharField(max_length=100)
+# class Company(models.Model):
+#     name = models.CharField(max_length=100)
+#     recruiter = models.OneToOneField(Recruiter, on_delete=models.CASCADE, related_name="company_recruiter")
+#     industry = models.CharField(max_length=100)
 
-    class Meta:
-        verbose_name_plural = "Companies"
+#     class Meta:
+#         verbose_name_plural = "Companies"
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name

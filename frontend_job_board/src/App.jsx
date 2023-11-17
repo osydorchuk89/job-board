@@ -11,7 +11,6 @@ import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
 import { UserProfile } from "./pages/UserProfile";
 import { UserProfileEdit } from "./pages/UserProfileEdit";
-import { ChangeLoginType } from "./pages/ChangeLoginType";
 import { Applications, applicationsLoader } from "./pages/Applications";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
@@ -103,10 +102,6 @@ export const App = () => {
                 {
                     path: "vacancy-post",
                     element: <VacancyPost />,
-                },
-                {
-                    path: "change-login-type",
-                    element: <ChangeLoginType />,
                 },
                 {
                     path: "contact",

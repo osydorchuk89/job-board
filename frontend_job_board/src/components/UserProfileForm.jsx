@@ -24,23 +24,20 @@ export const UserProfileForm = () => {
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const isCandidate = localStorage.getItem("user_type") === "candidate"
+    const userId = localStorage.getItem("user_id");
 
     const combineInputData = () => {
         const inputUserDataObject = {
+            id: userId,
             first_name: registrationData.current["firstName"].value.trim(),
             last_name: registrationData.current["lastName"].value.trim(),
             email: registrationData.current["email"].value.trim(),
         };
-        let inputProfileDataObject = {
+        const inputProfileDataObject = {
             phone: registrationData.current["phone"].value.trim(),
             country: registrationData.current["country"].value.trim(),
-            city: registrationData.current["city"].value.trim()
-        };
-        if (!isCandidate) {
-            inputProfileDataObject = {
-                ...inputProfileDataObject,
-                company: registrationData.current["company"].value.trim(),
-            }
+            city: registrationData.current["city"].value.trim(),
+            company: isCandidate ? null : registrationData.current["company"].value.trim(),
         };
         setUserInputData(inputUserDataObject);
         inputProfileDataObject.company && setCompanyName(inputProfileDataObject.company)
@@ -51,7 +48,6 @@ export const UserProfileForm = () => {
 
     const handleEditProfile = event => {
         event.preventDefault();
-        const userId = localStorage.getItem("user_id");
         const [inputUserData, inputProfileData] = combineInputData();
         console.log(inputUserData);
         console.log(inputProfileData);
@@ -67,7 +63,7 @@ export const UserProfileForm = () => {
             axios({
                 method: "put",
                 url: BASE_URL + `auth/users/${userId}/`,
-                data: { ...inputUserData },
+                data: inputUserData,
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: "JWT " + localStorage.getItem("access_token")
