@@ -79,7 +79,7 @@ export const TopNavBar = () => {
         },
         {
             link: "/contact",
-            text: "Contacts",
+            text: "Contact Us",
         }
     ];
 

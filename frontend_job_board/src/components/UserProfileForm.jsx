@@ -20,9 +20,12 @@ export const UserProfileForm = () => {
 
     const registrationData = useRef();
     const [userInputData, setUserInputData] = useState({});
+    const [userProfileData, setUserProfileData] = useState({})
     const [companyName, setCompanyName] = useState("");
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
+    const [emailIncorrect, setEmailIncorrect] = useState({});
+    const [phoneIncorrect, setPhonelIncorrect] = useState(null);
     const isCandidate = localStorage.getItem("user_type") === "candidate"
     const userId = localStorage.getItem("user_id");
 
@@ -32,6 +35,7 @@ export const UserProfileForm = () => {
             first_name: registrationData.current["firstName"].value.trim(),
             last_name: registrationData.current["lastName"].value.trim(),
             email: registrationData.current["email"].value.trim(),
+            user_group: isCandidate ? "candidate" : "recruiter"
         };
         const inputProfileDataObject = {
             phone: registrationData.current["phone"].value.trim(),
@@ -39,8 +43,11 @@ export const UserProfileForm = () => {
             city: registrationData.current["city"].value.trim(),
             company: isCandidate ? null : registrationData.current["company"].value.trim(),
         };
+        if (!/^\d+$/.test(inputProfileDataObject.phone)) {
+            setPhonelIncorrect(true);
+        } else { setPhonelIncorrect(null) };
         setUserInputData(inputUserDataObject);
-        inputProfileDataObject.company && setCompanyName(inputProfileDataObject.company)
+        setUserProfileData(inputProfileDataObject);
         return [inputUserDataObject, inputProfileDataObject];
     };
 
@@ -49,20 +56,19 @@ export const UserProfileForm = () => {
     const handleEditProfile = event => {
         event.preventDefault();
         const [inputUserData, inputProfileData] = combineInputData();
-        console.log(inputUserData);
-        console.log(inputProfileData);
-        console.log()
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
+        setEmailIncorrect({})
         if (
             inputUserData.first_name &&
             inputUserData.last_name &&
             inputUserData.email &&
+            (!inputProfileData.phone || /^\d+$/.test(inputProfileData.phone)) &&
             (isCandidate || inputProfileData.company)
         ) {
             axios({
                 method: "put",
-                url: BASE_URL + `auth/users/${userId}/`,
+                url: BASE_URL + `auth/users/me/`,
                 data: inputUserData,
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -97,7 +103,15 @@ export const UserProfileForm = () => {
                         })
                         .catch(error => console.log(error))
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    if (error.response.status === 400 && Object.hasOwn(error.response.data, "email")) {
+                        setEmailIncorrect(prevData => ({
+                            ...prevData,
+                            incorrect: true,
+                            message: error.response.data.email[0]
+                        }));
+                    } else { console.log(error) };
+                })
         } else { console.log("You should complete all required fields") }
     };
 
@@ -113,6 +127,7 @@ export const UserProfileForm = () => {
                     label="First Name"
                     placeholder="Enter your first name"
                     name="firstName"
+                    fieldIsEmpty={!userInputData.first_name}
                     error={!userInputData.first_name && !inputsFocused.firstName && submitButtonClicked}
                 />
                 <InputField
@@ -124,6 +139,7 @@ export const UserProfileForm = () => {
                     label="Last Name"
                     placeholder="Enter your last name"
                     name="lastName"
+                    fieldIsEmpty={!userInputData.last_name}
                     error={!userInputData.last_name && !inputsFocused.lastName && submitButtonClicked}
                 />
                 <InputField
@@ -136,7 +152,10 @@ export const UserProfileForm = () => {
                     placeholder="Enter your email"
                     name="email"
                     type="email"
-                    error={!userInputData.email && !inputsFocused.email && submitButtonClicked}
+                    emailIncorrect={emailIncorrect.incorrect}
+                    emailIncorrectMessage={emailIncorrect.message}
+                    fieldIsEmpty={!userInputData.email}
+                    error={(!userInputData.email || emailIncorrect.incorrect) && !inputsFocused.email && submitButtonClicked}
                 />
                 <InputField
                     defaultValue={localStorage.getItem("phone")}
@@ -149,9 +168,12 @@ export const UserProfileForm = () => {
                     name="phone"
                     type="tel"
                     maxLength="15"
-                    pattern="\d*"
                     // onInvalid={e => e.target.setCustomValidity("This field should contain only numbers")}
-                    startDecorator="+" />
+                    startDecorator="+"
+                    phoneIncorrect={phoneIncorrect}
+                    phoneIncorrectMessage="This field should contain only numbers"
+                    error={(userProfileData.phone !== "" && phoneIncorrect) && !inputsFocused.phone && submitButtonClicked}
+                />
                 {localStorage.getItem("user_type") === "recruiter" && <InputField
                     defaultValue={localStorage.getItem("company")}
                     onFocus={() => setInputsFocused(prevState => ({
@@ -161,7 +183,8 @@ export const UserProfileForm = () => {
                     label="Your Company Name"
                     placeholder="Enter your company"
                     name="company"
-                    error={!companyName && !inputsFocused.company && submitButtonClicked}
+                    fieldIsEmpty={!userProfileData.company}
+                    error={!userProfileData.company && !inputsFocused.company && submitButtonClicked}
                 />}
                 <InputField
                     defaultValue={localStorage.getItem("country") || ""}

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "candidates",
     "companies",
     "vacancies",
+    "feedback",
 ]
 
 MIDDLEWARE = [

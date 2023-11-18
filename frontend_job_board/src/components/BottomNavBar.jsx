@@ -70,11 +70,11 @@ export const BottomNavBar = () => {
                             non placeat odio nam nihil amet omnis nemo?</Typography>
                         <Button
                             component={RouterLink}
-                            to="/about-us"
+                            to="/contact"
                             variant="solid"
                             color="success"
                             size="sm"
-                            sx={{ display: { xs: "none", sm: "inline-block" } }}>READ MORE</Button>
+                            sx={{ display: { xs: "none", sm: "inline-block" } }}>CONTACT US</Button>
 
                     </Box>
                     <Box sx={boxSxProps}>

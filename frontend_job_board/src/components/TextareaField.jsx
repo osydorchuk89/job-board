@@ -8,7 +8,7 @@ export const TextareaField = props => {
                 defaultValue={props.defaultValue}
                 name={props.name}
                 placeholder={props.placeholder}
-                minRows={2}
+                minRows={3}
                 error={props.error}
                 onFocus={props.onFocus}
             />

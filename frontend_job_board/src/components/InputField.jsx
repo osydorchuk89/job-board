@@ -6,6 +6,7 @@ export const InputField = props => {
             <FormLabel sx={{ fontSize: "1.1rem" }}>{props.label}</FormLabel>
             <Input
                 size={props.size}
+                disabled={props.disabled}
                 defaultValue={props.defaultValue}
                 name={props.name}
                 placeholder={props.placeholder}

@@ -58,9 +58,9 @@ export const RegistrationForm = props => {
         };
         if (!/^\d+$/.test(inputProfileDataObject.phone)) {
             setPhonelIncorrect(true);
-        } else { setPhonelIncorrect(null) };;
+        } else { setPhonelIncorrect(null) };
         setUserInputData(inputUserDataObject);
-        setUserProfileData(inputProfileDataObject)
+        setUserProfileData(inputProfileDataObject);
         return [inputUserDataObject, inputProfileDataObject];
     };
 
@@ -79,7 +79,7 @@ export const RegistrationForm = props => {
             inputUserData.last_name &&
             inputUserData.email &&
             inputUserData.password.length >= 8 &&
-            (inputProfileData.phone && /^\d+$/.test(inputProfileData.phone)) &&
+            (!inputProfileData.phone || /^\d+$/.test(inputProfileData.phone)) &&
             (props.isCandidateRegistration || inputProfileData.company)
         ) {
             axios({
@@ -118,17 +118,15 @@ export const RegistrationForm = props => {
                             incorrect: true,
                             message: error.response.data.password[0]
                         }));
-                    };
-                    if (error.response.status === 400 && Object.hasOwn(error.response.data, "email")) {
-                        console.log(error.response.data.email[0])
+                    } else if (error.response.status === 400 && Object.hasOwn(error.response.data, "email")) {
                         setEmailIncorrect(prevData => ({
                             ...prevData,
                             incorrect: true,
                             message: error.response.data.email[0]
                         }));
-                    };
+                    } else { console.log(error) };
                 })
-        } else { console.log("You should complete all required fields") }
+        } else { console.log("You should complete all required fields") };
     };
 
     return (
@@ -198,9 +196,9 @@ export const RegistrationForm = props => {
                     name="phone"
                     type="tel"
                     maxLength="15"
+                    startDecorator="+"
                     phoneIncorrect={phoneIncorrect}
                     phoneIncorrectMessage="This field should contain only numbers"
-                    startDecorator="+"
                     error={(userProfileData.phone !== "" && phoneIncorrect) && !inputsFocused.phone && submitButtonClicked} />
                 {!props.isCandidateRegistration && <InputField
                     onFocus={() => setInputsFocused(prevState => ({

@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../store/AuthContext";
 import { ProfileContext } from "../store/ProfileContext";
+import { FeedbackContext } from "../store/FeedbackContext";
 import { SnackBarAlert } from "./SnackBarAlert";
 
 export const SnackBarContainer = () => {
 
     const { authStatus, changeAuthStatus } = useContext(AuthContext);
     const { profile, changeProfile } = useContext(ProfileContext);
+    const { feedback, changeFeedback } = useContext(FeedbackContext);
 
     const [loggedInAlert, setLoggedInAlert] = useState(false);
     const [loggedOutAlert, setLoggedOutAlert] = useState(false);
@@ -16,6 +18,7 @@ export const SnackBarContainer = () => {
     const [postedVacancyAlert, setPosterVacancyAlert] = useState(false);
     const [editedVacancyAlert, setEditedVacancyAlert] = useState(false);
     const [deletedVacancyAlert, setDeletedVacancyAlert] = useState(false);
+    const [postedFeedbackAlert, setPostedFeedbackAlert] = useState(false);
 
     useEffect(() => {
         authStatus.justLoggedOut && setLoggedOutAlert(true);
@@ -26,6 +29,7 @@ export const SnackBarContainer = () => {
         profile.justPostedVacancy && setPosterVacancyAlert(true);
         profile.justEditedVacancy && setEditedVacancyAlert(true);
         profile.justDeletedVacancy && setDeletedVacancyAlert(true);
+        feedback && setPostedFeedbackAlert(true);
     }, []);
 
     return (
@@ -143,6 +147,14 @@ export const SnackBarContainer = () => {
                         ...profile,
                         justDeletedVacancy: null
                     });
+                }}
+            />
+            <SnackBarAlert
+                open={postedFeedbackAlert}
+                text="You successfully sent a message!"
+                onClose={() => {
+                    setPostedFeedbackAlert(false);
+                    changeFeedback(null);
                 }}
             />
         </>

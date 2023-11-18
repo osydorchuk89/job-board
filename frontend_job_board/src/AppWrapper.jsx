@@ -3,6 +3,7 @@ import { App } from "./App";
 import { AuthContext } from "./store/AuthContext";
 import { UserQueryContext } from "./store/UserQueryContext";
 import { ProfileContext } from "./store/ProfileContext";
+import { FeedbackContext } from "./store/FeedbackContext";
 import { CssVarsProvider } from "@mui/joy";
 import { Theme } from "./themes/themes";
 
@@ -31,9 +32,12 @@ export const AppWrapper = () => {
         justDeletedVacancy: null
     });
 
+    const [userFeedback, setUserFeedback] = useState(null);
+
     const setUserAuthStatusFunction = value => setUserAuthStatus(value);
     const setUserQueryFunction = value => setUserQuery(value);
     const setUserProfileFunction = value => setUserProfile(value);
+    const setUserFeedbackFunction = value => setUserFeedback(value);
 
     const authContextValue = {
         authStatus: userAuthStatus,
@@ -50,13 +54,20 @@ export const AppWrapper = () => {
         changeProfile: setUserProfileFunction
     };
 
+    const userFeedbackContextValue = {
+        feedback: userFeedback,
+        changeFeedback: setUserFeedback
+    }
+
     return (
         <AuthContext.Provider value={authContextValue}>
             <UserQueryContext.Provider value={userQueryContextValue}>
                 <ProfileContext.Provider value={userProfileContextValue}>
-                    <CssVarsProvider theme={Theme}>
-                        <App />
-                    </CssVarsProvider>
+                    <FeedbackContext.Provider value={userFeedbackContextValue}>
+                        <CssVarsProvider theme={Theme}>
+                            <App />
+                        </CssVarsProvider>
+                    </FeedbackContext.Provider>
                 </ProfileContext.Provider>
             </UserQueryContext.Provider>
         </AuthContext.Provider>
