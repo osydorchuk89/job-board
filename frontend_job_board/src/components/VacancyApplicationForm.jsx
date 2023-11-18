@@ -116,7 +116,13 @@ export const VacancyApplicationForm = () => {
                         name="coverLetter"
                         onChange={handleFileUpload}
                         uploaded={filesUploaded.coverLetter} />
-                    <SubmitButton label="APPLY" />
+                    <SubmitButton
+                        label="APPLY"
+                        sx={{
+                            width: { xs: "50%", sm: "40%", md: "30%" },
+                            marginTop: 5,
+                            alignSelf: "center"
+                        }} />
                 </Stack>
             </form>
         </Container>

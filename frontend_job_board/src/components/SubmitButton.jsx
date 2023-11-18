@@ -7,10 +7,6 @@ export const SubmitButton = props => {
             variant="solid"
             color="success"
             size="lg"
-            sx={{
-                width: { xs: "50%", sm: "40%", md: "30%" },
-                marginTop: 5,
-                alignSelf: "center"
-            }}>{props.label}</Button>
+            sx={props.sx}>{props.label}</Button>
     )
 }

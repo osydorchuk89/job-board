@@ -21,7 +21,6 @@ export const UserProfileForm = () => {
     const registrationData = useRef();
     const [userInputData, setUserInputData] = useState({});
     const [userProfileData, setUserProfileData] = useState({})
-    const [companyName, setCompanyName] = useState("");
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const [emailIncorrect, setEmailIncorrect] = useState({});
@@ -168,7 +167,6 @@ export const UserProfileForm = () => {
                     name="phone"
                     type="tel"
                     maxLength="15"
-                    // onInvalid={e => e.target.setCustomValidity("This field should contain only numbers")}
                     startDecorator="+"
                     phoneIncorrect={phoneIncorrect}
                     phoneIncorrectMessage="This field should contain only numbers"
@@ -204,7 +202,13 @@ export const UserProfileForm = () => {
                     label="City"
                     placeholder="Enter city"
                     name="city" />
-                <SubmitButton label="EDIT PROFILE" />
+                <SubmitButton
+                    label="EDIT PROFILE"
+                    sx={{
+                        width: { xs: "50%", sm: "40%", md: "30%" },
+                        marginTop: 5,
+                        alignSelf: "center"
+                    }} />
             </Stack>
         </form>
     );

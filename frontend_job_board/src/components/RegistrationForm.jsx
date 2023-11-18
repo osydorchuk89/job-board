@@ -226,7 +226,13 @@ export const RegistrationForm = props => {
                     label="City"
                     placeholder="Enter city"
                     name="city" />
-                <SubmitButton label="REGISTER" />
+                <SubmitButton
+                    label="REGISTER"
+                    sx={{
+                        width: { xs: "50%", sm: "40%", md: "30%" },
+                        marginTop: 5,
+                        alignSelf: "center"
+                    }} />
             </Stack>
         </form>
     );

@@ -231,7 +231,13 @@ export const VacancyPostForm = props => {
                     options={workModeOptions}
                     onSelectItem={item => setWorkMode(item)}
                     error={!userInputData.work_mode && !inputsFocused.workMode && submitButtonClicked} />
-                <SubmitButton label={props.buttonText} />
+                <SubmitButton
+                    label={props.buttonText}
+                    sx={{
+                        width: { xs: "50%", sm: "40%", md: "30%" },
+                        marginTop: 5,
+                        alignSelf: "center"
+                    }} />
             </Stack>
         </form>
     );

@@ -93,10 +93,13 @@ export const ContactForm = () => {
     };
 
     return (
-        <Card variant="outlined" sx={{ width: "60%", alignItems: "center" }}>
+        <Card variant="outlined" sx={{ width: { xs: "100%", md: "60%" }, alignItems: "center" }}>
             <CardContent sx={{ width: "100%" }}>
                 <Typography textAlign="center" level="h3" sx={{ marginBottom: 5 }}>Contact Us</Typography>
-                <form ref={contactFormData} onSubmit={handleSubmitContactForm}>
+                <form
+                    style={{ display: "flex", flexDirection: "column" }}
+                    ref={contactFormData}
+                    onSubmit={handleSubmitContactForm}>
                     <InputField
                         disabled={authStatus.isLoggedIn}
                         defaultvalue={authStatus.isLoggedIn ? localStorage.getItem("first_name") : ""}
@@ -159,7 +162,13 @@ export const ContactForm = () => {
                         placeholder="Enter your message here"
                         name="message"
                         error={!userInputData.message && !inputsFocused.message && submitButtonClicked} />
-                    <SubmitButton label="SEND MESSAGE" />
+                    <SubmitButton
+                        label="SEND MESSAGE"
+                        sx={{
+                            width: { xs: "80%", sm: "50%", md: "40%" },
+                            marginTop: 3,
+                            alignSelf: "center"
+                        }} />
                 </form>
             </CardContent>
         </Card>
