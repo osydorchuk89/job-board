@@ -39,7 +39,7 @@ export const ContactForm = () => {
 
     const combineInputData = () => {
         const inputDataObject = {
-            userId: authStatus.isLoggedIn ? localStorage.getItem("user_id") : null,
+            user: authStatus.isLoggedIn ? +localStorage.getItem("user_id") : null,
             first_name: authStatus.isLoggedIn
                 ? localStorage.getItem("first_name")
                 : contactFormData.current["firstName"].value.trim(),
@@ -64,6 +64,8 @@ export const ContactForm = () => {
     const handleSubmitContactForm = event => {
         event.preventDefault();
         const inputUserData = combineInputData();
+        console.log(authStatus);
+        console.log(inputUserData);
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (

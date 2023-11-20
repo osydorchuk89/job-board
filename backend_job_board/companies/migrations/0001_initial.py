@@ -2,40 +2,44 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import phonenumber_field.modelfields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Company',
+            name="Company",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('country', models.CharField(max_length=100)),
-                ('industry', models.CharField(max_length=100)),
-                ('linkedin', models.URLField(blank=True, null=True)),
-                ('logo', models.ImageField(blank=True, null=True, upload_to='companies/logos')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=100)),
+                ("country", models.CharField(max_length=100)),
+                ("industry", models.CharField(max_length=100)),
+                ("linkedin", models.URLField(blank=True, null=True)),
+                ("logo", models.ImageField(blank=True, null=True, upload_to="companies/logos")),
             ],
             options={
-                'verbose_name_plural': 'Companies',
+                "verbose_name_plural": "Companies",
             },
         ),
         migrations.CreateModel(
-            name='Recruiter',
+            name="Recruiter",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('email', models.EmailField(max_length=100, unique=True)),
-                ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, region=None)),
-                ('linkedin', models.URLField(blank=True, null=True)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='company_recruiters', to='companies.company')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=100)),
+                ("email", models.EmailField(max_length=100, unique=True)),
+                ("phone", models.CharField(max_length=15, blank=True, null=True)),
+                ("linkedin", models.URLField(blank=True, null=True)),
+                (
+                    "company",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="company_recruiters",
+                        to="companies.company",
+                    ),
+                ),
             ],
         ),
     ]
