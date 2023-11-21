@@ -93,26 +93,19 @@ WSGI_APPLICATION = "backend_job_board.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if "RENDER" not in os.environ:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
-else:
-    DATABASES = {
-        # "default": {
-        #     "ENGINE": "django.db.backends.sqlite3",
-        #     "NAME": BASE_DIR / "db.sqlite3",
-        # },
-        # "default": dj_database_url.config(
-        #     # Feel free to alter this value to suit your needs.
-        #     default="postgresql://postgres:postgres@localhost:8000/backend_job_board",
-        #     conn_max_age=600,
-        # )
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-    }
+
+DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
+    # },
+    "default": dj_database_url.config(
+        # Feel free to alter this value to suit your needs.
+        default=dj_database_url.parse(os.environ.get("DATABASE_URL")),
+        conn_max_age=600,
+    )
+    # "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
 
 
 # Password validation
