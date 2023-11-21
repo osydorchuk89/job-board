@@ -11,7 +11,7 @@ export const SnackBarAlert = props => {
             }}
             size="sm"
             open={props.open}
-            autoHideDuration={1500}
+            autoHideDuration={2000}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
             color="success"
             variant="soft"
@@ -25,7 +25,7 @@ export const SnackBarAlert = props => {
             </Typography>
             <Link
                 sx={{
-                    color: "#FBFCFE",
+                    // color: "#FBFCFE",
                     textDecoration: "underline",
                     "&:hover": {
                         textDecoration: "underline"

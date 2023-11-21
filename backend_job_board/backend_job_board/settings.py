@@ -103,8 +103,10 @@ DATABASES = {
     #     conn_max_age=600,
     # )
 }
-
 DATABASES["default"] = dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# DATABASES["default"] = dj_database_url.parse(
+#     "postgres://job_link_db_03cu_user:lQhRrkR1LKXzCVQBzeBXbOx8YqIoEDCv@dpg-cle63a7pc7cc73elj07g-a.frankfurt-postgres.render.com/job_link_db_03cu"
+# )
 
 
 # Password validation

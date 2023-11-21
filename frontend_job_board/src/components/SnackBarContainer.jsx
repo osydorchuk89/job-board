@@ -1,10 +1,13 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/AuthContext";
 import { ProfileContext } from "../store/ProfileContext";
 import { FeedbackContext } from "../store/FeedbackContext";
 import { SnackBarAlert } from "./SnackBarAlert";
 
 export const SnackBarContainer = () => {
+
+    const navigate = useNavigate();
 
     const { authStatus, changeAuthStatus } = useContext(AuthContext);
     const { profile, changeProfile } = useContext(ProfileContext);
@@ -59,15 +62,15 @@ export const SnackBarContainer = () => {
             <SnackBarAlert
                 open={registeredAlert}
                 text="You succesfully registered!"
-                // linkText="Go to login page"
-                // onClick={() => {
-                //     setRegisteredAlert(false);
-                //     changeProfile({
-                //         ...profile,
-                //         justRegistered: null
-                //     });
-                //     navigate("/login");
-                // }}
+                linkText="Go to login page"
+                onClick={() => {
+                    setRegisteredAlert(false);
+                    changeProfile({
+                        ...profile,
+                        justRegistered: null
+                    });
+                    navigate("/login");
+                }}
                 onClose={() => {
                     setRegisteredAlert(false);
                     changeProfile({
