@@ -24,13 +24,13 @@ class Vacancy(models.Model):
         on_delete=models.CASCADE,
         related_name="vacancy_recruiter",
     )
-    city = models.CharField(max_length=100, null=True, blank=True)
-    country = models.CharField(max_length=100, null=True, blank=True)
-    about_company = models.TextField(null=True, blank=True)
-    position_overview = models.TextField(null=True, blank=True)
-    key_responsibilities = models.TextField(null=True, blank=True)
-    qualifications = models.TextField(null=True, blank=True)
-    salary = models.IntegerField(null=True, blank=True)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    about_company = models.TextField()
+    position_overview = models.TextField()
+    key_responsibilities = models.TextField()
+    qualifications = models.TextField()
+    salary = models.IntegerField()
     industry = models.CharField(max_length=100)
     employment_type = models.CharField(max_length=100, choices=EMPLOYMENT_TYPES)
     work_mode = models.CharField(max_length=100, choices=WORK_MODES)
@@ -62,9 +62,7 @@ class Application(models.Model):
         related_name="candidate_applications",
     )
     cv = models.FileField(upload_to=get_upload_path)
-    cover_letter = models.FileField(
-        upload_to=get_upload_path, null=True, blank=True
-    )
+    cover_letter = models.FileField(upload_to=get_upload_path, null=True, blank=True)
     submission_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

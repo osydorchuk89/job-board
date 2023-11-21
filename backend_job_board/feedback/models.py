@@ -15,6 +15,3 @@ class Feedback(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15, blank=True, null=True)
     message = models.TextField()
-
-    # def __str__(self):
-    #     return f"{self.user.first_name} {self.user.last_name}"
