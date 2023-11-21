@@ -25,7 +25,7 @@ export const VacancyPostForm = props => {
         industry: false,
         employmentType: false,
         workMode: false,
-        keyResponsibilities: false,
+        responsibilities: false,
         qualifications: false,
         salary: false
     };
@@ -54,7 +54,7 @@ export const VacancyPostForm = props => {
             city: vacancyData.current["city"].value.trim(),
             about_company: vacancyData.current["aboutCompany"].value.trim(),
             position_overview: vacancyData.current["positionOverview"].value.trim(),
-            key_responsibilities: vacancyData.current["keyResponsibilities"].value.trim(),
+            responsibilities: vacancyData.current["responsibilities"].value.trim(),
             qualifications: vacancyData.current["qualifications"].value.trim(),
             salary: vacancyData.current["salary"].value.trim(),
             employment_type: employmentType || props.defaultValues.employment_type,
@@ -79,7 +79,7 @@ export const VacancyPostForm = props => {
             inputData.salary &&
             inputData.employment_type &&
             inputData.work_mode &&
-            inputData.key_responsibilities &&
+            inputData.responsibilities &&
             inputData.qualifications
         ) {
             try {
@@ -190,15 +190,15 @@ export const VacancyPostForm = props => {
                     min="0"
                     error={!userInputData.salary && !inputsFocused.salary && submitButtonClicked} />
                 <TextareaField
-                    defaultValue={props.defaultValues.key_responsibilities}
+                    defaultValue={props.defaultValues.responsibilities}
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,
-                        keyResponsibilities: true
+                        responsibilities: true
                     }))}
                     label="Key Responsibilities"
                     placeholder="Enter key job responsibilities"
-                    name="keyResponsibilities"
-                    error={!userInputData.key_responsibilities && !inputsFocused.keyResponsibilities && submitButtonClicked} />
+                    name="responsibilities"
+                    error={!userInputData.responsibilities && !inputsFocused.responsibilities && submitButtonClicked} />
                 <TextareaField
                     defaultValue={props.defaultValues.qualifications}
                     onFocus={() => setInputsFocused(prevState => ({

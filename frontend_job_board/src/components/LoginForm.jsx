@@ -25,6 +25,7 @@ export const LoginForm = () => {
     const handleLogin = event => {
         event.preventDefault();
         setSubmitButtonClicked(true);
+        setInvalidCredentials(null);
         setInputsFocused(allInputsNotFocused);
         const userLoginData = {
             email: loginData.current["email"].value.trim(),

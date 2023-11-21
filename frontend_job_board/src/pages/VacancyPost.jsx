@@ -25,7 +25,7 @@ export const VacancyPost = () => {
         city: "",
         about_company: "",
         position_overview: "",
-        key_responsibilities: "",
+        responsibilities: "",
         qualifications: "",
         salary: "",
         employment_type: "",

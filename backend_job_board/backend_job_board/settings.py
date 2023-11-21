@@ -23,8 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-+a_n#)rmfdh%ncm1e=!sf_gby*vyivp9@5c9!#l37ve^gh9o4("
-SECRET_KEY = os.environ.get("SECRET_KEY", default="your secret key")
+if "RENDER" not in os.environ:
+    SECRET_KEY = "django-insecure-+a_n#)rmfdh%ncm1e=!sf_gby*vyivp9@5c9!#l37ve^gh9o4("
+else:
+    SECRET_KEY = os.environ.get("SECRET_KEY", default="your secret key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "RENDER" not in os.environ
@@ -91,18 +93,26 @@ WSGI_APPLICATION = "backend_job_board.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": BASE_DIR / "db.sqlite3",
-    # },
-    # "default": dj_database_url.config(
-    #     # Feel free to alter this value to suit your needs.
-    #     default="postgresql://postgres:postgres@localhost:8000/backend_job_board",
-    #     conn_max_age=600,
-    # )
-    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-}
+if "RENDER" not in os.environ:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+else:
+    DATABASES = {
+        # "default": {
+        #     "ENGINE": "django.db.backends.sqlite3",
+        #     "NAME": BASE_DIR / "db.sqlite3",
+        # },
+        # "default": dj_database_url.config(
+        #     # Feel free to alter this value to suit your needs.
+        #     default="postgresql://postgres:postgres@localhost:8000/backend_job_board",
+        #     conn_max_age=600,
+        # )
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    }
 
 
 # Password validation
@@ -140,7 +150,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-# STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "static"
 if not DEBUG:
     # Tell Django to copy statics to the `staticfiles` directory
     # in your application directory on Render.

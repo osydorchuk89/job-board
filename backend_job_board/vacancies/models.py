@@ -28,7 +28,7 @@ class Vacancy(models.Model):
     country = models.CharField(max_length=100)
     about_company = models.TextField()
     position_overview = models.TextField()
-    key_responsibilities = models.TextField()
+    responsibilities = models.TextField()
     qualifications = models.TextField()
     salary = models.IntegerField()
     industry = models.CharField(max_length=100)

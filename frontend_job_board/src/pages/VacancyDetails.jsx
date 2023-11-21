@@ -47,8 +47,8 @@ export const VacancyDetails = () => {
                 </Box>
                 <Box>
                     <Typography level="h4">Key Responsibilities</Typography>
-                    {vacancyData.key_responsibilities &&
-                        <List marker="disc">{vacancyData.key_responsibilities.split("\r\n").map(
+                    {vacancyData.responsibilities &&
+                        <List marker="disc">{vacancyData.responsibilities.split("\r\n").map(
                             (line, index) => <ListItem key={index}>{line}</ListItem>
                         )}</List>}
                 </Box>
