@@ -171,9 +171,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", os.environ.get("RENDER_EXTERNAL_HOSTNAME")]
 
 AUTH_USER_MODEL = "core.User"
 
