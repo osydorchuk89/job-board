@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/joy";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
+import { PasswordToggleIcon } from "./PasswordToggleIcon";
 import { BASE_URL } from "../utils/config";
 import { ProfileContext } from "../store/ProfileContext";
 
@@ -30,6 +31,7 @@ export const RegistrationForm = props => {
     const [passwordShort, setPasswordShort] = useState(null);
     const [emailIncorrect, setEmailIncorrect] = useState({});
     const [phoneIncorrect, setPhonelIncorrect] = useState(null);
+    const [passwordVisible, setPasswordVisible] = useState(false)
 
     const registrationData = useRef();
 
@@ -182,7 +184,8 @@ export const RegistrationForm = props => {
                     label="Password*"
                     name="password"
                     placeholder="Enter your password"
-                    type="password"
+                    type={passwordVisible ? "text" : "password"}
+                    endDecorator={<PasswordToggleIcon onClick={setPasswordVisible(value => !value)} />}
                     passwordShort={passwordShort}
                     passwordShortMessage="The password should have at least 8 characters"
                     passwordIncorrect={passwordIncorrect.incorrect}

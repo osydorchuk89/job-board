@@ -13,6 +13,7 @@ export const InputField = props => {
                 onFocus={props.onFocus}
                 type={props.type}
                 startDecorator={props.startDecorator}
+                endDecorator={props.endDecorator}
                 slotProps={{
                     input: {
                         min: props.min,

@@ -151,7 +151,7 @@ export const ContactForm = () => {
                             ...prevState,
                             phone: true
                         }))}
-                        label="Your Phone Number"
+                        label="Phone Number"
                         placeholder={authStatus.isLoggedIn ? localStorage.getItem("phone") : "Enter your phone"}
                         name="phone"
                         type="tel"
@@ -165,7 +165,7 @@ export const ContactForm = () => {
                             ...prevState,
                             message: true
                         }))}
-                        label="Your Message*"
+                        label="Message*"
                         placeholder="Enter your message here"
                         name="message"
                         error={!userInputData.message && !inputsFocused.message && submitButtonClicked} />
