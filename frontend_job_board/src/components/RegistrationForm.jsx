@@ -185,7 +185,7 @@ export const RegistrationForm = props => {
                     name="password"
                     placeholder="Enter your password"
                     type={passwordVisible ? "text" : "password"}
-                    endDecorator={<PasswordToggleIcon onClick={setPasswordVisible(value => !value)} />}
+                    endDecorator={<PasswordToggleIcon onClick={() => setPasswordVisible(value => !value)} />}
                     passwordShort={passwordShort}
                     passwordShortMessage="The password should have at least 8 characters"
                     passwordIncorrect={passwordIncorrect.incorrect}

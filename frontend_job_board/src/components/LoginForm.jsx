@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Typography } from "@mui/joy";
 import { AuthContext } from "../store/AuthContext";
 import { InputField } from "./InputField";
+import { PasswordToggleIcon } from "./PasswordToggleIcon";
 import { BASE_URL } from "../utils/config";
 
 export const LoginForm = () => {
@@ -17,6 +18,7 @@ export const LoginForm = () => {
     const [userInputData, setUserInputData] = useState({});
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
+    const [passwordVisible, setPasswordVisible] = useState(false)
 
     const loginData = useRef();
     const navigate = useNavigate();
@@ -102,11 +104,12 @@ export const LoginForm = () => {
                 label="Password"
                 name="password"
                 placeholder="Enter your password"
-                type="password"
+                type={passwordVisible ? "text" : "password"}
                 onFocus={() => setInputsFocused(prevState => ({
                     ...prevState,
                     password: true
                 }))}
+                endDecorator={<PasswordToggleIcon onClick={() => setPasswordVisible(value => !value)} />}
                 error={!userInputData.password && !inputsFocused.password && submitButtonClicked} />
             {invalidCredentials && !inputsFocused.email && !inputsFocused.password && <Typography
                 color="danger"
