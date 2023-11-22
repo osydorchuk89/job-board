@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useRef, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Stack } from "@mui/joy";
+import { Stack, Typography } from "@mui/joy";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
 import { BASE_URL } from "../utils/config";
@@ -138,12 +138,15 @@ export const RegistrationForm = props => {
             onSubmit={handleRegistration}
             ref={registrationData}>
             <Stack sx={{ width: { xs: "100%", sm: "90%", md: "80%" } }}>
+                <Typography color="danger" sx={{ marginBottom: 2 }}>
+                    Mandatory fields are marked with asterisk (*)
+                </Typography>
                 <InputField
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,
                         firstName: true
                     }))}
-                    label="First Name"
+                    label="First Name*"
                     placeholder="Enter your first name"
                     name="firstName"
                     fieldIsEmpty={!userInputData.first_name}
@@ -153,7 +156,7 @@ export const RegistrationForm = props => {
                         ...prevState,
                         lastName: true
                     }))}
-                    label="Last Name"
+                    label="Last Name*"
                     placeholder="Enter your last name"
                     name="lastName"
                     fieldIsEmpty={!userInputData.last_name}
@@ -163,7 +166,7 @@ export const RegistrationForm = props => {
                         ...prevState,
                         email: true
                     }))}
-                    label="Your Email"
+                    label="Email*"
                     placeholder="Enter your email"
                     name="email"
                     type="email"
@@ -176,7 +179,7 @@ export const RegistrationForm = props => {
                         ...prevState,
                         password: true
                     }))}
-                    label="Password"
+                    label="Password*"
                     name="password"
                     placeholder="Enter your password"
                     type="password"
@@ -191,7 +194,7 @@ export const RegistrationForm = props => {
                         ...prevState,
                         phone: true
                     }))}
-                    label="Your Phone Number"
+                    label="Phone Number"
                     placeholder="Enter your phone"
                     name="phone"
                     type="tel"
@@ -205,7 +208,7 @@ export const RegistrationForm = props => {
                         ...prevState,
                         company: true
                     }))}
-                    label="Your Company Name"
+                    label="Company Name*"
                     placeholder="Enter your company"
                     name="company"
                     fieldIsEmpty={!userProfileData.company}

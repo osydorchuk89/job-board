@@ -102,11 +102,14 @@ export const VacancyApplicationForm = () => {
             </Typography>
             <form style={{ display: "flex", justifyContent: "center" }} onSubmit={handleApplicationSubmit}>
                 <Stack sx={{ width: { xs: "70%", md: "60%" } }}>
+                    <Typography color="danger" sx={{ marginBottom: 2 }}>
+                        Mandatory fields are marked with asterisk (*)
+                    </Typography>
                     <DisabledInputField
-                        label="Your Name"
+                        label="Your Name*"
                         placeholder={`${localStorage.getItem("first_name")} ${localStorage.getItem("last_name")}`} />
                     <FileUploadField
-                        label="Your CV"
+                        label="Your CV*"
                         name="cv"
                         onChange={handleFileUpload}
                         uploaded={filesUploaded.cv}

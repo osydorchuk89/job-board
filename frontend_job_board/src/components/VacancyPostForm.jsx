@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Stack } from "@mui/joy";
+import { Stack, Typography } from "@mui/joy";
 import { InputField } from "../components/InputField";
 import { TextareaField } from "../components/TextareaField";
 import { SelectField } from "../components/SelectField";
@@ -67,6 +67,7 @@ export const VacancyPostForm = props => {
     const handleSubmitVacancy = async event => {
         event.preventDefault();
         const inputData = combineInputData();
+        console.log(inputData);
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (
@@ -114,18 +115,22 @@ export const VacancyPostForm = props => {
             ref={vacancyData}
             onSubmit={handleSubmitVacancy}>
             <Stack sx={{ width: { xs: "100%", sm: "90%", md: "80%" } }}>
+                <Typography color="danger" sx={{ marginBottom: 2 }}>
+                    Mandatory fields are marked with asterisk (*)
+                </Typography>
                 <InputField
                     defaultValue={props.defaultValues.title}
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,
                         title: true
                     }))}
-                    label="Vacancy Title"
+                    label="Vacancy Title*"
                     placeholder="Enter vacancy title"
                     name="title"
+                    fieldIsEmpty={!userInputData.title}
                     error={!userInputData.title && !inputsFocused.title && submitButtonClicked} />
                 <DisabledInputField
-                    label="Compane Name"
+                    label="Compane Name*"
                     placeholder={localStorage.getItem("company")} />
                 <InputField
                     defaultValue={props.defaultValues.industry}
@@ -133,9 +138,10 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         industry: true
                     }))}
-                    label="Industry"
+                    label="Industry*"
                     placeholder="Enter industry"
                     name="industry"
+                    fieldIsEmpty={!userInputData.industry}
                     error={!userInputData.industry && !inputsFocused.industry && submitButtonClicked} />
                 <InputField
                     defaultValue={props.defaultValues.country}
@@ -143,9 +149,10 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         country: true
                     }))}
-                    label="Country"
+                    label="Country*"
                     placeholder="Enter country"
                     name="country"
+                    fieldIsEmpty={!userInputData.country}
                     error={!userInputData.country && !inputsFocused.country && submitButtonClicked} />
                 <InputField
                     defaultValue={props.defaultValues.city}
@@ -153,9 +160,10 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         city: true
                     }))}
-                    label="City"
+                    label="City*"
                     placeholder="Enter city"
                     name="city"
+                    fieldIsEmpty={!userInputData.city}
                     error={!userInputData.city && !inputsFocused.city && submitButtonClicked} />
                 <TextareaField
                     defaultValue={props.defaultValues.about_company}
@@ -163,9 +171,10 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         aboutCompany: true
                     }))}
-                    label="About Company"
+                    label="About Company*"
                     placeholder="Enter brief information abour company"
                     name="aboutCompany"
+                    fieldIsEmpty={!userInputData.about_company}
                     error={!userInputData.about_company && !inputsFocused.aboutCompany && submitButtonClicked} />
                 <TextareaField
                     defaultValue={props.defaultValues.position_overview}
@@ -173,9 +182,10 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         positionOverview: true
                     }))}
-                    label="Position Overview"
+                    label="Position Overview*"
                     placeholder="Enter position overview"
                     name="positionOverview"
+                    fieldIsEmpty={!userInputData.position_overview}
                     error={!userInputData.position_overview && !inputsFocused.positionOverview && submitButtonClicked} />
                 <InputField
                     defaultValue={props.defaultValues.salary}
@@ -183,11 +193,12 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         salary: true
                     }))}
-                    label="Salary"
+                    label="Salary*"
                     placeholder="Enter annual salary"
                     name="salary"
                     type="number"
                     min="0"
+                    fieldIsEmpty={!userInputData.salary}
                     error={!userInputData.salary && !inputsFocused.salary && submitButtonClicked} />
                 <TextareaField
                     defaultValue={props.defaultValues.responsibilities}
@@ -195,9 +206,10 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         responsibilities: true
                     }))}
-                    label="Key Responsibilities"
+                    label="Key Responsibilities*"
                     placeholder="Enter key job responsibilities"
                     name="responsibilities"
+                    fieldIsEmpty={!userInputData.responsibilities}
                     error={!userInputData.responsibilities && !inputsFocused.responsibilities && submitButtonClicked} />
                 <TextareaField
                     defaultValue={props.defaultValues.qualifications}
@@ -205,9 +217,10 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         qualifications: true
                     }))}
-                    label="Qualifications"
+                    label="Qualifications*"
                     placeholder="Enter qualifications"
                     name="qualifications"
+                    fieldIsEmpty={!userInputData.qualifications}
                     error={!userInputData.qualifications && !inputsFocused.qualifications && submitButtonClicked} />
                 <SelectField
                     defaultValue={props.defaultValues.employment_type}
@@ -215,10 +228,11 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         employmentType: true
                     }))}
-                    label="Employment Type"
+                    label="Employment Type*"
                     placeholder="Select employment type"
                     options={employmentTypeOptions}
                     onSelectItem={item => setEmploymentType(item)}
+                    fieldIsEmpty={!userInputData.employment_type}
                     error={!userInputData.employment_type && !inputsFocused.employmentType && submitButtonClicked} />
                 <SelectField
                     defaultValue={props.defaultValues.work_mode}
@@ -226,10 +240,11 @@ export const VacancyPostForm = props => {
                         ...prevState,
                         workMode: true
                     }))}
-                    label="Work Mode"
+                    label="Work Mode*"
                     placeholder="Select work mode"
                     options={workModeOptions}
                     onSelectItem={item => setWorkMode(item)}
+                    fieldIsEmpty={!userInputData.work_mode}
                     error={!userInputData.work_mode && !inputsFocused.workMode && submitButtonClicked} />
                 <SubmitButton
                     label={props.buttonText}

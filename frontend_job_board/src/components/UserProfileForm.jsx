@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Stack } from "@mui/joy";
+import { Stack, Typography } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
@@ -117,13 +117,16 @@ export const UserProfileForm = () => {
     return (
         <form style={{ display: "flex", justifyContent: "center" }} onSubmit={handleEditProfile} ref={registrationData}>
             <Stack sx={{ width: { xs: "100%", sm: "80%", md: "60%" } }}>
+                <Typography color="danger" sx={{ marginBottom: 2 }}>
+                    Mandatory fields are marked with asterisk (*)
+                </Typography>
                 <InputField
                     defaultValue={localStorage.getItem("first_name")}
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,
                         firstName: true
                     }))}
-                    label="First Name"
+                    label="First Name*"
                     placeholder="Enter your first name"
                     name="firstName"
                     fieldIsEmpty={!userInputData.first_name}
@@ -135,7 +138,7 @@ export const UserProfileForm = () => {
                         ...prevState,
                         name: true
                     }))}
-                    label="Last Name"
+                    label="Last Name*"
                     placeholder="Enter your last name"
                     name="lastName"
                     fieldIsEmpty={!userInputData.last_name}
@@ -147,7 +150,7 @@ export const UserProfileForm = () => {
                         ...prevState,
                         email: true
                     }))}
-                    label="Your Email"
+                    label="Email*"
                     placeholder="Enter your email"
                     name="email"
                     type="email"
@@ -162,7 +165,7 @@ export const UserProfileForm = () => {
                         ...prevState,
                         phone: true
                     }))}
-                    label="Your Phone Number"
+                    label="Phone Number"
                     placeholder="Enter your phone"
                     name="phone"
                     type="tel"
@@ -178,7 +181,7 @@ export const UserProfileForm = () => {
                         ...prevState,
                         company: true
                     }))}
-                    label="Your Company Name"
+                    label="Company Name*"
                     placeholder="Enter your company"
                     name="company"
                     fieldIsEmpty={!userProfileData.company}

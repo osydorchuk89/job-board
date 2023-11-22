@@ -97,7 +97,12 @@ export const ContactForm = () => {
     return (
         <Card variant="outlined" sx={{ width: { xs: "100%", md: "60%" }, alignItems: "center" }}>
             <CardContent sx={{ width: "100%" }}>
-                <Typography textAlign="center" level="h3" sx={{ marginBottom: 5 }}>Contact Us</Typography>
+                <Typography textAlign="center" level="h3" sx={{ marginBottom: 5 }}>
+                    Contact Us
+                </Typography>
+                <Typography color="danger" sx={{ marginBottom: 2 }}>
+                    Mandatory fields are marked with asterisk (*)
+                </Typography>
                 <form
                     style={{ display: "flex", flexDirection: "column" }}
                     ref={contactFormData}
@@ -109,7 +114,7 @@ export const ContactForm = () => {
                             ...prevState,
                             firstName: true
                         }))}
-                        label="First Name"
+                        label="First Name*"
                         placeholder={authStatus.isLoggedIn ? localStorage.getItem("first_name") : "Enter your first name"}
                         name="firstName"
                         fieldIsEmpty={!userInputData.first_name}
@@ -121,7 +126,7 @@ export const ContactForm = () => {
                             ...prevState,
                             lastName: true
                         }))}
-                        label="Last Name"
+                        label="Last Name*"
                         placeholder={authStatus.isLoggedIn ? localStorage.getItem("last_name") : "Enter your last name"}
                         name="lastName"
                         fieldIsEmpty={!userInputData.last_name}
@@ -133,7 +138,7 @@ export const ContactForm = () => {
                             ...prevState,
                             email: true
                         }))}
-                        label="Email"
+                        label="Email*"
                         placeholder={authStatus.isLoggedIn ? localStorage.getItem("email") : "Enter your email"}
                         name="email"
                         type="email"
@@ -160,7 +165,7 @@ export const ContactForm = () => {
                             ...prevState,
                             message: true
                         }))}
-                        label="Your Message"
+                        label="Your Message*"
                         placeholder="Enter your message here"
                         name="message"
                         error={!userInputData.message && !inputsFocused.message && submitButtonClicked} />

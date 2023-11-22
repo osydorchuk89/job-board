@@ -23,7 +23,7 @@ export const InputField = props => {
                         ref: props.inputRef,
                     }
                 }} />
-            {(props.error) &&
+            {props.error &&
                 <>
                     {props.fieldIsEmpty && <FormHelperText>
                         This field is required.
