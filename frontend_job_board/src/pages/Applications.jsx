@@ -1,10 +1,36 @@
 import axios from "axios";
+import { useContext } from "react";
+import { useLoaderData, Link as RouterLink } from "react-router-dom";
+import { Container, Typography, Stack, Button } from "@mui/joy";
 import { ApplicationsDetails } from "../components/ApplicationsDetails";
 import { BASE_URL } from "../utils/config";
+import { AuthContext } from "../store/AuthContext";
 
 export const Applications = () => {
+
+    const applicationData = useLoaderData();
+    const { authStatus } = useContext(AuthContext);
+
     return (
-        <ApplicationsDetails />
+        <Container sx={{ paddingY: { xs: 5, xl: 10 } }}>
+            <Typography textAlign="center" level="h1">
+                {authStatus.userType === "candidate" ? "My Applications" : "Received Applications"}
+            </Typography>
+            {applicationData.length > 0
+                ? <ApplicationsDetails />
+                : <Stack alignItems="center">
+                    <Typography level="body-lg" sx={{ marginY: { xs: 10, lg: 15 } }}>There are no applications.</Typography>
+                    <Button
+                        variant="solid"
+                        color="success"
+                        size="lg"
+                        component={RouterLink}
+                        to="/my-profile"
+                        sx={{ marginBottom: 10 }}>
+                        BACK TO MY PROFILE PAGE
+                    </Button>
+                </Stack>}
+        </Container>
     );
 };
 

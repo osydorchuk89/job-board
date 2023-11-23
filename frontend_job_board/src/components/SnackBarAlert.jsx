@@ -1,7 +1,12 @@
-import { Link as RouterLink } from "react-router-dom";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Snackbar, Typography, Link } from "@mui/joy";
+import { ProfileContext } from "../store/ProfileContext";
 
 export const SnackBarAlert = props => {
+
+    const navigate = useNavigate();
+    const { profile, changeProfile } = useContext(ProfileContext);
 
     return (
         <Snackbar
@@ -25,13 +30,20 @@ export const SnackBarAlert = props => {
             </Typography>
             <Link
                 sx={{
-                    // color: "#FBFCFE",
                     textDecoration: "underline",
                     "&:hover": {
                         textDecoration: "underline"
                     }
                 }}
-                onClick={props.onClick}
+                onClick={event => {
+                    event.preventDefault();
+                    props.setAlert(false);
+                    changeProfile({
+                        ...profile,
+                        justRegistered: null
+                    });
+                    navigate(props.navigateLink);
+                }}
             >{props.linkText}</Link>
         </Snackbar >
     );

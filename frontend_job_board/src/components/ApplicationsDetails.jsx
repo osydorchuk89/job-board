@@ -1,11 +1,13 @@
+import { useContext } from "react";
 import { useLoaderData, Link as RouterLink } from "react-router-dom";
 import { List, ListItem, Link, Card, Stack } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
+import { AuthContext } from "../store/AuthContext";
 
 export const ApplicationsDetails = () => {
 
     const applicationData = useLoaderData();
-    const isCandidate = localStorage.getItem("user_type") === "candidate";
+    const { authStatus } = useContext(AuthContext);
 
     const options = {
         weekday: "long",
@@ -34,13 +36,13 @@ export const ApplicationsDetails = () => {
                                 {application.vacancy_title}
                             </Link>
                         </ListItem>
-                        {isCandidate && <ListItem>
+                        {authStatus.userType === "candidate" && <ListItem>
                             <strong>Company:</strong> {application.vacancy_company}
                         </ListItem>}
-                        {!isCandidate && <ListItem>
+                        {authStatus.userType === "recruiter" && <ListItem>
                             <strong>Applicant Name:</strong> {application.candidate_name}
                         </ListItem>}
-                        {!isCandidate &&
+                        {authStatus.userType === "recruiter" &&
                             <ListItem>
                                 <strong>Applicant Email:</strong> <RouterLink
                                     to="#"
@@ -49,12 +51,12 @@ export const ApplicationsDetails = () => {
                                         window.location.href = `mailto:${application.candidate_email}`;
                                     }}>{application.candidate_email}</RouterLink>
                             </ListItem>}
-                        {!isCandidate &&
+                        {authStatus.userType === "recruiter" &&
                             <ListItem>
                                 <strong>Applicant Phone:</strong> +{application.candidate_phone}
                             </ListItem>}
                         <ListItem>
-                            <strong>{isCandidate ? "Submitted" : "Received"} On:</strong> {
+                            <strong>{authStatus.userType === "candidate" ? "Submitted" : "Received"} On:</strong> {
                                 new Date(application.submission_date).toLocaleDateString("en-us", options)
                             }
                         </ListItem>

@@ -1,13 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/AuthContext";
 import { ProfileContext } from "../store/ProfileContext";
 import { FeedbackContext } from "../store/FeedbackContext";
 import { SnackBarAlert } from "./SnackBarAlert";
 
 export const SnackBarContainer = () => {
-
-    const navigate = useNavigate();
 
     const { authStatus, changeAuthStatus } = useContext(AuthContext);
     const { profile, changeProfile } = useContext(ProfileContext);
@@ -63,14 +60,8 @@ export const SnackBarContainer = () => {
                 open={registeredAlert}
                 text="You succesfully registered!"
                 linkText="Go to login page"
-                onClick={() => {
-                    setRegisteredAlert(false);
-                    changeProfile({
-                        ...profile,
-                        justRegistered: null
-                    });
-                    navigate("/login");
-                }}
+                navigateLink="/login"
+                setAlert={setRegisteredAlert}
                 onClose={() => {
                     setRegisteredAlert(false);
                     changeProfile({
@@ -82,24 +73,6 @@ export const SnackBarContainer = () => {
             <SnackBarAlert
                 open={editedProfileAlert}
                 text="You successfully edited your profile!"
-                // linkText="Go to your profile page"
-                // onClick={() => {
-                //     setEditedProfileAlert(false);
-                //     changeProfile({
-                //         ...profile,
-                //         justEditedProfile: null
-                //     });
-                //     navigate("/my-profile");
-                // }}
-                // slotProps={{
-                //     onClickAway: () => {
-                //         setEditedProfileAlert(false);
-                //         changeProfile({
-                //             ...profile,
-                //             justEditedProfile: null
-                //         });
-                //     }
-                // }}
                 onClose={() => {
                     setEditedProfileAlert(false);
                     changeProfile({
