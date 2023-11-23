@@ -72,15 +72,15 @@ export const VacancyDetailsCard = () => {
                         variant="solid"
                         color="success"
                         sx={{
-                            display: authStatus.userType === "recruiter" ? "none" : "block"
+                            display: authStatus.userType === "Recruiters" ? "none" : "block"
                         }}>APPLY NOW</Button>
-                    {authStatus.userType === "candidate" && <Button disabled sx={{ visibility: "hidden" }} />}
-                    {authStatus.userType === "recruiter" &&
+                    {authStatus.userType === "Candidates" && <Button disabled sx={{ visibility: "hidden" }} />}
+                    {authStatus.userType === "Recruiters" &&
                         <EditVacancyButton
                             disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
                             vacancyId={vacancyId}
                             size="lg" />}
-                    {authStatus.userType === "recruiter" &&
+                    {authStatus.userType === "Recruiters" &&
                         <DeleteVacancyButton
                             disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
                             vacancyId={vacancyId}

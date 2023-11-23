@@ -37,7 +37,7 @@ export const TopNavBar = () => {
         }
     ];
 
-    if (authStatus.userType === "recruiter" || !authStatus.isLoggedIn) {
+    if (authStatus.userType === "Recruiters" || !authStatus.isLoggedIn) {
         generalMenuItems = [
             ...generalMenuItems,
             {
@@ -61,13 +61,13 @@ export const TopNavBar = () => {
         generalMenuItems = [
             ...generalMenuItems,
             {
-                link: "/recruiter-register",
-                text: "Register As Recruiter",
-            },
-            {
                 link: "/candidate-register",
                 text: "Register As Candidate"
             },
+            {
+                link: "/recruiter-register",
+                text: "Register As Recruiter",
+            }
         ];
     };
 
@@ -136,7 +136,7 @@ export const TopNavBar = () => {
                             width: { xs: "25%", md: "20%", lg: "15%" },
                             display: { xs: "none", md: "block" }
                         }}>BROWSE VACANCIES</Button>
-                    {(authStatus.userType === "recruiter" || !authStatus.isLoggedIn) && <Button
+                    {(authStatus.userType === "Recruiters" || !authStatus.isLoggedIn) && <Button
                         component={RouterLink}
                         size="lg"
                         to="/vacancy-post"

@@ -45,13 +45,13 @@ export const VacanciesList = props => {
                             size="lg"
                             variant="solid"
                             color="success">LEARN MORE</Button>
-                        {authStatus.userType === "recruiter"
+                        {authStatus.userType === "Recruiters"
                             ? <EditVacancyButton
                                 disabled={vacancy.recruiter != localStorage.getItem("profile_id")}
                                 vacancyId={vacancy.id}
                                 size="lg" />
                             : <Button disabled sx={{ visibility: "hidden" }} />}
-                        {authStatus.userType === "recruiter"
+                        {authStatus.userType === "Recruiters"
                             ? <DeleteVacancyButton
                                 disabled={vacancy.recruiter != localStorage.getItem("profile_id")}
                                 vacancyId={vacancy.id}

@@ -14,7 +14,7 @@ export const Applications = () => {
     return (
         <Container sx={{ paddingY: { xs: 5, xl: 10 } }}>
             <Typography textAlign="center" level="h1">
-                {authStatus.userType === "candidate" ? "My Applications" : "Received Applications"}
+                {authStatus.userType === "Candidates" ? "My Applications" : "Received Applications"}
             </Typography>
             {applicationData.length > 0
                 ? <ApplicationsDetails />
@@ -35,7 +35,7 @@ export const Applications = () => {
 };
 
 export const applicationsLoader = async () => {
-    const isCandidate = localStorage.getItem("user_type") === "candidate";
+    const isCandidate = localStorage.getItem("user_type") === "Candidates";
     const additionalURL = isCandidate ? "api/candidates/me" : "api/companies/recruiters/me"
     try {
         const applicationURL = BASE_URL + additionalURL

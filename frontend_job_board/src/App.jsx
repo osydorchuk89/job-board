@@ -25,16 +25,16 @@ export const App = () => {
     const { changeAuthStatus } = useContext(AuthContext);
 
     useEffect(() => {
-        if (localStorage.getItem("user_type") === "candidate") {
+        if (localStorage.getItem("user_type") === "Candidates") {
             changeAuthStatus({
                 isLoggedIn: true,
-                userType: "candidate"
+                userType: "Candidates"
             });
         };
-        if (localStorage.getItem("user_type") === "recruiter") {
+        if (localStorage.getItem("user_type") === "Recruiters") {
             changeAuthStatus({
                 isLoggedIn: true,
-                userType: "recruiter"
+                userType: "Recruiters"
             });
         };
     }, [])

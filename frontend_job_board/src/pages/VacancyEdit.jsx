@@ -11,7 +11,7 @@ export const VacancyEdit = () => {
     const { authStatus } = useContext(AuthContext);
 
     useEffect(() => {
-        authStatus.userType !== "recruiter" && navigate("/");
+        authStatus.userType !== "Recruiters" && navigate("/");
     }, []);
 
     const vacancyData = useRouteLoaderData("vacancy");

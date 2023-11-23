@@ -12,7 +12,7 @@ export const VacancyApplication = () => {
 
     useEffect(() => {
         !authStatus.isLoggedIn && navigate("/login", { state: { previousPath: pathname } });
-        authStatus.userType === "recruiter" && navigate("/change-login-type");
+        authStatus.userType === "Recruiters" && navigate("/change-login-type");
     }, []);
 
     return (

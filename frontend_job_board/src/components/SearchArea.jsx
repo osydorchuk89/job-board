@@ -21,7 +21,6 @@ export const SearchArea = props => {
             vacancyCompany: userQuery.current["company"].value.trim(),
             vacancyCity: userQuery.current["city"].value.trim()
         };
-        console.log(userInputData);
         changeQuery(userInputData);
         navigate("/vacancies");
     };

@@ -4,12 +4,15 @@ import { List, ListItem, ListItemButton, ListItemContent } from "@mui/joy";
 import { useLogout } from "../hooks/useLogout";
 import { useBrowseVacancies } from "../hooks/useBrowseVacancies";
 import { UserQueryContext } from "../store/UserQueryContext";
+import { AuthContext } from "../store/AuthContext";
 
 export const UserProfileMenu = () => {
 
     const { changeQuery } = useContext(UserQueryContext);
+    const { authStatus } = useContext(AuthContext);
+
     let navigate = useNavigate();
-    const isCandidate = localStorage.getItem("user_type") === "candidate";
+    const isCandidate = authStatus.userType === "Candidates";
 
     const handleBrowseVacancies = useBrowseVacancies();
     const handleLogout = useLogout();

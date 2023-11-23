@@ -36,13 +36,13 @@ export const ApplicationsDetails = () => {
                                 {application.vacancy_title}
                             </Link>
                         </ListItem>
-                        {authStatus.userType === "candidate" && <ListItem>
+                        {authStatus.userType === "Candidates" && <ListItem>
                             <strong>Company:</strong> {application.vacancy_company}
                         </ListItem>}
-                        {authStatus.userType === "recruiter" && <ListItem>
+                        {authStatus.userType === "Recruiters" && <ListItem>
                             <strong>Applicant Name:</strong> {application.candidate_name}
                         </ListItem>}
-                        {authStatus.userType === "recruiter" &&
+                        {authStatus.userType === "Recruiters" &&
                             <ListItem>
                                 <strong>Applicant Email:</strong> <RouterLink
                                     to="#"
@@ -51,12 +51,12 @@ export const ApplicationsDetails = () => {
                                         window.location.href = `mailto:${application.candidate_email}`;
                                     }}>{application.candidate_email}</RouterLink>
                             </ListItem>}
-                        {authStatus.userType === "recruiter" &&
+                        {authStatus.userType === "Recruiters" &&
                             <ListItem>
                                 <strong>Applicant Phone:</strong> +{application.candidate_phone}
                             </ListItem>}
                         <ListItem>
-                            <strong>{authStatus.userType === "candidate" ? "Submitted" : "Received"} On:</strong> {
+                            <strong>{authStatus.userType === "Candidates" ? "Submitted" : "Received"} On:</strong> {
                                 new Date(application.submission_date).toLocaleDateString("en-us", options)
                             }
                         </ListItem>

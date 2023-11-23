@@ -6,10 +6,12 @@ import { BASE_URL } from "../utils/config";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
 import { ProfileContext } from "../store/ProfileContext";
+import { AuthContext } from "../store/AuthContext";
 
 export const UserProfileForm = () => {
 
     const { profile, changeProfile } = useContext(ProfileContext);
+    const { authStatus } = useContext(AuthContext);
 
     const allInputsNotFocused = {
         firstName: false,
@@ -25,7 +27,7 @@ export const UserProfileForm = () => {
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const [emailIncorrect, setEmailIncorrect] = useState({});
     const [phoneIncorrect, setPhonelIncorrect] = useState(null);
-    const isCandidate = localStorage.getItem("user_type") === "candidate"
+    const isCandidate = authStatus.userType === "Candidates";
     const userId = localStorage.getItem("user_id");
 
     const combineInputData = () => {
@@ -175,7 +177,7 @@ export const UserProfileForm = () => {
                     phoneIncorrectMessage="This field should contain only numbers"
                     error={(userProfileData.phone !== "" && phoneIncorrect) && !inputsFocused.phone && submitButtonClicked}
                 />
-                {localStorage.getItem("user_type") === "recruiter" && <InputField
+                {!isCandidate && <InputField
                     defaultValue={localStorage.getItem("company")}
                     onFocus={() => setInputsFocused(prevState => ({
                         ...prevState,

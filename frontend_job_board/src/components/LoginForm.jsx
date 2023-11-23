@@ -47,18 +47,16 @@ export const LoginForm = () => {
                 .then(response => {
                     setInvalidCredentials(false);
                     const profileURL = response.data.user_group === "Candidates" ? "api/candidates/me" : "api/companies/recruiters/me"
-                    const loggedInUserType = response.data.user_group === "Candidates" ? "candidate" : "recruiter"
-                    console.log(response.data);
                     localStorage.setItem("access_token", response.data.access);
                     localStorage.setItem("refresh_token", response.data.refresh);
                     localStorage.setItem("user_id", response.data.user_id);
                     localStorage.setItem("email", response.data.email);
                     localStorage.setItem("first_name", response.data.first_name);
                     localStorage.setItem("last_name", response.data.last_name)
-                    localStorage.setItem("user_type", loggedInUserType);
+                    localStorage.setItem("user_type", response.data.user_group);
                     changeAuthStatus({
                         isLoggedIn: true,
-                        userType: loggedInUserType,
+                        userType: response.data.user_group,
                         justLoggedIn: true
                     });
                     axios({

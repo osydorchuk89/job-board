@@ -48,6 +48,7 @@ export const RegistrationForm = props => {
             last_name: registrationData.current["lastName"].value.trim(),
             email: registrationData.current["email"].value.trim(),
             password: registrationData.current["password"].value.trim(),
+            user_group: props.isCandidateRegistration ? "Candidates" : "Recruiters"
         };
         if (inputUserDataObject.password.length < 8) {
             setPasswordShort(true);
@@ -71,7 +72,6 @@ export const RegistrationForm = props => {
     const handleRegistration = event => {
         event.preventDefault();
         const [inputUserData, inputProfileData] = combineInputData();
-        const userGroup = props.isCandidateRegistration ? "Candidates" : "Recruiters"
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         setEmailIncorrect({});
@@ -87,7 +87,7 @@ export const RegistrationForm = props => {
             axios({
                 method: "post",
                 url: BASE_URL + "auth/users/",
-                data: { ...inputUserData, user_group: userGroup },
+                data: inputUserData,
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
