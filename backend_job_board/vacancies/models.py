@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 EMPLOYMENT_TYPES = [
     ("Full-Time", "Full-Time"),
@@ -42,7 +43,7 @@ class Vacancy(models.Model):
 
 
 def get_upload_path(instance, filename):
-    return f"vacancies/{instance.vacancy}/{filename}"
+    return f"vacancies/{slugify(instance.vacancy)}-{instance.vacancy.id}/{filename}"
 
 
 class Application(models.Model):
