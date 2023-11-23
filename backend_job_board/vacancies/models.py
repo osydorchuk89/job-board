@@ -1,12 +1,10 @@
 from django.db import models
 
 EMPLOYMENT_TYPES = [
-    ("Full Time", "Full Time"),
-    ("Part Time", "Part Time"),
+    ("Full-Time", "Full-Time"),
+    ("Part-Time", "Part-Time"),
     ("Contract", "Contract"),
-    ("Temporary", "Temporary"),
     ("Freelance", "Freelance"),
-    ("Internship", "Internship"),
 ]
 
 WORK_MODES = [

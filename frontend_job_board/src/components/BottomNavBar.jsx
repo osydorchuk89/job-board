@@ -1,6 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
-import { Box, Button, Typography, Sheet, Stack, IconButton } from "@mui/joy";
+import { Box, Button, Typography, Sheet, Stack } from "@mui/joy";
 import { NavList } from "./NavList";
+import { NavQueryList } from "./NavQueryList";
 import { SocialIcons } from "./SocialIcons";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -19,16 +20,29 @@ export const BottomNavBar = () => {
     };
 
     const navigateListItems = [
-        "About",
-        "Services",
-        "News",
-        "Careers"
+        {
+            text: "About",
+            link: "/about-us"
+        },
+        {
+            text: "Services",
+            link: "/services"
+        },
+        {
+            text: "News",
+            link: "/news"
+        },
+        {
+            text: "Careers",
+            link: "/careers"
+        },
     ];
+
     const categoriesListItems = [
         "Full-Time",
         "Part-Time",
-        "Freelance",
-        "Internship"
+        "Contract",
+        "Freelance"
     ];
 
     const socialIcons = [
@@ -90,14 +104,13 @@ export const BottomNavBar = () => {
                     </Box>
                     <Box sx={boxSxProps}>
                         <Typography level="h5" sx={{ marginBottom: 1 }}>CATEGORIES</Typography>
-                        <NavList
+                        <NavQueryList
                             sx={{
                                 display: { xs: "flex", sm: "block" },
                                 flexDirection: { xs: "column" },
                                 alignItems: { xs: "center" },
                             }}
-                            listItems={categoriesListItems}
-                        ></NavList>
+                            listItems={categoriesListItems} />
                     </Box>
                     <Box sx={boxSxProps}>
                         <Typography level="h5" sx={{ marginBottom: 1 }}>SOCIAL MEDIA</Typography>

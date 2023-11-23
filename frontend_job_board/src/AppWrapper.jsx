@@ -13,7 +13,8 @@ export const AppWrapper = () => {
         vacancyTitle: null,
         vacancyCompany: null,
         vacancyCity: null,
-        vacancyRecruiter: null
+        vacancyRecruiter: null,
+        vacancyEmploymentType: null
     });
 
     const [userAuthStatus, setUserAuthStatus] = useState({
@@ -56,7 +57,7 @@ export const AppWrapper = () => {
 
     const userFeedbackContextValue = {
         feedback: userFeedback,
-        changeFeedback: setUserFeedback
+        changeFeedback: setUserFeedbackFunction
     }
 
     return (

@@ -20,7 +20,7 @@ export const Login = () => {
                 justifyContent="center"
                 alignItems="center"
                 spacing={5}
-                sx={{ paddingY: 5 }}
+                sx={{ paddingY: { xs: 5, xl: 16 } }}
             >
                 <Card variant="outlined" sx={{
                     width: { xs: "80%", sm: "60%", md: "40%" }

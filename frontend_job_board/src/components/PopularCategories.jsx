@@ -10,8 +10,17 @@ const PopularCategory = props => {
 
     return (
         <Box sx={{ paddingY: 5 }}>
-            <Typography level="h4" sx={{ marginBottom: 2, fontWeight: "bold" }}>{props.title}</Typography>
-            <Stack direction="row" spacing={{ xs: 2, md: 5 }}>
+            <Typography
+                level="h4"
+                sx={{ marginBottom: 2, fontWeight: "bold" }}>
+                {props.title}
+            </Typography>
+            <Stack
+                direction="row"
+                flexWrap="wrap"
+                useFlexGap
+                spacing={{ xs: 2, md: 5 }}
+                sx={props.sx}>
                 {props.popularItems.map((item, index) => <Button
                     key={index}
                     size="lg"
@@ -56,6 +65,7 @@ export const PopularCategories = () => {
                 title="Popular Locations"
                 popularItems={popularLocations}
                 queryField="vacancyCity"
+                sx={{ marginBottom: 5 }}
             />
         </Container>
     );

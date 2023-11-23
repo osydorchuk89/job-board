@@ -36,6 +36,9 @@ export const vacanciesLoader = async query => {
         if (query.vacancyRecruiter) {
             vacanciesURL += `&recruiter=${query.vacancyRecruiter}`;
         };
+        if (query.vacancyEmploymentType) {
+            vacanciesURL += `&employment_type=${query.vacancyEmploymentType}`;
+        };
         const response = await axios({
             method: "get",
             url: vacanciesURL

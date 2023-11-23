@@ -1,5 +1,4 @@
-import { CssVarsProvider, extendTheme } from "@mui/joy/styles";
-import Button from "@mui/joy/Button";
+import { extendTheme } from "@mui/joy/styles";
 
 export const Theme = extendTheme({
     components: {
@@ -17,7 +16,7 @@ export const Theme = extendTheme({
         },
     },
     fontFamily: {
-        display: "Segoe UI",
-        body: "Segoe UI"
+        display: "Roboto",
+        body: "Roboto"
     },
 });
