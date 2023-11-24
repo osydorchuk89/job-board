@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useLoaderData, Link as RouterLink } from "react-router-dom";
 import { List, ListItem, Link, Card, Stack } from "@mui/joy";
-import { BASE_URL } from "../utils/config";
 import { AuthContext } from "../store/AuthContext";
 
 export const ApplicationsDetails = () => {
@@ -15,6 +14,8 @@ export const ApplicationsDetails = () => {
         month: "long",
         day: "numeric",
     };
+
+    console.log(applicationData);
 
     return (
         <Stack
