@@ -15,8 +15,6 @@ export const ApplicationsDetails = () => {
         day: "numeric",
     };
 
-    console.log(applicationData);
-
     return (
         <Stack
             alignItems="center"
