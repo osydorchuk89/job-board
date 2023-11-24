@@ -125,7 +125,7 @@ export const App = () => {
                             children: [
                                 {
                                     index: true,
-                                    loader: applicationsLoader,
+                                    loader: candidateApplicationsLoader,
                                     element: <VacancyDetails />,
                                 },
                                 {
@@ -134,7 +134,7 @@ export const App = () => {
                                 },
                                 {
                                     path: "apply",
-                                    loader: applicationsLoader,
+                                    loader: candidateApplicationsLoader,
                                     element: <VacancyApplication />
                                 }
                             ]
