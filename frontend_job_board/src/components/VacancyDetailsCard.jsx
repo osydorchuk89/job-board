@@ -16,6 +16,10 @@ export const VacancyDetailsCard = () => {
     const vacancyId = params.vacancyId;
 
     const isCandidate = authStatus.userType === "Candidates";
+    const isRecruiter = authStatus.userType === "Recruiters";
+    const isNotLoggedIn = !authStatus.isLoggedIn
+
+    const candidateApplied = applicationsData.some(obj => obj.vacancy == vacancyId);
 
     return (
         <Stack>
@@ -68,25 +72,24 @@ export const VacancyDetailsCard = () => {
                         )}</List>}
                 </Box>
                 <CardActions>
-                    {applicationsData.some(obj => obj.vacancy == vacancyId) && isCandidate
-                        ? <Button disabled size="lg">YOU HAVE ALREADY APPLIED FOR THIS POSITION</Button>
-                        :
+                    {isCandidate && candidateApplied &&
+                        <Button disabled size="lg">YOU HAVE ALREADY APPLIED FOR THIS POSITION</Button>
+                    }
+                    {((isCandidate && !candidateApplied) || isNotLoggedIn) &&
                         <Button
                             component={RouterLink}
                             to={`/vacancies/${vacancyId}/apply`}
                             size="lg"
                             variant="solid"
-                            color="success"
-                            sx={{
-                                display: isCandidate ? "block" : "none"
-                            }}>APPLY NOW</Button>
+                            color="success">APPLY NOW</Button>
+
                     }
-                    {isCandidate && <Button disabled sx={{ visibility: "hidden" }} />}
-                    {!isCandidate && <EditVacancyButton
+                    {(isCandidate || isNotLoggedIn) && <Button disabled sx={{ visibility: "hidden" }} />}
+                    {isRecruiter && <EditVacancyButton
                         disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
                         vacancyId={vacancyId}
                         size="lg" />}
-                    {!isCandidate && <DeleteVacancyButton
+                    {isRecruiter && <DeleteVacancyButton
                         disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
                         vacancyId={vacancyId}
                         size="lg" />}

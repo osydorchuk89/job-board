@@ -11,7 +11,7 @@ import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
 import { UserProfile } from "./pages/UserProfile";
 import { UserProfileEdit } from "./pages/UserProfileEdit";
-import { Applications, applicationsLoader } from "./pages/Applications";
+import { Applications, applicationsLoader, candidateApplicationsLoader } from "./pages/Applications";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
 import { AboutUs } from "./pages/AboutUs";
@@ -23,7 +23,6 @@ export const App = () => {
 
     const { query } = useContext(UserQueryContext);
     const { authStatus, changeAuthStatus } = useContext(AuthContext);
-    console.log(authStatus);
 
     useEffect(() => {
         if (localStorage.getItem("user_type") === "Candidates") {

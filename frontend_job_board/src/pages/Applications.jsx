@@ -10,7 +10,6 @@ export const Applications = () => {
 
     const applicationData = useLoaderData();
     const { authStatus } = useContext(AuthContext);
-    console.log(authStatus);
 
     return (
         <Container sx={{ paddingY: { xs: 5, xl: 10 } }}>
@@ -53,6 +52,25 @@ export const applicationsLoader = async () => {
             return response.data.recruiter_applications
         };
     } catch (error) {
-        console.error(error);
+        console.log(error);
     };
+};
+
+export const candidateApplicationsLoader = async () => {
+    const isCandidate = localStorage.getItem("user_type") === "Candidates";
+    if (isCandidate) {
+        try {
+            const applicationURL = BASE_URL + "api/candidates/me"
+            const response = await axios({
+                method: "get",
+                url: applicationURL,
+                headers: {
+                    Authorization: "JWT " + localStorage.getItem("access_token")
+                }
+            });
+            return response.data.candidate_applications
+        } catch (error) {
+            console.log(error);
+        };
+    } else { return null };
 };

@@ -15,7 +15,7 @@ export const VacancyDetails = () => {
 export const vacancyDataLoader = async ({ request, params }) => {
     try {
         const vacancyId = params.vacancyId;
-        const vacancyURL = BASE_URL + `api/vacancies/${vacancyId}`
+        const vacancyURL = BASE_URL + `api/vacancies/${vacancyId}/`
         const response = await axios.get(vacancyURL);
         return response.data;
     } catch (error) {

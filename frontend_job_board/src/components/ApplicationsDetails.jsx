@@ -61,7 +61,7 @@ export const ApplicationsDetails = () => {
                             }
                         </ListItem>
                         <ListItem>
-                            <Link component={RouterLink} to={`${BASE_URL.slice(0, -1)}${application.cv}`}>
+                            <Link component={RouterLink} to={application.cv}>
                                 <strong>Download CV</strong>
                             </Link>
                         </ListItem>

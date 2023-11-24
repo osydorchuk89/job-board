@@ -134,10 +134,28 @@ USE_I18N = True
 
 USE_TZ = True
 
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": "job-link",
+            "access_key": os.environ.get("AWS_ACCES_KEY_ID"),
+            "secret_key": os.environ.get("AWS_SECRET_ACCESS_KEY"),
+            "location": "media",
+            "region_name": "us-east-1",
+            "file_overwrite": False,
+            "signature_version": "s3v4",
+            "default_acl": "public-read",
+            "object_parameters": {"CacheControl": "max-age=86400"},
+            "custom_domain": "%s.s3.amazonaws.com" % "job-link",
+        },
+    },
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "static"
 if not DEBUG:
@@ -148,9 +166,8 @@ if not DEBUG:
     # Turn on WhiteNoise storage backend that takes care of compressing static files
     # and creating unique names for each version so they can safely be cached forever.
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-MEDIA_URL = "/uploads/"
-MEDIA_ROOT = BASE_DIR / "uploads"
+# MEDIA_URL = "/uploads/"
+# MEDIA_ROOT = BASE_DIR / "uploads"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
