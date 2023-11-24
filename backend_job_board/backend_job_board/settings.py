@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     "corsheaders",
-    "storages",
     "core",
     "candidates",
     "companies",
