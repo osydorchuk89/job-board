@@ -60,6 +60,7 @@ export const VacancyApplicationForm = () => {
     const handleApplicationSubmit = async event => {
         event.preventDefault();
         const inputData = combineInputData();
+        console.log(inputData);
         setSubmitButtonClicked(true);
         if (inputData.cv) {
             try {
