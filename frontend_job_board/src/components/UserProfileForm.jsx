@@ -36,7 +36,7 @@ export const UserProfileForm = () => {
             first_name: registrationData.current["firstName"].value.trim(),
             last_name: registrationData.current["lastName"].value.trim(),
             email: registrationData.current["email"].value.trim(),
-            user_group: isCandidate ? "candidate" : "recruiter"
+            user_group: isCandidate ? "Candidates" : "Recruiters"
         };
         const inputProfileDataObject = {
             phone: registrationData.current["phone"].value.trim(),
