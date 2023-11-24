@@ -19,7 +19,7 @@ export const VacancyDetailsCard = () => {
     const isRecruiter = authStatus.userType === "Recruiters";
     const isNotLoggedIn = !authStatus.isLoggedIn
 
-    const candidateApplied = applicationsData.some(obj => obj.vacancy == vacancyId);
+    const candidateApplied = applicationsData ? applicationsData.some(obj => obj.vacancy == vacancyId) : null;
 
     return (
         <Stack>

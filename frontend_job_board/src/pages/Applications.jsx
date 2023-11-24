@@ -37,30 +37,9 @@ export const Applications = () => {
 export const applicationsLoader = async () => {
     const isCandidate = localStorage.getItem("user_type") === "Candidates";
     const additionalURL = isCandidate ? "api/candidates/me" : "api/companies/recruiters/me"
-    try {
-        const applicationURL = BASE_URL + additionalURL
-        const response = await axios({
-            method: "get",
-            url: applicationURL,
-            headers: {
-                Authorization: "JWT " + localStorage.getItem("access_token")
-            }
-        });
-        if (isCandidate) {
-            return response.data.candidate_applications
-        } else {
-            return response.data.recruiter_applications
-        };
-    } catch (error) {
-        console.log(error);
-    };
-};
-
-export const candidateApplicationsLoader = async () => {
-    const isCandidate = localStorage.getItem("user_type") === "Candidates";
-    if (isCandidate) {
+    if (localStorage.getItem("user_type")) {
         try {
-            const applicationURL = BASE_URL + "api/candidates/me"
+            const applicationURL = BASE_URL + additionalURL
             const response = await axios({
                 method: "get",
                 url: applicationURL,
@@ -68,9 +47,14 @@ export const candidateApplicationsLoader = async () => {
                     Authorization: "JWT " + localStorage.getItem("access_token")
                 }
             });
-            return response.data.candidate_applications
+            if (localStorage.getItem("user_type") === "Candidates") {
+                return response.data.candidate_applications
+            } else {
+                return response.data.recruiter_applications
+            };
         } catch (error) {
             console.log(error);
         };
     } else { return null };
+
 };
