@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useParams, useRouteLoaderData, Link as RouterLink } from "react-router-dom";
+import { useParams, useRouteLoaderData, useLoaderData, Link as RouterLink } from "react-router-dom";
 import { Box, Button, Stack, Typography, Card, CardActions, List, ListItem } from "@mui/joy"
 import { TopVacancyDetails } from "../components/TopVacancyDetails";
 import { EditVacancyButton } from "./EditVacancyButton";
@@ -10,9 +10,12 @@ export const VacancyDetailsCard = () => {
 
     const { authStatus } = useContext(AuthContext);
     const vacancyData = useRouteLoaderData("vacancy");
+    const applicationsData = useLoaderData();
 
     const params = useParams();
     const vacancyId = params.vacancyId;
+
+    const isCandidate = authStatus.userType === "Candidates";
 
     return (
         <Stack>
@@ -65,26 +68,28 @@ export const VacancyDetailsCard = () => {
                         )}</List>}
                 </Box>
                 <CardActions>
-                    <Button
-                        component={RouterLink}
-                        to={`/vacancies/${vacancyId}/apply`}
-                        size="lg"
-                        variant="solid"
-                        color="success"
-                        sx={{
-                            display: authStatus.userType === "Recruiters" ? "none" : "block"
-                        }}>APPLY NOW</Button>
-                    {authStatus.userType === "Candidates" && <Button disabled sx={{ visibility: "hidden" }} />}
-                    {authStatus.userType === "Recruiters" &&
-                        <EditVacancyButton
-                            disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
-                            vacancyId={vacancyId}
-                            size="lg" />}
-                    {authStatus.userType === "Recruiters" &&
-                        <DeleteVacancyButton
-                            disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
-                            vacancyId={vacancyId}
-                            size="lg" />}
+                    {applicationsData.some(obj => obj.vacancy == vacancyId) && isCandidate
+                        ? <Button disabled size="lg">YOU HAVE ALREADY APPLIED FOR THIS POSITION</Button>
+                        :
+                        <Button
+                            component={RouterLink}
+                            to={`/vacancies/${vacancyId}/apply`}
+                            size="lg"
+                            variant="solid"
+                            color="success"
+                            sx={{
+                                display: isCandidate ? "block" : "none"
+                            }}>APPLY NOW</Button>
+                    }
+                    {isCandidate && <Button disabled sx={{ visibility: "hidden" }} />}
+                    {!isCandidate && <EditVacancyButton
+                        disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
+                        vacancyId={vacancyId}
+                        size="lg" />}
+                    {!isCandidate && <DeleteVacancyButton
+                        disabled={vacancyData.recruiter != localStorage.getItem("profile_id")}
+                        vacancyId={vacancyId}
+                        size="lg" />}
                 </CardActions>
             </Card>
         </Stack>

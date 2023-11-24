@@ -10,8 +10,6 @@ export const VacanciesList = props => {
 
     const { authStatus } = useContext(AuthContext);
 
-    console.log(props.data);
-
     return (
         <Container sx={{ paddingY: 5 }}>
             {props.data.map(vacancy => (

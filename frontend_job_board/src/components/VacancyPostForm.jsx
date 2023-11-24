@@ -67,7 +67,6 @@ export const VacancyPostForm = props => {
     const handleSubmitVacancy = async event => {
         event.preventDefault();
         const inputData = combineInputData();
-        console.log(inputData);
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (

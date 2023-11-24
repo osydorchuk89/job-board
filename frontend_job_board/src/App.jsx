@@ -60,7 +60,7 @@ export const App = () => {
             id: "root",
             loader: () => {
                 if (query) {
-                    return vacanciesLoader(query)
+                    return vacanciesLoader(query);
                 };
                 return null;
             },
@@ -125,6 +125,7 @@ export const App = () => {
                             children: [
                                 {
                                     index: true,
+                                    loader: applicationsLoader,
                                     element: <VacancyDetails />,
                                 },
                                 {
@@ -133,6 +134,7 @@ export const App = () => {
                                 },
                                 {
                                     path: "apply",
+                                    loader: applicationsLoader,
                                     element: <VacancyApplication />
                                 }
                             ]

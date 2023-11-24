@@ -64,8 +64,6 @@ export const ContactForm = () => {
     const handleSubmitContactForm = event => {
         event.preventDefault();
         const inputUserData = combineInputData();
-        console.log(authStatus);
-        console.log(inputUserData);
         setSubmitButtonClicked(true);
         setInputsFocused(allInputsNotFocused);
         if (
@@ -75,7 +73,6 @@ export const ContactForm = () => {
             inputUserData.message &&
             (!inputUserData.phone || /^\d+$/.test(inputUserData.phone))
         ) {
-            console.log(inputUserData);
             axios({
                 method: "post",
                 url: BASE_URL + "api/feedback/",
