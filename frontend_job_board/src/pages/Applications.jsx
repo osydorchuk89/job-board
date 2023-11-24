@@ -10,6 +10,7 @@ export const Applications = () => {
 
     const applicationData = useLoaderData();
     const { authStatus } = useContext(AuthContext);
+    console.log(authStatus);
 
     return (
         <Container sx={{ paddingY: { xs: 5, xl: 10 } }}>

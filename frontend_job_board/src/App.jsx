@@ -22,7 +22,8 @@ import { UserQueryContext } from "./store/UserQueryContext";
 export const App = () => {
 
     const { query } = useContext(UserQueryContext);
-    const { changeAuthStatus } = useContext(AuthContext);
+    const { authStatus, changeAuthStatus } = useContext(AuthContext);
+    console.log(authStatus);
 
     useEffect(() => {
         if (localStorage.getItem("user_type") === "Candidates") {
