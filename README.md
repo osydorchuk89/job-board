@@ -3,8 +3,6 @@ Job Link is a full-stack dummy web application for applying for and posting job 
 
 It is available at this URL: [Job Link](https://job-link.onrender.com/).
 
-This is my first web development project.
-
 # Short Description
 The web app allows users register either as candidates or as recruiters.
 
