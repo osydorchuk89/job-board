@@ -19,7 +19,7 @@ Recruiters can:
 Unregistered users can:
 - Browse available vacancies
 
-# Technologies Used
+# Technologies and Services Used
 **Front-End:**
 - React
 - Joy UI
