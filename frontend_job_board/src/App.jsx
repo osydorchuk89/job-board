@@ -11,10 +11,13 @@ import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
 import { UserProfile } from "./pages/UserProfile";
 import { UserProfileEdit } from "./pages/UserProfileEdit";
-import { Applications, applicationsLoader, candidateApplicationsLoader } from "./pages/Applications";
+import { Applications, applicationsLoader } from "./pages/Applications";
 import { Error } from "./pages/Error";
 import { Root } from "./pages/Root";
 import { AboutUs } from "./pages/AboutUs";
+import { Services } from "./pages/Services";
+import { News } from "./pages/News";
+import { Careers } from "./pages/Careers";
 import { checkTokenExpiry } from "./utils/checkTokenExpiry";
 import { AuthContext } from "./store/AuthContext";
 import { UserQueryContext } from "./store/UserQueryContext";
@@ -22,7 +25,7 @@ import { UserQueryContext } from "./store/UserQueryContext";
 export const App = () => {
 
     const { query } = useContext(UserQueryContext);
-    const { authStatus, changeAuthStatus } = useContext(AuthContext);
+    const { changeAuthStatus } = useContext(AuthContext);
 
     useEffect(() => {
         if (localStorage.getItem("user_type") === "Candidates") {
@@ -110,6 +113,18 @@ export const App = () => {
                 {
                     path: "about-us",
                     element: <AboutUs />
+                },
+                {
+                    path: "services",
+                    element: <Services />
+                },
+                {
+                    path: "news",
+                    element: <News />
+                },
+                {
+                    path: "careers",
+                    element: <Careers />
                 },
                 {
                     path: "vacancies",

@@ -1,7 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Card, CardContent, Typography, Button } from "@mui/joy"
 
-export const AboutUs = () => {
+export const AboutUsInfo = () => {
     return (
         <Card variant="outlined">
             <CardContent>
