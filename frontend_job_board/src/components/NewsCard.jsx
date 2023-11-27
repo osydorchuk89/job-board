@@ -3,7 +3,11 @@ import { Button, Card, CardContent, CardActions, Typography, Link } from "@mui/j
 
 export const NewsCard = props => {
     return (
-        <Card variant="outlined" sx={{ marginY: 5 }}>
+        <Card variant="outlined"
+            sx={{
+                marginY: 5,
+                width: { xs: "100%", md: "80%" }
+            }}>
             <CardContent>
                 <Typography level="h3" sx={{ marginBottom: 2 }}>
                     <Link
@@ -24,9 +28,8 @@ export const NewsCard = props => {
                     size="lg"
                     variant="solid"
                     color="success"
-                    sx={{
-                        width: { xs: "50%", md: "40%", lg: "30%" }
-                    }}>READ MORE</Button>
+                >READ MORE</Button>
+                <Button sx={{ display: "none" }} />
             </CardActions>
         </Card>
     )
