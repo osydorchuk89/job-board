@@ -8,7 +8,7 @@ export const NewsCard = props => {
                 <Typography level="h3" sx={{ marginBottom: 2 }}>
                     <Link
                         component={RouterLink}
-                        to="#">{props.tit}le</Link>
+                        to="#">{props.title}</Link>
                 </Typography>
                 <Typography sx={{
                     marginTop: 2,
@@ -23,7 +23,10 @@ export const NewsCard = props => {
                     to="#"
                     size="lg"
                     variant="solid"
-                    color="success">READ MORE</Button>
+                    color="success"
+                    sx={{
+                        width: { xs: "50%", md: "40%", lg: "30%" }
+                    }}>READ MORE</Button>
             </CardActions>
         </Card>
     )

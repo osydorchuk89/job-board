@@ -68,11 +68,9 @@ export const News = () => {
     return (
         <Container sx={{
             paddingY: 5,
-            width: { xs: "90%", sm: "80%", md: "70%" }
         }}>
             <Stack alignItems="center" spacing={3}>
                 <Typography level="h3">News</Typography>
-                <Typography level="h4">Amet Consectetur</Typography>
                 {newsList.map((item, index) => <NewsCard key={index} title={item.title} summary={item.summary} />)}
             </Stack>
         </Container>
