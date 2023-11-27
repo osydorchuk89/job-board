@@ -6,7 +6,7 @@ export const NewsCard = props => {
         <Card variant="outlined"
             sx={{
                 marginY: 5,
-                width: { xs: "100%", md: "80%" }
+                width: { xs: "100%", sm: "80%" }
             }}>
             <CardContent>
                 <Typography level="h3" sx={{ marginBottom: 2 }}>
@@ -16,7 +16,6 @@ export const NewsCard = props => {
                 </Typography>
                 <Typography sx={{
                     marginTop: 2,
-                    display: { xs: "none", md: "block" }
                 }}>
                     {props.summary}
                 </Typography>
