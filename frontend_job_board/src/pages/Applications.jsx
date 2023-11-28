@@ -36,7 +36,7 @@ export const Applications = () => {
 
 export const applicationsLoader = async () => {
     const isCandidate = localStorage.getItem("user_type") === "Candidates";
-    const additionalURL = isCandidate ? "api/candidates/me" : "api/companies/recruiters/me"
+    const additionalURL = isCandidate ? "api/candidates/me/" : "api/companies/recruiters/me/"
     if (localStorage.getItem("user_type")) {
         try {
             const applicationURL = BASE_URL + additionalURL

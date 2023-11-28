@@ -28,7 +28,7 @@ export const VacancyApplicationForm = () => {
 
     const params = useParams();
     const vacancyId = params.vacancyId;
-    let vacancyURL = BASE_URL + `api/vacancies/${vacancyId}`
+    let vacancyURL = BASE_URL + `api/vacancies/${vacancyId}/`
 
     const handleFileUpload = event => {
         event.preventDefault();
@@ -65,7 +65,7 @@ export const VacancyApplicationForm = () => {
             try {
                 await axios({
                     method: "post",
-                    url: vacancyURL + "/applications/",
+                    url: vacancyURL + "applications/",
                     data: inputData,
                     headers: {
                         "Content-Type": "multipart/form-data",

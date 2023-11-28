@@ -36,7 +36,6 @@ export const VacancyEdit = () => {
                         method="put"
                         action="justEditedVacancy"
                         url={`${BASE_URL}api/vacancies/${vacancyId}/`}
-                        // navigateUrl={`/vacancies/${vacancyId}/edit/updated`}
                         defaultValues={vacancyData}
                         buttonText="EDIT VACANCY"
                     />

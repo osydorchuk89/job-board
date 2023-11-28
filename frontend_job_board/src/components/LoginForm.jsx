@@ -46,7 +46,7 @@ export const LoginForm = () => {
             })
                 .then(response => {
                     setInvalidCredentials(false);
-                    const profileURL = response.data.user_group === "Candidates" ? "api/candidates/me" : "api/companies/recruiters/me"
+                    const profileURL = response.data.user_group === "Candidates" ? "api/candidates/me/" : "api/companies/recruiters/me/"
                     localStorage.setItem("access_token", response.data.access);
                     localStorage.setItem("refresh_token", response.data.refresh);
                     localStorage.setItem("user_id", response.data.user_id);
