@@ -7,7 +7,7 @@ class Recruiter(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="recruiter_user"
     )
     company = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=15, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
 
