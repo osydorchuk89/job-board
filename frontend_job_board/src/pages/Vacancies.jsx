@@ -3,6 +3,7 @@ import { useRouteLoaderData } from "react-router-dom";
 import { Typography, Container } from "@mui/joy";
 import { VacanciesList } from "../components/VacanciesList";
 import { SearchArea } from "../components/SearchArea";
+import { PopularCategories } from "../components/PopularCategories";
 import { BASE_URL } from "../utils/config";
 
 export const Vacancies = () => {
@@ -13,11 +14,14 @@ export const Vacancies = () => {
         <Container>
             <SearchArea paddingY={5} />
             <Typography level="h4" textAlign="center">
-                Total {vacancies.length} {vacancies.length === 1 ? "vacancy" : "vacancies"} found
+                {vacancies.length > 0
+                    ? `Total ${vacancies.length} ${vacancies.length === 1 ? "vacancy" : "vacancies"} found`
+                    : "Nothing found. Try popular categories below."}
             </Typography>
-            <VacanciesList data={vacancies} />
-        </Container >
-
+            {vacancies.length > 0
+                ? < VacanciesList data={vacancies} />
+                : <PopularCategories />}
+        </Container>
     );
 };
 
