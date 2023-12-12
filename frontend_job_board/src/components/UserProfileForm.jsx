@@ -100,7 +100,7 @@ export const UserProfileForm = () => {
                                 ...profile,
                                 justEditedProfile: true,
                             });
-                            navigate("/");
+                            navigate("/my-profile");
                         })
                         .catch(error => console.log(error))
                 })

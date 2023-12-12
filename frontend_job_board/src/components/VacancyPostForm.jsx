@@ -9,11 +9,13 @@ import { DisabledInputField } from "./DisabledInputField";
 import { SubmitButton } from "./SubmitButton";
 import { employmentTypeOptions, workModeOptions } from "../store/data";
 import { ProfileContext } from "../store/ProfileContext";
+import { UserQueryContext } from "../store/UserQueryContext";
 
 export const VacancyPostForm = props => {
 
     const location = useLocation();
 
+    const { changeQuery } = useContext(UserQueryContext);
     const { profile, changeProfile } = useContext(ProfileContext);
 
     const allInputsNotFocused = {
@@ -97,8 +99,11 @@ export const VacancyPostForm = props => {
                 changeProfile({
                     ...profile,
                     [props.action]: true
-                })
-                navigate("/");
+                });
+                changeQuery({
+                    vacancyRecruiter: inputData.recruiter,
+                });
+                navigate("/vacancies");
             } catch (error) {
                 console.log(error);
             };

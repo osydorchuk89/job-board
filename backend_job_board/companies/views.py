@@ -6,18 +6,6 @@ from .models import Recruiter
 from .serializers import RecruiterSerializer
 
 
-# class CompanyViewSet(viewsets.ModelViewSet, EditDeleteCompanyPermission):
-#     serializer_class = CompanySerializer
-#     permission_classes = [EditDeleteCompanyPermission, DjangoModelPermissionsOrAnonReadOnly]
-
-#     def get_queryset(self):
-#         queryset = Company.objects.all()
-#         industry_value = self.request.query_params.get("industry")
-#         if industry_value is not None:
-#             queryset = queryset.filter(industry=industry_value)
-#         return queryset
-
-
 class RecruiterViewSet(viewsets.ModelViewSet):
     serializer_class = RecruiterSerializer
     queryset = Recruiter.objects.all()
@@ -33,10 +21,3 @@ class RecruiterViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
-
-    # def get_permissions(self):
-    #     if self.request.method == "GET":
-    #         return [IsAdminUser()]
-    #     elif self.request.method == "POST":
-    #         return [AllowAny()]
-    #     return [permission() for permission in self.permission_classes]

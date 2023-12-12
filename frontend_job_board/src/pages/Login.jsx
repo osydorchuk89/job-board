@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Container, Typography, Card, CardContent, CardActions, Stack, Link } from "@mui/joy";
 import { AuthContext } from "../store/AuthContext";
 import { LoginForm } from "../components/LoginForm";
-import { useEffect } from "react";
+import { SnackBarContainer } from "../components/SnackBarContainer";
 
 export const Login = () => {
 
@@ -42,6 +42,7 @@ export const Login = () => {
                     </Link>
                 </Typography>
             </Stack>
+            <SnackBarContainer />
         </Container >
     );
 };

@@ -3,6 +3,7 @@ import { AuthContext } from "../store/AuthContext";
 import { ProfileContext } from "../store/ProfileContext";
 import { FeedbackContext } from "../store/FeedbackContext";
 import { SnackBarAlert } from "./SnackBarAlert";
+import { Container } from "@mui/joy";
 
 export const SnackBarContainer = () => {
 
@@ -33,7 +34,7 @@ export const SnackBarContainer = () => {
     }, []);
 
     return (
-        <>
+        <Container>
             <SnackBarAlert
                 open={loggedInAlert}
                 text="You successfully logged in!"
@@ -58,10 +59,10 @@ export const SnackBarContainer = () => {
             />
             <SnackBarAlert
                 open={registeredAlert}
-                text="You succesfully registered!"
-                linkText="Go to login page"
-                navigateLink="/login"
-                setAlert={setRegisteredAlert}
+                text="You succesfully registered! Now, please log in to your account."
+                // linkText="Go to login page"
+                // navigateLink="/login"
+                // setAlert={setRegisteredAlert}
                 onClose={() => {
                     setRegisteredAlert(false);
                     changeProfile({
@@ -133,6 +134,6 @@ export const SnackBarContainer = () => {
                     changeFeedback(null);
                 }}
             />
-        </>
+        </Container>
     );
 };

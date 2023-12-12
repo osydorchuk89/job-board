@@ -18,7 +18,7 @@ export const LoginForm = () => {
     const [userInputData, setUserInputData] = useState({});
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
-    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const loginData = useRef();
     const navigate = useNavigate();

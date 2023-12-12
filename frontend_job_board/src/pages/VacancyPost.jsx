@@ -44,7 +44,6 @@ export const VacancyPost = () => {
                 method="post"
                 action="justPostedVacancy"
                 url={`${BASE_URL}api/vacancies/`}
-                // navigateUrl={"/vacancy-post/posted"}
                 buttonText="POST VACANCY"
             />
         </Container>

@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useLoaderData, Link as RouterLink } from "react-router-dom";
 import { Container, Typography, Stack, Button } from "@mui/joy";
 import { ApplicationsDetails } from "../components/ApplicationsDetails";
+import { SnackBarContainer } from "../components/SnackBarContainer";
 import { BASE_URL } from "../utils/config";
 import { AuthContext } from "../store/AuthContext";
 
@@ -20,16 +21,19 @@ export const Applications = () => {
                 ? <ApplicationsDetails />
                 : <Stack alignItems="center">
                     <Typography level="body-lg" sx={{ marginY: { xs: 10, lg: 15 } }}>There are no applications.</Typography>
-                    <Button
-                        variant="solid"
-                        color="success"
-                        size="lg"
-                        component={RouterLink}
-                        to="/my-profile"
-                        sx={{ marginBottom: 10 }}>
-                        BACK TO MY PROFILE PAGE
-                    </Button>
                 </Stack>}
+            <Stack alignItems="center">
+                <Button
+                    variant="solid"
+                    color="success"
+                    size="lg"
+                    component={RouterLink}
+                    to="/my-profile"
+                    sx={{ marginBottom: 10 }}>
+                    BACK TO MY PROFILE PAGE
+                </Button>
+            </Stack>
+            <SnackBarContainer />
         </Container>
     );
 };

@@ -109,7 +109,7 @@ export const RegistrationForm = props => {
                                 ...profile,
                                 justRegistered: true,
                             });
-                            navigate("/");
+                            navigate("/login");
                         })
                         .catch(error => console.log(error))
                 })
