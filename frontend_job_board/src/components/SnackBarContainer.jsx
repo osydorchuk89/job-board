@@ -60,9 +60,6 @@ export const SnackBarContainer = () => {
             <SnackBarAlert
                 open={registeredAlert}
                 text="You succesfully registered! Now, please log in to your account."
-                // linkText="Go to login page"
-                // navigateLink="/login"
-                // setAlert={setRegisteredAlert}
                 onClose={() => {
                     setRegisteredAlert(false);
                     changeProfile({

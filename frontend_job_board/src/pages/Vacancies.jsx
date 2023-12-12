@@ -4,7 +4,6 @@ import { Typography, Container } from "@mui/joy";
 import { VacanciesList } from "../components/VacanciesList";
 import { SearchArea } from "../components/SearchArea";
 import { PopularCategories } from "../components/PopularCategories";
-import { SnackBarContainer } from "../components/SnackBarContainer";
 import { BASE_URL } from "../utils/config";
 
 export const Vacancies = () => {
@@ -22,7 +21,6 @@ export const Vacancies = () => {
             {vacancies.length > 0
                 ? < VacanciesList data={vacancies} />
                 : <PopularCategories />}
-            <SnackBarContainer />
         </Container>
     );
 };

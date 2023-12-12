@@ -28,7 +28,7 @@ export const DeleteVacancyButton = props => {
                     ...profile,
                     justDeletedVacancy: true
                 })
-                navigate("/vacancies");
+                navigate("/my-profile");
             } catch (error) { console.log(error) }
         };
     };

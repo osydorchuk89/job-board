@@ -103,7 +103,7 @@ export const VacancyPostForm = props => {
                 changeQuery({
                     vacancyRecruiter: inputData.recruiter,
                 });
-                navigate("/vacancies");
+                navigate("/my-profile");
             } catch (error) {
                 console.log(error);
             };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useLoaderData, Link as RouterLink } from "react-router-dom";
 import { Container, Typography, Stack, Button } from "@mui/joy";
 import { ApplicationsDetails } from "../components/ApplicationsDetails";
@@ -8,8 +8,12 @@ import { AuthContext } from "../store/AuthContext";
 
 export const Applications = () => {
 
-    const applicationData = useLoaderData();
     const { authStatus } = useContext(AuthContext);
+    const applicationData = useLoaderData();
+
+    useEffect(() => {
+        !authStatus.isLoggedIn && navigate("/login");
+    }, []);
 
     return (
         <Container sx={{ paddingY: { xs: 5, xl: 10 } }}>
