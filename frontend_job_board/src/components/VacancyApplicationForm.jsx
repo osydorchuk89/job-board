@@ -77,7 +77,7 @@ export const VacancyApplicationForm = () => {
                     ...profile,
                     justApplied: true
                 })
-                navigate("/my-profile");
+                navigate("/my-profile/applications");
             } catch (error) {
                 console.log(error);
             };
