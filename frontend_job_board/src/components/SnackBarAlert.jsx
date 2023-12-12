@@ -22,6 +22,7 @@ export const SnackBarAlert = props => {
             variant="soft"
             onClose={props.onClose}
             slotProps={props.slotProps}
+            resumeHideDuration={0}
         >
             <Typography
                 color="inherit">

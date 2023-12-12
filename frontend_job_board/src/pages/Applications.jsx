@@ -3,7 +3,6 @@ import { useContext } from "react";
 import { useLoaderData, Link as RouterLink } from "react-router-dom";
 import { Container, Typography, Stack, Button } from "@mui/joy";
 import { ApplicationsDetails } from "../components/ApplicationsDetails";
-import { SnackBarContainer } from "../components/SnackBarContainer";
 import { BASE_URL } from "../utils/config";
 import { AuthContext } from "../store/AuthContext";
 
@@ -33,7 +32,6 @@ export const Applications = () => {
                     BACK TO MY PROFILE PAGE
                 </Button>
             </Stack>
-            <SnackBarContainer />
         </Container>
     );
 };
