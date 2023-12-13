@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from .models import Candidate
 from .serializers import CandidateSerializer
 from .permissions import CreateCandidatePermission
@@ -9,7 +9,9 @@ from .permissions import CreateCandidatePermission
 
 class CandidateViewSet(viewsets.ModelViewSet, CreateCandidatePermission):
     serializer_class = CandidateSerializer
-    queryset = Candidate.objects.all()
+    queryset = (
+        Candidate.objects.select_related("user").prefetch_related("candidate_applications").all()
+    )
     permission_classes = [CreateCandidatePermission]
 
     @action(detail=False, methods=["GET", "PUT"], permission_classes=[IsAuthenticated])

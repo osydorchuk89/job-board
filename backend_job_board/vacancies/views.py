@@ -10,7 +10,7 @@ class VacancyViewSet(viewsets.ModelViewSet, EditDeleteVacancyPermission):
     permission_classes = [EditDeleteVacancyPermission, DjangoModelPermissionsOrAnonReadOnly]
 
     def get_queryset(self):
-        queryset = Vacancy.objects.all()
+        queryset = Vacancy.objects.select_related("recruiter").all()
 
         company_value = self.request.query_params.get("company")
         title_value = self.request.query_params.get("title")
@@ -41,4 +41,7 @@ class ApplicationViewSet(viewsets.ModelViewSet, ViewApplicationPermission):
     permission_classes = [ViewApplicationPermission, DjangoModelPermissions]
 
     def get_queryset(self):
-        return Application.objects.filter(vacancy_id=self.kwargs["vacancy_pk"])
+        queryset = Application.objects.select_related(
+            "recruiter", "vacancy", "candidate", "candidate__user"
+        ).filter(vacancy_id=self.kwargs["vacancy_pk"])
+        return queryset

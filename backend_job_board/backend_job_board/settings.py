@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     "corsheaders",
+    "debug_toolbar",
     "core",
     "candidates",
     "companies",
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -152,6 +154,10 @@ DJOSER = {
         "current_user": "core.serializers.UserSerializer",
     }
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # LOGGING = {
 #     "version": 1,

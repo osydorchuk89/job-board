@@ -4,11 +4,15 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from .models import Recruiter
 from .serializers import RecruiterSerializer
+from .permissions import CreateRecruiterPermission
 
 
-class RecruiterViewSet(viewsets.ModelViewSet):
+class RecruiterViewSet(viewsets.ModelViewSet, CreateRecruiterPermission):
     serializer_class = RecruiterSerializer
-    queryset = Recruiter.objects.all()
+    queryset = (
+        Recruiter.objects.select_related("user").prefetch_related("recruiter_applications").all()
+    )
+    permission_classes = [CreateRecruiterPermission]
 
     @action(detail=False, methods=["GET", "PUT"], permission_classes=[IsAuthenticated])
     def me(self, request):

@@ -5,4 +5,4 @@ class CreateCandidatePermission(BasePermission):
     def has_permission(self, request, view):
         if request.method == "POST":
             return True
-        return False
+        return request.user.is_superuser
