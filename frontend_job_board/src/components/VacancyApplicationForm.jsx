@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useContext } from "react";
 import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
-import { Container, Typography, Stack } from "@mui/joy";
+import { Container, Typography, Stack, Alert } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
 import { DisabledInputField } from "./DisabledInputField";
 import { FileUploadField } from "./FileUploadField";
@@ -25,6 +25,7 @@ export const VacancyApplicationForm = () => {
         cv: false,
         coverLetter: false
     });
+    const [formIncomplete, setFormIncomplete] = useState(null);
 
     const params = useParams();
     const vacancyId = params.vacancyId;
@@ -62,6 +63,7 @@ export const VacancyApplicationForm = () => {
         const inputData = combineInputData();
         setSubmitButtonClicked(true);
         if (inputData.cv) {
+            setFormIncomplete(false);
             try {
                 await axios({
                     method: "post",
@@ -81,7 +83,7 @@ export const VacancyApplicationForm = () => {
             } catch (error) {
                 console.log(error);
             };
-        } else { console.log("You should complete the required fields") };
+        } else { setFormIncomplete(true) };
     };
 
     return (
@@ -118,6 +120,10 @@ export const VacancyApplicationForm = () => {
                         name="coverLetter"
                         onChange={handleFileUpload}
                         uploaded={filesUploaded.coverLetter} />
+                    {formIncomplete && !Object.values(inputsFocused).some(val => val === true) &&
+                        <Alert sx={{ display: "flex", justifyContent: "center" }} color="danger">
+                            <Typography color="danger">You should complete all required fields</Typography>
+                        </Alert>}
                     <SubmitButton
                         label="APPLY"
                         sx={{

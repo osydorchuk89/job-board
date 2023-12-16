@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Card, CardContent, Typography } from "@mui/joy";
+import { Card, CardContent, Typography, Alert } from "@mui/joy";
 import { InputField } from "./InputField";
 import { TextareaField } from "../components/TextareaField";
 import { SubmitButton } from "./SubmitButton";
@@ -28,6 +28,7 @@ export const ContactForm = () => {
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const [phoneIncorrect, setPhonelIncorrect] = useState(null);
+    const [formIncomplete, setFormIncomplete] = useState(null);
 
     const contactFormData = useRef();
 
@@ -73,6 +74,7 @@ export const ContactForm = () => {
             inputUserData.message &&
             (!inputUserData.phone || /^\d+$/.test(inputUserData.phone))
         ) {
+            setFormIncomplete(false);
             axios({
                 method: "post",
                 url: BASE_URL + "api/feedback/",
@@ -88,8 +90,9 @@ export const ContactForm = () => {
                 .catch(error => {
                     console.log(error);
                 });
-        } else { console.log("You should complete all required fields") };
+        } else { setFormIncomplete(true) };
     };
+
 
     return (
         <Card variant="outlined" sx={{ width: { xs: "100%", md: "60%" }, alignItems: "center" }}>
@@ -166,6 +169,10 @@ export const ContactForm = () => {
                         placeholder="Enter your message here"
                         name="message"
                         error={!userInputData.message && !inputsFocused.message && submitButtonClicked} />
+                    {formIncomplete && !Object.values(inputsFocused).some(val => val === true) &&
+                        <Alert sx={{ display: "flex", justifyContent: "center" }} color="danger">
+                            <Typography color="danger">You should complete all required fields</Typography>
+                        </Alert>}
                     <SubmitButton
                         label="SEND MESSAGE"
                         sx={{

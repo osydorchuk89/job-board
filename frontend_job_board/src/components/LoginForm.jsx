@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Typography } from "@mui/joy";
+import { Button, Typography, Alert } from "@mui/joy";
 import { AuthContext } from "../store/AuthContext";
 import { InputField } from "./InputField";
 import { PasswordToggleIcon } from "./PasswordToggleIcon";
@@ -19,6 +19,7 @@ export const LoginForm = () => {
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [formIncomplete, setFormIncomplete] = useState(null);
 
     const loginData = useRef();
     const navigate = useNavigate();
@@ -35,6 +36,7 @@ export const LoginForm = () => {
         };
         setUserInputData(userLoginData);
         if (userLoginData.email && userLoginData.password) {
+            setFormIncomplete(false);
             axios({
                 method: "post",
                 url: BASE_URL + "auth/jwt/token/",
@@ -80,7 +82,7 @@ export const LoginForm = () => {
                 .catch(error => {
                     error.response.status === 401 && setInvalidCredentials(true);
                 });
-        } else { console.log("You should complete the required fields") };
+        } else { setFormIncomplete(true) };
     };
 
     return (
@@ -97,6 +99,7 @@ export const LoginForm = () => {
                     ...prevState,
                     email: true
                 }))}
+                fieldIsEmpty={!userInputData.email}
                 error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
             <InputField
                 label="Password"
@@ -108,15 +111,21 @@ export const LoginForm = () => {
                     password: true
                 }))}
                 endDecorator={<PasswordToggleIcon onClick={() => setPasswordVisible(value => !value)} />}
+                fieldIsEmpty={!userInputData.password}
                 error={!userInputData.password && !inputsFocused.password && submitButtonClicked} />
             {invalidCredentials && !inputsFocused.email && !inputsFocused.password && <Typography
                 color="danger"
                 sx={{ marginBottom: 5 }}>Invalid email and/or password</Typography>}
+            {formIncomplete && !Object.values(inputsFocused).some(val => val === true) &&
+                <Alert sx={{ display: "flex", justifyContent: "center" }} color="danger">
+                    <Typography color="danger">You should complete all required fields</Typography>
+                </Alert>}
             <Button
                 size="lg"
                 type="submit"
                 variant="solid"
-                color="success">LOGIN</Button>
+                color="success"
+                sx={{ marginTop: 2 }}>LOGIN</Button>
         </form>
     )
 };

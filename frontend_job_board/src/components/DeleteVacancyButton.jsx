@@ -13,7 +13,7 @@ export const DeleteVacancyButton = props => {
 
     const handleDeleteVacancy = async vacancyId => {
         let deleteVacancyUrl = BASE_URL + `api/vacancies/${vacancyId}/`
-        const confirmDelete = confirm(`Are you sure you want to delete vacancy #${vacancyId}?`)
+        const confirmDelete = confirm("Are you sure you want to delete this vacancy?")
         if (confirmDelete) {
             try {
                 axios({

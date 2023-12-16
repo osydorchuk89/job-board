@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Stack, Typography } from "@mui/joy";
+import { Stack, Typography, Alert } from "@mui/joy";
 import { InputField } from "../components/InputField";
 import { TextareaField } from "../components/TextareaField";
 import { SelectField } from "../components/SelectField";
@@ -37,6 +37,8 @@ export const VacancyPostForm = props => {
     const [userInputData, setUserInputData] = useState({});
     const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
+    const [formIncomplete, setFormIncomplete] = useState(null);
+
     const vacancyData = useRef();
 
     useEffect(() => {
@@ -84,6 +86,7 @@ export const VacancyPostForm = props => {
             inputData.responsibilities &&
             inputData.qualifications
         ) {
+            setFormIncomplete(false);
             try {
                 await axios({
                     method: props.method,
@@ -107,7 +110,7 @@ export const VacancyPostForm = props => {
             } catch (error) {
                 console.log(error);
             };
-        } else { console.log("You should complete the required fields") };
+        } else { setFormIncomplete(true) };
     };
 
     return (
@@ -250,6 +253,10 @@ export const VacancyPostForm = props => {
                     onSelectItem={item => setWorkMode(item)}
                     fieldIsEmpty={!userInputData.work_mode}
                     error={!userInputData.work_mode && !inputsFocused.workMode && submitButtonClicked} />
+                {formIncomplete && !Object.values(inputsFocused).some(val => val === true) &&
+                    <Alert sx={{ display: "flex", justifyContent: "center" }} color="danger">
+                        <Typography color="danger">You should complete all required fields</Typography>
+                    </Alert>}
                 <SubmitButton
                     label={props.buttonText}
                     sx={{

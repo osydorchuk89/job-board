@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useRef, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Stack, Typography } from "@mui/joy";
+import { Stack, Typography, Alert } from "@mui/joy";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
 import { PasswordToggleIcon } from "./PasswordToggleIcon";
@@ -31,7 +31,8 @@ export const RegistrationForm = props => {
     const [passwordShort, setPasswordShort] = useState(null);
     const [emailIncorrect, setEmailIncorrect] = useState({});
     const [phoneIncorrect, setPhonelIncorrect] = useState(null);
-    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [formIncomplete, setFormIncomplete] = useState(null);
 
     const registrationData = useRef();
 
@@ -84,6 +85,7 @@ export const RegistrationForm = props => {
             (!inputProfileData.phone || /^\d+$/.test(inputProfileData.phone)) &&
             (props.isCandidateRegistration || inputProfileData.company)
         ) {
+            setFormIncomplete(false);
             axios({
                 method: "post",
                 url: BASE_URL + "auth/users/",
@@ -128,7 +130,7 @@ export const RegistrationForm = props => {
                         }));
                     } else { console.log(error) };
                 })
-        } else { console.log("You should complete all required fields") };
+        } else { setFormIncomplete(true) };
     };
 
     return (
@@ -232,6 +234,10 @@ export const RegistrationForm = props => {
                     label="City"
                     placeholder="Enter city"
                     name="city" />
+                {formIncomplete && !Object.values(inputsFocused).some(val => val === true) &&
+                    <Alert sx={{ display: "flex", justifyContent: "center" }} color="danger">
+                        <Typography color="danger">You should complete all required fields</Typography>
+                    </Alert>}
                 <SubmitButton
                     label="REGISTER"
                     sx={{

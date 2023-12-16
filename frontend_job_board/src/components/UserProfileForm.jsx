@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Stack, Typography } from "@mui/joy";
+import { Stack, Typography, Alert } from "@mui/joy";
 import { BASE_URL } from "../utils/config";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
@@ -27,6 +27,8 @@ export const UserProfileForm = () => {
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const [emailIncorrect, setEmailIncorrect] = useState({});
     const [phoneIncorrect, setPhonelIncorrect] = useState(null);
+    const [formIncomplete, setFormIncomplete] = useState(null);
+
     const isCandidate = authStatus.userType === "Candidates";
     const userId = localStorage.getItem("user_id");
 
@@ -67,6 +69,7 @@ export const UserProfileForm = () => {
             (!inputProfileData.phone || /^\d+$/.test(inputProfileData.phone)) &&
             (isCandidate || inputProfileData.company)
         ) {
+            setFormIncomplete(false);
             axios({
                 method: "put",
                 url: BASE_URL + `auth/users/me/`,
@@ -113,7 +116,7 @@ export const UserProfileForm = () => {
                         }));
                     } else { console.log(error) };
                 })
-        } else { console.log("You should complete all required fields") }
+        } else { setFormIncomplete(true) }
     };
 
     return (
@@ -207,6 +210,10 @@ export const UserProfileForm = () => {
                     label="City"
                     placeholder="Enter city"
                     name="city" />
+                {formIncomplete && !Object.values(inputsFocused).some(val => val === true) &&
+                    <Alert sx={{ display: "flex", justifyContent: "center" }} color="danger">
+                        <Typography color="danger">You should complete all required fields</Typography>
+                    </Alert>}
                 <SubmitButton
                     label="EDIT PROFILE"
                     sx={{
