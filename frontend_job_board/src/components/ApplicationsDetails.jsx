@@ -60,7 +60,10 @@ export const ApplicationsDetails = () => {
                             }
                         </ListItem>
                         <ListItem>
-                            <Link component={RouterLink} to={application.cv}>
+                            <Link
+                                target="_blank"
+                                rel="noopener"
+                                href={application.cv}>
                                 <strong>Download CV</strong>
                             </Link>
                         </ListItem>
