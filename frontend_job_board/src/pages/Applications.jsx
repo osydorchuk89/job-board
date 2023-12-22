@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
-import { useLoaderData, Link as RouterLink } from "react-router-dom";
+import { useLoaderData, useNavigate, Link as RouterLink } from "react-router-dom";
 import { Container, Typography, Stack, Button } from "@mui/joy";
 import { ApplicationsDetails } from "../components/ApplicationsDetails";
 import { BASE_URL } from "../utils/config";
@@ -8,6 +8,7 @@ import { AuthContext } from "../store/AuthContext";
 
 export const Applications = () => {
 
+    const navigate = useNavigate();
     const { authStatus } = useContext(AuthContext);
     const applicationData = useLoaderData();
 
@@ -20,7 +21,7 @@ export const Applications = () => {
             <Typography textAlign="center" level="h1">
                 {authStatus.userType === "Candidates" ? "My Applications" : "Received Applications"}
             </Typography>
-            {applicationData.length > 0
+            {applicationData?.length > 0
                 ? <ApplicationsDetails />
                 : <Stack alignItems="center">
                     <Typography level="body-lg" sx={{ marginY: { xs: 10, lg: 15 } }}>There are no applications.</Typography>
