@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Snackbar, Typography, Link } from "@mui/joy";
+import { Snackbar, Typography, Link, IconButton } from "@mui/joy";
+import CloseIcon from '@mui/icons-material/Close';
 import { ProfileContext } from "../store/ProfileContext";
 
 export const SnackBarAlert = props => {
@@ -16,13 +17,22 @@ export const SnackBarAlert = props => {
             }}
             size="sm"
             open={props.open}
-            autoHideDuration={2000}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
             color="success"
             variant="soft"
+            autoHideDuration={3000}
             onClose={props.onClose}
             slotProps={props.slotProps}
-            resumeHideDuration={0}
+            endDecorator={
+                <IconButton
+                    onClick={props.onClose}
+                    size="sm"
+                    variant="soft"
+                    color="success"
+                >
+                    <CloseIcon />
+                </IconButton>
+            }
         >
             <Typography
                 color="inherit">

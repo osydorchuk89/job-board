@@ -116,6 +116,7 @@ export const RegistrationForm = props => {
                         .catch(error => console.log(error))
                 })
                 .catch(error => {
+                    setFormIncomplete(true)
                     if (error.response.status === 400 && Object.hasOwn(error.response.data, "password")) {
                         setPasswordIncorrect(prevData => ({
                             ...prevData,
@@ -236,7 +237,7 @@ export const RegistrationForm = props => {
                     name="city" />
                 {formIncomplete && !Object.values(inputsFocused).some(val => val === true) &&
                     <Alert sx={{ display: "flex", justifyContent: "center" }} color="danger">
-                        <Typography color="danger">You should complete all required fields</Typography>
+                        <Typography color="danger">You should complete all required fields correctly</Typography>
                     </Alert>}
                 <SubmitButton
                     label="REGISTER"
