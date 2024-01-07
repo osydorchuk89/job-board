@@ -31,6 +31,13 @@ export const SnackBarContainer = () => {
         profile.justEditedVacancy && setEditedVacancyAlert(true);
         profile.justDeletedVacancy && setDeletedVacancyAlert(true);
         feedback && setPostedFeedbackAlert(true);
+
+        return () => {
+            changeAuthStatus({
+                ...authStatus,
+                justLoggedIn: null
+            });
+        };
     }, []);
 
     return (
