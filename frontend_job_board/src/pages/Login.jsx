@@ -1,17 +1,22 @@
-import { useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Container, Typography, Card, CardContent, CardActions, Stack, Link } from "@mui/joy";
 import { AuthContext } from "../store/AuthContext";
+import { ProfileContext } from "../store/ProfileContext";
 import { LoginForm } from "../components/LoginForm";
-import { SnackBarContainer } from "../components/SnackBarContainer";
+import { SnackBarAlert } from "../components/SnackBarAlert";
 
 export const Login = () => {
 
     const navigate = useNavigate();
     const { authStatus } = useContext(AuthContext);
+    const { profile, changeProfile } = useContext(ProfileContext);
+
+    const [registeredAlert, setRegisteredAlert] = useState(false);
 
     useEffect(() => {
         authStatus.isLoggedIn && navigate("/");
+        profile.justRegistered && setRegisteredAlert(true);
     }, []);
 
     return (
@@ -42,7 +47,19 @@ export const Login = () => {
                     </Link>
                 </Typography>
             </Stack>
-            <SnackBarContainer />
+            <Container>
+                <SnackBarAlert
+                    open={registeredAlert}
+                    text="You succesfully registered! Now, please log in to your account."
+                    onClose={() => {
+                        setRegisteredAlert(false);
+                        changeProfile({
+                            ...profile,
+                            justRegistered: null
+                        });
+                    }}
+                />
+            </Container>
         </Container >
     );
 };

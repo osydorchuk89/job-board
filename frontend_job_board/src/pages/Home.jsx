@@ -1,9 +1,25 @@
+import { useState, useEffect, useContext } from "react";
+import { Container, Typography } from "@mui/joy";
+import { AuthContext } from "../store/AuthContext";
+import { FeedbackContext } from "../store/FeedbackContext";
 import { SearchArea } from "../components/SearchArea";
 import { PopularCategories } from "../components/PopularCategories";
-import { Container, Typography } from "@mui/joy";
-import { SnackBarContainer } from "../components/SnackBarContainer";
+import { SnackBarAlert } from "../components/SnackBarAlert";
 
 export const Home = () => {
+
+    const { authStatus, changeAuthStatus } = useContext(AuthContext);
+    const { feedback, changeFeedback } = useContext(FeedbackContext);
+
+    const [loggedInAlert, setLoggedInAlert] = useState(false);
+    const [loggedOutAlert, setLoggedOutAlert] = useState(false);
+    const [postedFeedbackAlert, setPostedFeedbackAlert] = useState(false);
+
+    useEffect(() => {
+        authStatus.justLoggedOut && setLoggedOutAlert(true);
+        authStatus.justLoggedIn && setLoggedInAlert(true);
+        feedback && setPostedFeedbackAlert(true);
+    }, []);
 
     return (
         <Container>
@@ -18,7 +34,38 @@ export const Home = () => {
             </Typography>
             <SearchArea marginY={{ xs: 5, md: 20 }} />
             <PopularCategories />
-            <SnackBarContainer />
+            <Container>
+                <SnackBarAlert
+                    open={loggedInAlert}
+                    text="You successfully logged in!"
+                    onClose={() => {
+                        setLoggedInAlert(false);
+                        changeAuthStatus({
+                            ...authStatus,
+                            justLoggedIn: null
+                        });
+                    }}
+                />
+                <SnackBarAlert
+                    open={loggedOutAlert}
+                    text="You logged out!"
+                    onClose={() => {
+                        setLoggedOutAlert(false);
+                        changeAuthStatus({
+                            ...authStatus,
+                            justLoggedOut: null
+                        });
+                    }}
+                />
+                <SnackBarAlert
+                    open={postedFeedbackAlert}
+                    text="You successfully sent a message!"
+                    onClose={() => {
+                        setPostedFeedbackAlert(false);
+                        changeFeedback(null);
+                    }}
+                />
+            </Container>
         </Container>
     )
 };
