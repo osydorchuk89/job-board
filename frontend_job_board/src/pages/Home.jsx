@@ -9,16 +9,22 @@ import { SnackBarAlert } from "../components/SnackBarAlert";
 export const Home = () => {
 
     const { authStatus, changeAuthStatus } = useContext(AuthContext);
-    const { feedback, changeFeedback } = useContext(FeedbackContext);
+    let { feedback, changeFeedback } = useContext(FeedbackContext);
 
     const [loggedInAlert, setLoggedInAlert] = useState(false);
     const [loggedOutAlert, setLoggedOutAlert] = useState(false);
     const [postedFeedbackAlert, setPostedFeedbackAlert] = useState(false);
 
     useEffect(() => {
-        authStatus.justLoggedOut && setLoggedOutAlert(true);
         authStatus.justLoggedIn && setLoggedInAlert(true);
+        authStatus.justLoggedOut && setLoggedOutAlert(true);
         feedback && setPostedFeedbackAlert(true);
+
+        return () => {
+            authStatus.justLoggedIn = false;
+            authStatus.justLoggedOut = false;
+            feedback = false;
+        }
     }, []);
 
     return (

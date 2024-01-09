@@ -17,6 +17,10 @@ export const Login = () => {
     useEffect(() => {
         authStatus.isLoggedIn && navigate("/");
         profile.justRegistered && setRegisteredAlert(true);
+
+        return () => {
+            profile.justRegistered = false;
+        }
     }, []);
 
     return (

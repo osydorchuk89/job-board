@@ -25,6 +25,14 @@ export const UserProfile = () => {
         profile.justPostedVacancy && setPostedVacancyAlert(true);
         profile.justEditedVacancy && setEditedVacancyAlert(true);
         profile.justDeletedVacancy && setDeletedVacancyAlert(true);
+
+        return () => {
+            profile.justApplied = false;
+            profile.justEditedProfile = false;
+            profile.justPostedVacancy = false;
+            profile.justEditedVacancy = false;
+            profile.justDeletedVacancy = false;
+        }
     }, []);
 
     return (
