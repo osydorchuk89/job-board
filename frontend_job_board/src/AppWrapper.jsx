@@ -33,7 +33,9 @@ export const AppWrapper = () => {
         justDeletedVacancy: null
     });
 
-    const [userFeedback, setUserFeedback] = useState(null);
+    const [userFeedback, setUserFeedback] = useState({
+        justSentFeeback: null
+    });
 
     const setUserAuthStatusFunction = value => setUserAuthStatus(value);
     const setUserQueryFunction = value => setUserQuery(value);

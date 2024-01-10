@@ -9,7 +9,7 @@ import { SnackBarAlert } from "../components/SnackBarAlert";
 export const Home = () => {
 
     const { authStatus, changeAuthStatus } = useContext(AuthContext);
-    let { feedback, changeFeedback } = useContext(FeedbackContext);
+    const { feedback, changeFeedback } = useContext(FeedbackContext);
 
     const [loggedInAlert, setLoggedInAlert] = useState(false);
     const [loggedOutAlert, setLoggedOutAlert] = useState(false);
@@ -18,12 +18,12 @@ export const Home = () => {
     useEffect(() => {
         authStatus.justLoggedIn && setLoggedInAlert(true);
         authStatus.justLoggedOut && setLoggedOutAlert(true);
-        feedback && setPostedFeedbackAlert(true);
+        feedback.justSentFeeback && setPostedFeedbackAlert(true);
 
         return () => {
             authStatus.justLoggedIn = false;
             authStatus.justLoggedOut = false;
-            feedback = false;
+            feedback.justSentFeeback = false;
         }
     }, []);
 
@@ -68,7 +68,10 @@ export const Home = () => {
                     text="You successfully sent a message!"
                     onClose={() => {
                         setPostedFeedbackAlert(false);
-                        changeFeedback(null);
+                        changeFeedback({
+                            ...feedback,
+                            justSentFeeback: null
+                        });
                     }}
                 />
             </Container>
