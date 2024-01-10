@@ -14,7 +14,7 @@ export const ContactForm = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { authStatus } = useContext(AuthContext);
-    const { changeFeedback } = useContext(FeedbackContext);
+    const { feedback, changeFeedback } = useContext(FeedbackContext);
 
     const allInputsNotFocused = {
         firstName: false,
@@ -29,6 +29,7 @@ export const ContactForm = () => {
     const [inputsFocused, setInputsFocused] = useState(allInputsNotFocused);
     const [phoneIncorrect, setPhonelIncorrect] = useState(null);
     const [formIncomplete, setFormIncomplete] = useState(null);
+    const [emailIncorrect, setEmailIncorrect] = useState({});
 
     const contactFormData = useRef();
 
@@ -84,15 +85,23 @@ export const ContactForm = () => {
                 }
             })
                 .then(() => {
-                    changeFeedback(true);
+                    changeFeedback({
+                        ...feedback,
+                        changeFeedback: true
+                    });
                     navigate("/");
                 })
                 .catch(error => {
-                    console.log(error);
+                    if (error.response.status === 400 && Object.hasOwn(error.response.data, "email")) {
+                        setEmailIncorrect(prevData => ({
+                            ...prevData,
+                            incorrect: true,
+                            message: error.response.data.email[0]
+                        }));
+                    } else { console.log(error) };
                 });
         } else { setFormIncomplete(true) };
     };
-
 
     return (
         <Card variant="outlined" sx={{ width: { xs: "100%", md: "60%" }, alignItems: "center" }}>
@@ -142,8 +151,10 @@ export const ContactForm = () => {
                         placeholder={authStatus.isLoggedIn ? localStorage.getItem("email") : "Enter your email"}
                         name="email"
                         type="email"
+                        emailIncorrect={emailIncorrect.incorrect}
+                        emailIncorrectMessage={emailIncorrect.message}
                         fieldIsEmpty={!userInputData.email}
-                        error={!userInputData.email && !inputsFocused.email && submitButtonClicked} />
+                        error={(!userInputData.email || emailIncorrect.incorrect) && !inputsFocused.email && submitButtonClicked} />
                     <InputField
                         disabled={authStatus.isLoggedIn}
                         defaultvalue={authStatus.isLoggedIn ? localStorage.getItem("phone") : ""}
