@@ -16,8 +16,6 @@ export const Home = () => {
     const [postedFeedbackAlert, setPostedFeedbackAlert] = useState(false);
 
     useEffect(() => {
-        console.log(feedback);
-        console.log(authStatus);
         authStatus.justLoggedIn && setLoggedInAlert(true);
         authStatus.justLoggedOut && setLoggedOutAlert(true);
         feedback.justSentFeedback && setPostedFeedbackAlert(true);
