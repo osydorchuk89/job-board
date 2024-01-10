@@ -34,7 +34,7 @@ export const AppWrapper = () => {
     });
 
     const [userFeedback, setUserFeedback] = useState({
-        justSentFeeback: null
+        justSentFeedback: null
     });
 
     const setUserAuthStatusFunction = value => setUserAuthStatus(value);

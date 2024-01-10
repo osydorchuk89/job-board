@@ -87,7 +87,7 @@ export const ContactForm = () => {
                 .then(() => {
                     changeFeedback({
                         ...feedback,
-                        changeFeedback: true
+                        justSentFeedback: true
                     });
                     navigate("/");
                 })

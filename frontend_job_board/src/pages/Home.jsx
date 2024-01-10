@@ -16,14 +16,16 @@ export const Home = () => {
     const [postedFeedbackAlert, setPostedFeedbackAlert] = useState(false);
 
     useEffect(() => {
+        console.log(feedback);
+        console.log(authStatus);
         authStatus.justLoggedIn && setLoggedInAlert(true);
         authStatus.justLoggedOut && setLoggedOutAlert(true);
-        feedback.justSentFeeback && setPostedFeedbackAlert(true);
+        feedback.justSentFeedback && setPostedFeedbackAlert(true);
 
         return () => {
             authStatus.justLoggedIn = false;
             authStatus.justLoggedOut = false;
-            feedback.justSentFeeback = false;
+            feedback.justSentFeedback = false;
         }
     }, []);
 
@@ -70,7 +72,7 @@ export const Home = () => {
                         setPostedFeedbackAlert(false);
                         changeFeedback({
                             ...feedback,
-                            justSentFeeback: null
+                            justSentFeedback: null
                         });
                     }}
                 />
