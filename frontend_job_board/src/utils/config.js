@@ -1,2 +1,1 @@
-// export const BASE_URL = "http://127.0.0.1:8000/";
-export const BASE_URL = "https://job-link-backend.onrender.com/";
+export const BASE_URL = "https://job-link-821933699928.europe-west1.run.app";
