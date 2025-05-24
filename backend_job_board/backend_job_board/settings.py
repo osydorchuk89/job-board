@@ -1,20 +1,17 @@
 import os
-import dj_database_url
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY = "django-insecure-+a_n#)rmfdh%ncm1e=!sf_gby*vyivp9@5c9!#l37ve^gh9o4("
 SECRET_KEY = os.environ.get("SECRET_KEY", default="your secret key")
 
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "job-link-821933699928.europe-west1.run.app"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -26,7 +23,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     "corsheaders",
-    "debug_toolbar",
     "core",
     "candidates",
     "companies",
@@ -34,8 +30,10 @@ INSTALLED_APPS = [
     "feedback",
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -46,6 +44,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 ROOT_URLCONF = "backend_job_board.urls"
 
@@ -67,17 +68,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend_job_board.wsgi.application"
 
+CLOUDSQL_CONNECTION_NAME = os.environ.get("CLOUDSQL_CONNECTION_NAME")
+DB_USER_PASSWORD = os.environ.get("DB_USER_PASSWORD")
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "job-link",
+        "USER": "job-link-user",
+        "PASSWORD": DB_USER_PASSWORD,
+        "HOST": f"/cloudsql/{CLOUDSQL_CONNECTION_NAME}",
+        "PORT": "5432",
     }
 }
-DATABASES["default"] = dj_database_url.parse(os.environ.get("DATABASE_URL"))
-# DATABASES["default"] = dj_database_url.parse(
-#     "postgres://job_link_db_03cu_user:lQhRrkR1LKXzCVQBzeBXbOx8YqIoEDCv@dpg-cle63a7pc7cc73elj07g-a.frankfurt-postgres.render.com/job_link_db_03cu"
-# )
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,14 +122,13 @@ STORAGES = {
             "custom_domain": "%s.s3.amazonaws.com" % "job-link",
         },
     },
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    },
 }
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "static"
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -138,7 +140,11 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
 }
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://job-link.onrender.com"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://job-link.onrender.com",
+    "https://job-link-821933699928.europe-west1.run.app",
+]
 
 AUTH_USER_MODEL = "core.User"
 
@@ -159,27 +165,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {"class": "logging.StreamHandler"},
-#         "file": {
-#             "class": "logging.FileHandler",
-#             "filename": "general.log",
-#             "formatter": "verbose",
-#         },
-#     },
-#     "loggers": {
-#         "": {
-#             "handlers": ["console", "file"],
-#             "level": os.environ.get("DJANGO_LOG_LEVEL", "INFO"),
-#         }
-#     },
-#     "formatters": {
-#         "verbose": {
-#             "format": "{asctime} ({levelname}) - {name} - {message}",
-#             "style": "{",
-#         }
-#     },
-# }
+CSRF_TRUSTED_ORIGINS = [
+    "https://job-link.onrender.com",
+    "https://job-link-821933699928.europe-west1.run.app",
+]
